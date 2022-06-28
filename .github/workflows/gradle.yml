@@ -24,9 +24,9 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-        working-directory: /ribborn
+        working-directory: ./ribborn
 
       - name: Build with Gradle
         run: ./gradlew build
-        working-directory: /ribborn
+        working-directory: ./ribborn
         
