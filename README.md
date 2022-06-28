@@ -1,5 +1,8 @@
 # ribborn-backend
 패션 공유 사이트 리본 백엔드
+
+### ⚙️ 아키텍쳐
+<image width="800" src="https://user-images.githubusercontent.com/76610357/160749647-ba24cedc-c447-4628-9c6a-a7f92b87971b.png"/>
 <!-- 
  
 # 친구와 함께 하는 1:1 화상 토론 서비스, WEPEECH 🍑
