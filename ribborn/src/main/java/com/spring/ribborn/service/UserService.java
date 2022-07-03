@@ -1,5 +1,6 @@
 package com.spring.ribborn.service;
 
+import com.spring.ribborn.dto.LoginRequestDto;
 import com.spring.ribborn.dto.UserRequestDto;
 import com.spring.ribborn.model.User;
 import com.spring.ribborn.repository.UserRepository;
@@ -44,4 +45,20 @@ public class UserService {
         userRepository.save(user);
 
     }
+
+    // 로그인
+    public Boolean login(LoginRequestDto loginRequestDto) {
+        User user = userRepository.findByUsername(loginRequestDto.getUsername())
+                .orElse(null);
+        if (user != null) {
+            if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+
 }
