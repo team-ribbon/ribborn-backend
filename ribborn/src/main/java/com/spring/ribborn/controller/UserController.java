@@ -30,6 +30,16 @@ public class UserController {
         return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
     }
 
+    // 아이디 중복체크
+    @PostMapping("/api/users/register/idCheck")
+    public ResponseEntity<ApiResponseMessage> idCheck(@RequestBody LoginRequestDto userRequestDto){
+        userService.useridCheck(userRequestDto);
+
+        ApiResponseMessage message = new ApiResponseMessage("Success", "사용가능한 아이디입니다", "", "");
+        return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
+    }
+
+
     // 로그인
     @PostMapping("/api/users/login")
     public ResponseEntity<String> login(final HttpServletResponse response, @RequestBody LoginRequestDto loginRequestDto) {
