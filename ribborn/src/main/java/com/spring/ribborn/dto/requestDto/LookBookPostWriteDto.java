@@ -1,5 +1,6 @@
 package com.spring.ribborn.dto.requestDto;
 
+import com.spring.ribborn.model.Content;
 import com.spring.ribborn.model.Images;
 import lombok.Data;
 
@@ -13,13 +14,13 @@ public class LookBookPostWriteDto {
 
     private String postCategory;
 
-    private List<String> content;
+    private List<Content> content;
     private String username;
     private String introduction;
 
     private List<Images> images = new ArrayList<>();
 
-    public LookBookPostWriteDto(String title, String category, List<String> content) {
+    public LookBookPostWriteDto(String title, String category, List<Content> content) {
         this.title = title;
         this.category = category;
         this.content = content;

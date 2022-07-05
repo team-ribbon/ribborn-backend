@@ -35,15 +35,12 @@ public class PostWriteRepository {
 
     public void lookBookPostWrite(LookBookPostWriteDto lookBookPostWriteDto, User user) {
         Post post = new Post();
-        List<String> contents = lookBookPostWriteDto.getContent();
-        for(String content: contents){
-            Content newContent = new Content(content);
-            post.settingContent(newContent);
-        }
-
+        List<Content> contents = lookBookPostWriteDto.getContent();
+        post.setContent(contents);
         post.setUser(user);
         post.setImages(lookBookPostWriteDto.getImages());
         post.setPostCate(lookBookPostWriteDto.getPostCategory());
-
+        post.setCategory(lookBookPostWriteDto.getCategory());
+        em.persist(post);
     }
 }
