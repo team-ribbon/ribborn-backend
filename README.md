@@ -7,6 +7,28 @@
 <image width="800" src="https://user-images.githubusercontent.com/76610357/160749647-ba24cedc-c447-4628-9c6a-a7f92b87971b.png"/>
 <!-- 
  
+8. 웹소켓 연결 시도 시 토큰 인증 에러가 나는 문제
+❓ 원인 : Bearer Token을 사용한 후 Bearer 타입까지 포함된 토큰 문자열을 인증하려고 하였기 때문
+
+💡 To-Be (Stomp Interceptor에서 타입 부분을 잘라냄)
+
+String jwtToken = accessor
+        .getFirstNativeHeader("Authorization")
+        .substring(7);
+🔑 Bearer Token을 사용한 이유
+
+# Bearer Token의 정의
+A security token with the property that any party in possession of the token (a "bearer") can use the token
+in any way that any other party in possession of it can. Using a bearer token does not require a bearer to 
+prove possession of cryptographic key material(proof-of-possession).
+토큰을 소유한 모든 당사자가 토큰을 소유한 다른 당사자가 할 수 있는 방식으로 토큰을 사용할 수 있는 속성이 있는 보안 토큰이다. 
+보유자 토큰을 사용하는 경우 보유자가 암호화 키 자료(소유 증명)의 소유를 증명할 필요가 없다.
+# 일반적으로  토큰은 요청 헤더의 Authorization 필드에 담아져 보내지는데, Authorization은 아래와 같은 구조를 갖고 있다.
+- Authorization: [type] [credential]
+- Bearer는 Authorization Type의 한 종류로, JWT / OAuth에 대한 토큰을 사용할 경우 주로 사용된다.
+
+
+
 # 친구와 함께 하는 1:1 화상 토론 서비스, WEPEECH 🍑
 
 <br>
