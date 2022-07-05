@@ -5,6 +5,7 @@ import com.spring.ribborn.model.Images;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -13,8 +14,8 @@ public class LookbookResponseDto {
     @Builder
     public static class LookbookMain {
         private Long id;
-        private String nickname;
         private Images image;
+        private String nickname;
         private String category;
         private int likeCount;
         private LocalDateTime createdAt;
