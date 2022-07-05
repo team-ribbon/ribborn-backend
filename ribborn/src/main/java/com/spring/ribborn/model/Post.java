@@ -36,5 +36,8 @@ public class Post extends TimeStamp{
     private String item;
     private String postCate;
 
+    public void settingContent(Content content){
+        this.content.add(content);
+    }
 
 }

@@ -1,6 +1,6 @@
 package com.spring.ribborn.service;
 
-import com.spring.ribborn.dto.PostWriteRequestDto;
+import com.spring.ribborn.dto.requestDto.PostWriteRequestDto;
 import com.spring.ribborn.model.User;
 import com.spring.ribborn.repository.PostWriteRepository;
 import com.spring.ribborn.repository.UserRepository;

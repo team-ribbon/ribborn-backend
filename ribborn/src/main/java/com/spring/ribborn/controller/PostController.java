@@ -1,8 +1,9 @@
 package com.spring.ribborn.controller;
 
 
-import com.spring.ribborn.dto.PostWriteRequestDto;
+import com.spring.ribborn.dto.requestDto.PostWriteRequestDto;
 import com.spring.ribborn.exception.ApiResponseMessage;
+import com.spring.ribborn.model.Images;
 import com.spring.ribborn.security.UserDetailsImpl;
 import com.spring.ribborn.service.AwsS3Service;
 import com.spring.ribborn.service.PostWriteService;
@@ -33,9 +34,11 @@ public class PostController {
                                                            @AuthenticationPrincipal UserDetailsImpl userDetails){
         List<String> strings = awsS3Service.uploadFile(multipartFile);
 
+        for(String string : strings){
+            Images images = new Images(string);
+            postWriteRequestDto.settingImages(images);
+        }
 
-        postWriteRequestDto.setImages(strings);
-        postWriteRequestDto.setNickname(userDetails.getNickname());
         postWriteRequestDto.setUsername(userDetails.getUsername());
 
 

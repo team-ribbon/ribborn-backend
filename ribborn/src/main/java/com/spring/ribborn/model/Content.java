@@ -7,7 +7,7 @@ import javax.persistence.Embeddable;
 import java.util.List;
 
 @Embeddable
-@Getter
+@Getter @Setter
 public class Content {
     private String content;
     protected Content(){}
