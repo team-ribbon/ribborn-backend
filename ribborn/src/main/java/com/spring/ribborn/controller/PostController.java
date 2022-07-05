@@ -1,6 +1,7 @@
 package com.spring.ribborn.controller;
 
 
+import com.spring.ribborn.dto.requestDto.LookBookPostWriteDto;
 import com.spring.ribborn.dto.requestDto.PostWriteRequestDto;
 import com.spring.ribborn.exception.ApiResponseMessage;
 import com.spring.ribborn.model.Images;
@@ -27,24 +28,42 @@ public class PostController {
     private final PostWriteService postWriteService;
 
 
-    //질문 게시판 작성
-    @PostMapping("/api/qnaPosts")
+    //질문,후기,리폼견적 게시판 작성
+    @PostMapping(value = {"/api/qnaPosts","/api/reviewPosts","/api/reform-Posts"})
     public ResponseEntity<ApiResponseMessage> qnaPostWrite(@RequestPart(value = "file", required = false) List<MultipartFile> multipartFile,
                                                            @RequestPart(value = "key")PostWriteRequestDto postWriteRequestDto,
                                                            @AuthenticationPrincipal UserDetailsImpl userDetails){
-        List<String> strings = awsS3Service.uploadFile(multipartFile);
 
+        List<String> strings = awsS3Service.uploadFile(multipartFile);
         for(String string : strings){
             Images images = new Images(string);
             postWriteRequestDto.settingImages(images);
         }
 
         postWriteRequestDto.setUsername(userDetails.getUsername());
-
-
         postWriteService.postWrite(postWriteRequestDto);
 
         ApiResponseMessage message = new ApiResponseMessage("Success", "게시글이 작성 되었습니다.", "", "");
         return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
     }
+
+    //룩북 게시판 작성
+    @PostMapping("/api/lookPosts")
+    public ResponseEntity<ApiResponseMessage> lookPostWrite(@RequestPart(value = "file", required = false) List<MultipartFile> multipartFile,
+                                                            @RequestPart(value = "key") LookBookPostWriteDto lookBookPostWriteDto,
+                                                            @AuthenticationPrincipal UserDetailsImpl userDetails){
+        List<String> strings = awsS3Service.uploadFile(multipartFile);
+        for(String string : strings){
+            Images images = new Images(string);
+            lookBookPostWriteDto.settingImages(images);
+        }
+
+        lookBookPostWriteDto.setUsername(userDetails.getUsername());
+        postWriteService.lookBookPostWrite(lookBookPostWriteDto);
+
+
+        ApiResponseMessage message = new ApiResponseMessage("Success", "게시글이 작성 되었습니다.", "", "");
+        return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
+    }
+
 }

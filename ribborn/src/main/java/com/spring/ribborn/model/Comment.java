@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Setter
 public class Comment extends TimeStamp{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
     private Long id;
 
