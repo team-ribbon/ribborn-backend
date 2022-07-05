@@ -23,6 +23,7 @@ public class PostWriteRepository {
         post.settingContent(content);
         //post.setLikeCount();
         //post.setCommentCount();
+        post.setPostCate(postWriteRequestDto.getPostCategory());
         post.setTitle(postWriteRequestDto.getTitle());
         post.setCategory(postWriteRequestDto.getCategory());
         em.persist(post);

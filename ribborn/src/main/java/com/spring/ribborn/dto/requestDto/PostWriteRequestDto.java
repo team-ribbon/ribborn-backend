@@ -12,6 +12,9 @@ import java.util.List;
 public class PostWriteRequestDto {
     private String title;
     private String category;
+
+    private String postCategory;
+
     private String content;
     private String username;
 
