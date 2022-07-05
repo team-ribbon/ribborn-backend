@@ -1,4 +1,4 @@
-package com.spring.ribborn.dto;
+package com.spring.ribborn.dto.requestDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

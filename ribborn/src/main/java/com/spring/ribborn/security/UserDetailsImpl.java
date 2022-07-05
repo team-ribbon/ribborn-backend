@@ -15,7 +15,7 @@ public class UserDetailsImpl implements UserDetails {
         this.user = user;
     }
 
-    public User getMember() {
+    public User getUser() {
         return user;
     }
 
@@ -57,4 +57,6 @@ public class UserDetailsImpl implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.emptyList();
     }
+
+
 }

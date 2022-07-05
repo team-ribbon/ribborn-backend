@@ -1,4 +1,4 @@
-package com.spring.ribborn.dto;
+package com.spring.ribborn.dto.requestDto;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,4 +15,10 @@ public class UserRequestDto {
     private String addressCategory;
     private String addressDetail;
     private String introduction;
+
+
+
+
 }
+
+
