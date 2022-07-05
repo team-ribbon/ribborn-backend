@@ -11,7 +11,7 @@ import java.util.List;
 @Getter @Setter
 public class Post extends TimeStamp{
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private Long id;
 

@@ -1,14 +1,15 @@
 package com.spring.ribborn.repository;
 
+import com.spring.ribborn.dto.requestDto.LookBookPostWriteDto;
 import com.spring.ribborn.dto.requestDto.PostWriteRequestDto;
 import com.spring.ribborn.model.Content;
-import com.spring.ribborn.model.Images;
 import com.spring.ribborn.model.Post;
 import com.spring.ribborn.model.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -23,9 +24,26 @@ public class PostWriteRepository {
         post.settingContent(content);
         //post.setLikeCount();
         //post.setCommentCount();
+        if(postWriteRequestDto.getRegion() != null){
+            post.setRegion(postWriteRequestDto.getRegion());
+        }
         post.setPostCate(postWriteRequestDto.getPostCategory());
         post.setTitle(postWriteRequestDto.getTitle());
         post.setCategory(postWriteRequestDto.getCategory());
         em.persist(post);
+    }
+
+    public void lookBookPostWrite(LookBookPostWriteDto lookBookPostWriteDto, User user) {
+        Post post = new Post();
+        List<String> contents = lookBookPostWriteDto.getContent();
+        for(String content: contents){
+            Content newContent = new Content(content);
+            post.settingContent(newContent);
+        }
+
+        post.setUser(user);
+        post.setImages(lookBookPostWriteDto.getImages());
+        post.setPostCate(lookBookPostWriteDto.getPostCategory());
+
     }
 }

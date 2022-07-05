@@ -7,20 +7,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class PostWriteRequestDto {
+public class LookBookPostWriteDto {
     private String title;
     private String category;
 
     private String postCategory;
 
-    private String content;
+    private List<String> content;
     private String username;
-    private String region;
+    private String introduction;
 
     private List<Images> images = new ArrayList<>();
 
-    public PostWriteRequestDto(String title, String category, String content) {
-
+    public LookBookPostWriteDto(String title, String category, List<String> content) {
         this.title = title;
         this.category = category;
         this.content = content;
