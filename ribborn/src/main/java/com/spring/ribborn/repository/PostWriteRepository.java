@@ -3,6 +3,7 @@ package com.spring.ribborn.repository;
 import com.spring.ribborn.dto.requestDto.LookBookPostWriteDto;
 import com.spring.ribborn.dto.requestDto.PostWriteRequestDto;
 import com.spring.ribborn.model.Content;
+import com.spring.ribborn.model.Contents;
 import com.spring.ribborn.model.Post;
 import com.spring.ribborn.model.User;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +19,14 @@ public class PostWriteRepository {
     private final EntityManager em;
     public void postWrite(PostWriteRequestDto postWriteRequestDto, User user) {
         Post post = new Post();
-        Content content = new Content(postWriteRequestDto.getContent());
+        Contents contents = new Contents();
+        contents.setContent(postWriteRequestDto.getContent());
+        for(String image : postWriteRequestDto.getImages()){
+            contents.setImage(image);
+            post.setContents(contents);
+        }
         post.setUser(user);
-        post.setImages(postWriteRequestDto.getImages());
-        post.settingContent(content);
+
         //post.setLikeCount();
         //post.setCommentCount();
         if(postWriteRequestDto.getRegion() != null){

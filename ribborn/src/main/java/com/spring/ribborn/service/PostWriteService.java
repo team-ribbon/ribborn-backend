@@ -6,7 +6,7 @@ import com.spring.ribborn.dto.responseDto.PostWriteResponseDto;
 import com.spring.ribborn.model.Images;
 import com.spring.ribborn.model.Post;
 import com.spring.ribborn.model.User;
-import com.spring.ribborn.repository.ImagesRepository;
+//import com.spring.ribborn.repository.ImagesRepository;
 import com.spring.ribborn.repository.PostRepository;
 import com.spring.ribborn.repository.PostWriteRepository;
 import com.spring.ribborn.repository.UserRepository;
