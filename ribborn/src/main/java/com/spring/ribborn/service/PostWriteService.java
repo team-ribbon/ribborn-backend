@@ -3,8 +3,6 @@ package com.spring.ribborn.service;
 import com.spring.ribborn.dto.requestDto.LookBookPostWriteDto;
 import com.spring.ribborn.dto.requestDto.PostWriteRequestDto;
 import com.spring.ribborn.dto.responseDto.PostWriteResponseDto;
-import com.spring.ribborn.dto.responseDto.ReformResponseDto;
-import com.spring.ribborn.model.Content;
 import com.spring.ribborn.model.Images;
 import com.spring.ribborn.model.Post;
 import com.spring.ribborn.model.User;
@@ -20,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +44,7 @@ public class PostWriteService {
         postWriteRepository.lookBookPostWrite(lookBookPostWriteDto,user);
     }
 
-    //-------------------------------------
+    //-------------------------------------------------------------------------------------
 
     // 후기 & 질문 게시판 조회
     @Transactional

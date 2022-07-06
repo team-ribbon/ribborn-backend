@@ -2,15 +2,12 @@ package com.spring.ribborn.dto.responseDto;
 
 import com.spring.ribborn.model.Content;
 import com.spring.ribborn.model.Images;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class PostWriteResponseDto {
     @Builder
     public static class WriteMain {

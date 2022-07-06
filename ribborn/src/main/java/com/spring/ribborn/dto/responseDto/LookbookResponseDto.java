@@ -5,11 +5,9 @@ import com.spring.ribborn.model.Images;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class LookbookResponseDto {
     @Builder
     public static class LookbookMain {
