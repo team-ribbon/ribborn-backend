@@ -1,6 +1,5 @@
 package com.spring.ribborn.controller;
 
-import com.spring.ribborn.dto.responseDto.LookbookResponseDto;
 import com.spring.ribborn.dto.responseDto.PostWriteResponseDto;
 import com.spring.ribborn.model.Post;
 import com.spring.ribborn.security.UserDetailsImpl;
