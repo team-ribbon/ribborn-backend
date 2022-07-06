@@ -26,13 +26,11 @@ public class ReformService {
     // 리폼견적 목록페이지 조회
     @Transactional
     public ResponseEntity<ReformResponseDto.ReformMain> getReforms(Pageable pageable, UserDetailsImpl userDetails) {
-        List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc(pageable);
-
-        Long userId = userDetails.getUser().getId();
+        List<Post> posts = postRepository.findAllByOrderByCreateAtDesc(pageable);
         List<ReformResponseDto.ReformMain> ReformList = new ArrayList<>();
 
         for (Post post : posts) {
-            Images viewImage = imagesRepository.findTopByPostIdOrderByCreatedAtDesc(post.getId());
+            Images viewImage = imagesRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
             ReformResponseDto.ReformMain mainDto = ReformResponseDto.ReformMain.builder()
                     .id(post.getId())
                     .image(viewImage)

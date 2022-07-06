@@ -4,5 +4,5 @@ import com.spring.ribborn.model.Images;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ImagesRepository extends JpaRepository<Images, Long> {
-    Images findTopByPostIdOrderByCreatedAtDesc(Long postId);
+    Images findTop1ByPostIdOrderByCreateAtDesc(Long postId);
 }

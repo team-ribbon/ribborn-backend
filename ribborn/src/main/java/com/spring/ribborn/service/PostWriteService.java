@@ -49,13 +49,11 @@ public class PostWriteService {
     // 후기 & 질문 게시판 조회
     @Transactional
     public ResponseEntity<PostWriteResponseDto.WriteMain> getPostWrite(Pageable pageable, UserDetailsImpl userDetails) {
-        List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc(pageable);
-
-        Long userId = userDetails.getUser().getId();
+        List<Post> posts = postRepository.findAllByOrderByCreateAtDesc(pageable);
         List<PostWriteResponseDto.WriteMain> PostList = new ArrayList<>();
 
         for (Post post : posts) {
-            Images viewImage = imagesRepository.findTopByPostIdOrderByCreatedAtDesc(post.getId());
+            Images viewImage = imagesRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
             PostWriteResponseDto.WriteMain mainDto = PostWriteResponseDto.WriteMain.builder()
                     .id(post.getId())
                     .image(viewImage)

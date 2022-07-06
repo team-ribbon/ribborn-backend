@@ -26,13 +26,11 @@ public class LookbookService {
     // 룩북 목록페이지 조회
     @Transactional
     public ResponseEntity<LookbookResponseDto.LookbookMain> getLookbooks(Pageable pageable, UserDetailsImpl userDetails) {
-        List<Post> posts = postRepository.findAllByOrderByCreatedAtDesc(pageable);
-
-        Long userId = userDetails.getUser().getId();
+        List<Post> posts = postRepository.findAllByOrderByCreateAtDesc(pageable);
         List<LookbookResponseDto.LookbookMain> lookbookList = new ArrayList<>();
 
         for (Post post : posts) {
-            Images viewImage = imagesRepository.findTopByPostIdOrderByCreatedAtDesc(post.getId());
+            Images viewImage = imagesRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
             LookbookResponseDto.LookbookMain mainDto = LookbookResponseDto.LookbookMain.builder()
                     .id(post.getId())
                     .image(viewImage)
