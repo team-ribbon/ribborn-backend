@@ -55,11 +55,8 @@ public class PostController {
                                                             @RequestPart(value = "key") LookBookPostWriteDto lookBookPostWriteDto,
                                                             @AuthenticationPrincipal UserDetailsImpl userDetails){
         List<String> strings = awsS3Service.uploadFile(multipartFile);
-        for(String string : strings){
-            Images images = new Images(string);
-            lookBookPostWriteDto.settingImages(images);
-        }
 
+        lookBookPostWriteDto.setImages(strings);
         lookBookPostWriteDto.setUsername(userDetails.getUsername());
         postWriteService.lookBookPostWrite(lookBookPostWriteDto);
 

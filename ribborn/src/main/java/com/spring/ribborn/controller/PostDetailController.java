@@ -16,8 +16,7 @@ public class PostDetailController {
 
     @GetMapping("/api/qnaList/{postId}")
     public PostDetailResponseDto postDetailView(@PathVariable("postId") Long postId, @RequestParam int page, @RequestParam int size){
-        PostDetailResponseDto postDetailResponseDto = postDetailService.postDetailView(postId, page, size);
 
-        return postDetailResponseDto;
+        return postDetailService.postDetailView(postId, page, size);
     }
 }
