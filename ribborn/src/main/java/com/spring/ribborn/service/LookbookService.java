@@ -3,7 +3,7 @@ package com.spring.ribborn.service;
 import com.spring.ribborn.dto.responseDto.LookbookResponseDto;
 import com.spring.ribborn.model.Images;
 import com.spring.ribborn.model.Post;
-import com.spring.ribborn.repository.ImagesRepository;
+/*import com.spring.ribborn.repository.ImagesRepository;*/
 import com.spring.ribborn.repository.PostRepository;
 import com.spring.ribborn.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LookbookService {
     private final PostRepository postRepository;
-    private final ImagesRepository imagesRepository;
+    /*private final ImagesRepository imagesRepository;*/
 
     // 룩북 목록페이지 조회
     @Transactional
@@ -30,10 +30,10 @@ public class LookbookService {
         List<LookbookResponseDto.LookbookMain> lookbookList = new ArrayList<>();
 
         for (Post post : posts) {
-            Images viewImage = imagesRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
+            /*Images viewImage = imagesRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());*/
             LookbookResponseDto.LookbookMain mainDto = LookbookResponseDto.LookbookMain.builder()
                     .id(post.getId())
-                    .image(viewImage)
+                    //.image(viewImage)
                     .nickname(post.getUser().getNickname())
                     .category(post.getCategory())
                     .likeCount(post.getLikeCount())

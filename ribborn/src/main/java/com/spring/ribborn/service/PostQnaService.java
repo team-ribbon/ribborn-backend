@@ -3,7 +3,7 @@ package com.spring.ribborn.service;
 import com.spring.ribborn.dto.responseDto.PostWriteResponseDto;
 import com.spring.ribborn.model.Images;
 import com.spring.ribborn.model.Post;
-import com.spring.ribborn.repository.ImagesRepository;
+//import com.spring.ribborn.repository.ImagesRepository;
 import com.spring.ribborn.repository.PostRepository;
 import com.spring.ribborn.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostQnaService {
     private final PostRepository postRepository;
-    private final ImagesRepository imagesRepository;
+    //private final ImagesRepository imagesRepository;
 
     // 질문 게시판 조회
     @Transactional
@@ -30,10 +30,10 @@ public class PostQnaService {
         List<PostWriteResponseDto.WriteMain> QnaList = new ArrayList<>();
 
         for (Post post : posts) {
-            Images viewImage = imagesRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
+            //Images viewImage = imagesRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
             PostWriteResponseDto.WriteMain mainDto = PostWriteResponseDto.WriteMain.builder()
                     .id(post.getId())
-                    .image(viewImage)
+                    //.image(viewImage)
                     .likeCount(post.getLikeCount())
                     .commentCount(post.getCommentCount())
                     .nickname(post.getUser().getNickname())

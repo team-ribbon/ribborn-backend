@@ -41,11 +41,7 @@ public class PostController {
                                                            @AuthenticationPrincipal UserDetailsImpl userDetails){
 
         List<String> strings = awsS3Service.uploadFile(multipartFile);
-        for(String string : strings){
-            Images images = new Images(string);
-            postWriteRequestDto.settingImages(images);
-        }
-
+        postWriteRequestDto.setImages(strings);
         postWriteRequestDto.setUsername(userDetails.getUsername());
         postWriteService.postWrite(postWriteRequestDto);
 
