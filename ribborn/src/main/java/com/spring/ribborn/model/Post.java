@@ -35,6 +35,7 @@ public class Post extends TimeStamp{
     private String region;
     private String item;
     private String postCate;
+    private String process;
 
     public void settingContent(Content content){
         this.content.add(content);
