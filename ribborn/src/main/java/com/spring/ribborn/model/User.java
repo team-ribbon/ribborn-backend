@@ -1,5 +1,6 @@
 package com.spring.ribborn.model;
 
+import com.spring.ribborn.dto.requestDto.UserUpdateRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -59,4 +60,23 @@ public class User {
         this.introduction = introduction;
     }
 
+    public void update(UserUpdateRequestDto userUpdateRequestDto) {
+        this.nickname = userUpdateRequestDto.getNickname();
+        this.password = userUpdateRequestDto.getNewPassword();
+        this.companyNum = userUpdateRequestDto.getCompanyNum();
+        this.phoneNum = userUpdateRequestDto.getPhoneNum();
+        this.addressCategory = userUpdateRequestDto.getAddressCategory();
+        this.addressDetail = userUpdateRequestDto.getAddressDetail();
+        this.introduction = userUpdateRequestDto.getIntroduction();
+    }
+
+    public void update(String password, String nickname, String companyNum, String phoneNum, String addressCategory, String addressDetail, String introduction) {
+        this.nickname = nickname;
+        this.password = password;
+        this.companyNum = companyNum;
+        this.phoneNum = phoneNum;
+        this.addressCategory = addressCategory;
+        this.addressDetail = addressDetail;
+        this.introduction = introduction;
+    }
 }

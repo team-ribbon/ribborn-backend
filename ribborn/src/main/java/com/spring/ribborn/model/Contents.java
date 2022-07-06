@@ -2,10 +2,11 @@ package com.spring.ribborn.model;
 
 import javax.persistence.*;
 
+@Entity
 public class Contents {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "contents_id")
+    @Column(name = "contens_id")
     private Long id;
 
     private String image;
