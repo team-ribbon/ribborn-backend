@@ -18,8 +18,6 @@ public class Contents {
     private String image;
     private String content;
 
-    private LocalDateTime createAt;
-
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
     private Post post;

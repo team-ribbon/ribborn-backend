@@ -4,7 +4,7 @@ import com.spring.ribborn.model.Content;
 import com.spring.ribborn.model.Contents;
 import com.spring.ribborn.model.Images;
 import com.spring.ribborn.model.Post;
-import com.spring.ribborn.repository.ContentsRepository;
+import com.spring.ribborn.repository.ImagesRepository;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,18 +12,18 @@ import java.util.List;
 
 @Data
 public class LookbookResponseDto {
-    private static ContentsRepository contentsRepository;
+    private static ImagesRepository imagesRepository;
     @Builder
     public static class LookbookMain {
         private Long id;
-        private Contents image;
+        private Images image;
         private String nickname;
         private String category;
         private int likeCount;
         private LocalDateTime createdAt;
 
         public static LookbookMain from(Post post) {
-            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
+            Images viewImage = imagesRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
             return LookbookMain.builder()
                     .id(post.getId())
                     .image(viewImage)
