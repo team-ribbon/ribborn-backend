@@ -5,7 +5,6 @@ import com.spring.ribborn.dto.requestDto.PostWriteRequestDto;
 import com.spring.ribborn.dto.responseDto.PostWriteResponseDto;
 import com.spring.ribborn.model.Post;
 import com.spring.ribborn.model.User;
-import com.spring.ribborn.repository.ImagesRepository;
 import com.spring.ribborn.repository.PostRepository;
 import com.spring.ribborn.repository.PostWriteRepository;
 import com.spring.ribborn.repository.UserRepository;
@@ -22,7 +21,6 @@ public class PostWriteService {
     private final PostWriteRepository postWriteRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
-    private final ImagesRepository imagesRepository;
 
     //게시글 작성
     @Transactional

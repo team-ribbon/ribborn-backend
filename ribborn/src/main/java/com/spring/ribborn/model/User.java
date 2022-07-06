@@ -60,6 +60,7 @@ public class User {
         this.introduction = introduction;
     }
 
+    // 유저 정보 수정
     public void update(UserUpdateRequestDto userUpdateRequestDto) {
         this.nickname = userUpdateRequestDto.getNickname();
         this.password = userUpdateRequestDto.getNewPassword();
@@ -70,13 +71,4 @@ public class User {
         this.introduction = userUpdateRequestDto.getIntroduction();
     }
 
-    public void update(String password, String nickname, String companyNum, String phoneNum, String addressCategory, String addressDetail, String introduction) {
-        this.nickname = nickname;
-        this.password = password;
-        this.companyNum = companyNum;
-        this.phoneNum = phoneNum;
-        this.addressCategory = addressCategory;
-        this.addressDetail = addressDetail;
-        this.introduction = introduction;
-    }
 }

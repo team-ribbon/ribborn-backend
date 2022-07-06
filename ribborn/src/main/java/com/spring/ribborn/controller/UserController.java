@@ -4,6 +4,7 @@ import com.spring.ribborn.dto.requestDto.LoginRequestDto;
 import com.spring.ribborn.dto.requestDto.UserRequestDto;
 import com.spring.ribborn.dto.requestDto.UserUpdateRequestDto;
 import com.spring.ribborn.dto.responseDto.UserResponseDto;
+import com.spring.ribborn.dto.responseDto.UserTokenResponseDto;
 import com.spring.ribborn.exception.ApiResponseMessage;
 import com.spring.ribborn.jwt.JwtTokenProvider;
 import com.spring.ribborn.security.UserDetailsImpl;
@@ -54,11 +55,17 @@ public class UserController {
         }
     }
 
+    // 유저 정보 조회(토큰)
+    @GetMapping("/api/users/auth")
+    public UserTokenResponseDto userInfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        Long id = userDetails.getUserId();
+        return userService.userAuth(id);
+    }
+
     // 유저 상세페이지
     @GetMapping("/api/users/userinfo/{id}")
     public UserResponseDto userinfo(@PathVariable("id") Long id , @AuthenticationPrincipal UserDetailsImpl userDetails){
         String username = userDetails.getUsername();
-        System.out.println("username = " + username);
         if(id.equals(userDetails.getUser().getId())){
             return userService.userInfo(id);
         } else {
@@ -70,17 +77,13 @@ public class UserController {
     @GetMapping("/api/users/mypage")
     public UserResponseDto userinfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
         Long id = userDetails.getUserId();
-        System.out.println("id = " + id);
         return userService.userInfo(id);
     }
-
-
 
     // 유저 정보 수정
     @PutMapping("/api/users/mypage")
     public ResponseEntity<ApiResponseMessage> updateUser(@RequestBody UserUpdateRequestDto userUpdateRequestDto , @AuthenticationPrincipal UserDetailsImpl userDetails){
         Long userId = userDetails.getUserId();
-        System.out.println("userId = " + userId);
         userService.updateUser(userUpdateRequestDto, userId);
         ApiResponseMessage message = new ApiResponseMessage("Success", "수정이 완료되었습니다", "", "");
         return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);

@@ -12,13 +12,13 @@ import java.time.LocalDateTime;
 public class Contents {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "contens_id")
+    @Column(name = "contents_id")
     private Long id;
 
     private String image;
     private String content;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
 }

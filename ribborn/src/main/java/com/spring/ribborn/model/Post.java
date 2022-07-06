@@ -1,5 +1,6 @@
 package com.spring.ribborn.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,10 @@ public class Post extends TimeStamp{
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private List<Contents> contents = new ArrayList<>();
 
     @ElementCollection
     @CollectionTable (name = "image", joinColumns = @JoinColumn(name="image_post_id",referencedColumnName = "post_id") )
@@ -41,4 +46,8 @@ public class Post extends TimeStamp{
         this.content.add(content);
     }
 
+    public void setContents(Contents content){
+        contents.add(content);
+        content.setPost(this);
+    }
 }

@@ -4,14 +4,14 @@ import com.spring.ribborn.dto.requestDto.LoginRequestDto;
 import com.spring.ribborn.dto.requestDto.UserRequestDto;
 import com.spring.ribborn.dto.requestDto.UserUpdateRequestDto;
 import com.spring.ribborn.dto.responseDto.UserResponseDto;
+import com.spring.ribborn.dto.responseDto.UserTokenResponseDto;
 import com.spring.ribborn.model.User;
 import com.spring.ribborn.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -69,11 +69,18 @@ public class UserService {
     //아이디 중복 체크
     public void useridCheck(LoginRequestDto userRequestDto) {
         String username = userRequestDto.getUsername();
-
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자 아이디가 존재합니다.");
         }
+    }
+
+    // 유저 정보 조회 토큰
+    public UserTokenResponseDto userAuth(Long id) {
+        User user = userRepository.findById(id).orElseThrow(
+                () -> new NullPointerException("해당 아이디가 존재하지 않습니다.")
+        );
+        return new UserTokenResponseDto(user);
     }
 
     // 유저 상세 정보 , 마이 페이지
@@ -94,38 +101,20 @@ public class UserService {
 //
 
     // 유저 정보 수정
+    @Transactional
     public void updateUser(UserUpdateRequestDto userUpdateRequestDto, Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new NullPointerException("해당 아이디가 존재하지 않습니다.")
         );
-        System.out.println("userId = " + userId);
-        System.out.println("getid = " + user.getId());
         // 비밀번호 복호화 코드  if(encoder.matches( 입력받은 비교할 비밀번호, 이미 암호화된 비밀번호) )
         if(encoder.matches(userUpdateRequestDto.getCurrentPassword() , user.getPassword() )) {
             String password = userUpdateRequestDto.getNewPassword();
-            String nickname = userUpdateRequestDto.getNickname();
-            String companyNum = userUpdateRequestDto.getCompanyNum();
-            String phoneNum = userUpdateRequestDto.getPhoneNum();
-            String addressCategory = userUpdateRequestDto.getAddressCategory();
-            String addressDetail = userUpdateRequestDto.getAddressDetail();
-            String introduction = userUpdateRequestDto.getIntroduction();
-
-            System.out.println("password = " + password);
-            System.out.println("nickname = " + nickname);
-            System.out.println("companyNum = " + companyNum);
-            System.out.println("phoneNum = " + phoneNum);
-            System.out.println("addressCategory = " + addressCategory);
-            System.out.println("addressDetail = " + addressDetail);
-            System.out.println("introduction = " + introduction);
-
-            password = passwordEncoder.encode(password);
-
-            user.update( password ,nickname ,companyNum , phoneNum , addressCategory , addressDetail , introduction);
-//            user.update(userUpdateRequestDto);
+            //비밀번호 다시 암호화
+            userUpdateRequestDto.setNewPassword(passwordEncoder.encode(password));
+            user.update(userUpdateRequestDto);
         }else{
             throw new IllegalArgumentException("기존 비밀번호가 틀렸습니다");
         }
     }
-
 
 }
