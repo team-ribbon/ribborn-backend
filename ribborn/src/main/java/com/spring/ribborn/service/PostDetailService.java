@@ -20,6 +20,7 @@ public class PostDetailService {
     public PostDetailResponseDto postDetailView(Long postId,int page, int size) {
         PostDetailResponseDto postDetail = postDetailRepository.findPostDetail(postId);
         List<ContentsQueryDto> contents = postDetailRepository.findContents(postId);
+
         postDetail.ContentSetting(contents);
         return postDetail;
     }
