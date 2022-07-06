@@ -28,14 +28,4 @@ public class LookbookController {
         Page<Post> lookList = lookbookService.getLookbooks(pageable);
         return lookList.map(LookbookResponseDto.LookbookMain::from);
     }
-
-    // 룩북 상세페이지 조회
-    @GetMapping("/api/lookPosts/{postid}")
-    public ResponseEntity<LookbookResponseDto> getLookPost(@PathVariable Long postId) {
-        try{
-            return new ResponseEntity(lookbookService.getDetail(postId), HttpStatus.OK);
-        }catch(IllegalArgumentException e){
-            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
 }

@@ -37,14 +37,4 @@ public class PostWriteController {
         Page<Post> reviewList = postWriteService.getWrite(pageable);
         return reviewList.map(PostWriteResponseDto.WriteMain::from);
     }
-
-    // 질문 & 후기 상세페이지 조회
-    @GetMapping(value = {"/api/qnaPosts/{postid}", "/api/reviewPosts/{postid}"})
-    public ResponseEntity<PostWriteResponseDto> getWritePost(@PathVariable Long postId) {
-        try{
-            return new ResponseEntity(postWriteService.getDetail(postId), HttpStatus.OK);
-        }catch(IllegalArgumentException e){
-            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
 }

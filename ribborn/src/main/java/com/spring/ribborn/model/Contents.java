@@ -17,6 +17,7 @@ public class Contents {
 
     private String image;
     private String content;
+    private LocalDateTime createAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
