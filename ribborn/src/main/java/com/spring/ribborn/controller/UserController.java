@@ -2,11 +2,10 @@ package com.spring.ribborn.controller;
 
 import com.spring.ribborn.dto.requestDto.LoginRequestDto;
 import com.spring.ribborn.dto.requestDto.UserRequestDto;
+import com.spring.ribborn.dto.requestDto.UserUpdateRequestDto;
 import com.spring.ribborn.dto.responseDto.UserResponseDto;
 import com.spring.ribborn.exception.ApiResponseMessage;
 import com.spring.ribborn.jwt.JwtTokenProvider;
-import com.spring.ribborn.model.User;
-import com.spring.ribborn.repository.UserRepository;
 import com.spring.ribborn.security.UserDetailsImpl;
 import com.spring.ribborn.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,14 +15,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-    private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
     // 회원가입
@@ -69,6 +66,14 @@ public class UserController {
         }
     }
 
-
+    // 유저 정보 수정
+    @PutMapping("/api/users/mypage")
+    public ResponseEntity<ApiResponseMessage> updateUser(@RequestBody UserUpdateRequestDto userUpdateRequestDto , @AuthenticationPrincipal UserDetailsImpl userDetails){
+        Long userId = userDetails.getUserId();
+        System.out.println("userId = " + userId);
+        userService.updateUser(userUpdateRequestDto, userId);
+        ApiResponseMessage message = new ApiResponseMessage("Success", "수정이 완료되었습니다", "", "");
+        return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
+        }
 
 }
