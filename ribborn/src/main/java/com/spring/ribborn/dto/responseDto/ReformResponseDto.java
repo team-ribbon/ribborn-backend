@@ -33,17 +33,4 @@ public class ReformResponseDto {
         }
     }
 
-    /*@Builder
-    public static class ReformDetail {
-        private Long id;
-        private String nickname;
-        private List<Images> images;
-        private String title;
-        private String category;
-        private List<Content> content;
-        private String region;
-        private String process;
-        private LocalDateTime createAt;
-        private LocalDateTime modifyAt;
-    }*/
 }

@@ -32,16 +32,4 @@ public class PostWriteResponseDto {
         }
     }
 
-    /*@Builder
-    public static class WriteDetail {
-        private Long id;
-        private String nickname;
-        private List<Images> images;
-        private String title;
-        private String category;
-        private List<Content> content;
-        private int likeCount;
-        private LocalDateTime createAt;
-        private LocalDateTime modifyAt;
-    }*/
 }

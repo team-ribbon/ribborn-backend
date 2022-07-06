@@ -32,15 +32,4 @@ public class LookbookResponseDto {
         }
     }
 
-    /*@Builder
-    public static class LookbookDetail {
-        private Long id;
-        private String nickname;
-        private List<Images> images;
-        private String category;
-        private List<Content> content;
-        private int likeCount;
-        private LocalDateTime createAt;
-        private LocalDateTime modifyAt;
-    }*/
 }
