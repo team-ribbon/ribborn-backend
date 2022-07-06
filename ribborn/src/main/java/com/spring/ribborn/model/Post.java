@@ -25,14 +25,6 @@ public class Post extends TimeStamp{
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Contents> contents = new ArrayList<>();
 
-    @ElementCollection
-    @CollectionTable (name = "image", joinColumns = @JoinColumn(name="image_post_id",referencedColumnName = "post_id") )
-    private List<Images> images = new ArrayList<>();
-
-    @ElementCollection
-    @CollectionTable (name = "content", joinColumns = @JoinColumn(name="content_post_id",referencedColumnName = "post_id") )
-    private List<Content> content = new ArrayList<>();
-
     private int likeCount;
     private int commentCount;
     private String title;
@@ -41,10 +33,6 @@ public class Post extends TimeStamp{
     private String item;
     private String postCate;
     private String process;
-
-    public void settingContent(Content content){
-        this.content.add(content);
-    }
 
     public void setContents(Contents content){
         contents.add(content);

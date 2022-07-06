@@ -2,7 +2,6 @@ package com.spring.ribborn.repository;
 
 import com.spring.ribborn.dto.queryDto.ContentsQueryDto;
 import com.spring.ribborn.dto.responseDto.PostDetailResponseDto;
-import com.spring.ribborn.model.Images;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +19,7 @@ public class PostDetailRepository {
                 " select new com.spring.ribborn.dto.responseDto.PostDetailResponseDto(" +
                         "p.id, u.nickname,p.title, p.category,p.createAt,p.modifyAt)" +
                         " from Post p" +
-                        " join User u" +
+                        " join p.user u" +
                         " where p.id = :postId", PostDetailResponseDto.class)
                 .setParameter("postId", postId)
                 .getSingleResult();
@@ -31,7 +30,7 @@ public class PostDetailRepository {
                 " select new com.spring.ribborn.dto.queryDto.ContentsQueryDto(" +
                         " c.image,c.content)" +
                         " from Contents c" +
-                        " join fetch c.post p" +
+                        " join c.post p" +
                         " where p.id = :postId", ContentsQueryDto.class)
                 .setParameter("postId",postId)
                 .getResultList();

@@ -26,24 +26,5 @@ public class LookbookService {
         return postRepository.findAll(pageable);
     }
 
-        // 룩북 상세페이지 조회
-//    @Transactional
-//    public LookbookResponseDto.LookbookDetail getDetail (Long postId){
-//        Post post = postRepository.findById(postId).orElseThrow(
-//                () -> new NullPointerException("게시글이 존재하지 않습니다.")
-//        );
-//
-//        LookbookResponseDto.LookbookDetail detailDto = LookbookResponseDto.LookbookDetail.builder()
-//                .id(post.getId())
-//                .nickname(post.getUser().getNickname())
-//                .images(post.getImages())
-//                .category(post.getCategory())
-//                .content(post.getContent())
-//                .likeCount(post.getLikeCount())
-//                .createAt(post.getCreateAt())
-//                .modifyAt(post.getModifyAt())
-//                .build();
-//        return detailDto;
-//    }
 }
 

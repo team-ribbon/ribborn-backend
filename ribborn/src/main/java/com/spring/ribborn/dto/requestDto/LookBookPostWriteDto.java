@@ -1,7 +1,5 @@
 package com.spring.ribborn.dto.requestDto;
 
-import com.spring.ribborn.model.Content;
-import com.spring.ribborn.model.Images;
 import lombok.Data;
 
 import java.util.ArrayList;
