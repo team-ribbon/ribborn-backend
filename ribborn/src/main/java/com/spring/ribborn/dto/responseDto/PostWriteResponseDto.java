@@ -1,14 +1,9 @@
 package com.spring.ribborn.dto.responseDto;
 
-import com.spring.ribborn.model.Content;
 import com.spring.ribborn.model.Contents;
-import com.spring.ribborn.model.Images;
 import com.spring.ribborn.model.Post;
 import com.spring.ribborn.repository.ContentsRepository;
 import lombok.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 public class PostWriteResponseDto {
@@ -37,7 +32,7 @@ public class PostWriteResponseDto {
         }
     }
 
-    @Builder
+    /*@Builder
     public static class WriteDetail {
         private Long id;
         private String nickname;
@@ -48,5 +43,5 @@ public class PostWriteResponseDto {
         private int likeCount;
         private LocalDateTime createAt;
         private LocalDateTime modifyAt;
-    }
+    }*/
 }

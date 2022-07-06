@@ -1,15 +1,10 @@
 package com.spring.ribborn.dto.responseDto;
 
-import com.spring.ribborn.model.Content;
 import com.spring.ribborn.model.Contents;
-import com.spring.ribborn.model.Images;
 import com.spring.ribborn.model.Post;
 import com.spring.ribborn.repository.ContentsRepository;
 import lombok.Builder;
 import lombok.Data;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 public class ReformResponseDto {
@@ -38,7 +33,7 @@ public class ReformResponseDto {
         }
     }
 
-    @Builder
+    /*@Builder
     public static class ReformDetail {
         private Long id;
         private String nickname;
@@ -50,5 +45,5 @@ public class ReformResponseDto {
         private String process;
         private LocalDateTime createAt;
         private LocalDateTime modifyAt;
-    }
+    }*/
 }

@@ -1,8 +1,6 @@
 package com.spring.ribborn.dto.responseDto;
 
 import com.spring.ribborn.dto.queryDto.ContentsQueryDto;
-import com.spring.ribborn.model.Content;
-import com.spring.ribborn.model.Images;
 import lombok.Data;
 
 import java.time.LocalDateTime;
