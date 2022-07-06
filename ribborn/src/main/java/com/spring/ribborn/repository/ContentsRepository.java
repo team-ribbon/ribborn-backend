@@ -1,7 +1,6 @@
 package com.spring.ribborn.repository;
 
 import com.spring.ribborn.model.Contents;
-import com.spring.ribborn.model.Images;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
