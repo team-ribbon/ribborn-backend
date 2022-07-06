@@ -17,7 +17,7 @@ public class PostWriteRequestDto {
     private String username;
     private String region;
 
-    private List<Images> images = new ArrayList<>();
+    private List<String> images = new ArrayList<>();
 
     public PostWriteRequestDto(String title, String category, String content) {
 
@@ -26,7 +26,5 @@ public class PostWriteRequestDto {
         this.content = content;
     }
 
-    public void settingImages(Images images){
-        this.images.add(images);
-    }
+
 }
