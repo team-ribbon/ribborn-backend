@@ -21,11 +21,11 @@ public class Post extends TimeStamp{
     private User user;
 
     @ElementCollection
-    @CollectionTable (name = "image", joinColumns = @JoinColumn(name="post_id",referencedColumnName = "post_id") )
+    @CollectionTable (name = "image", joinColumns = @JoinColumn(name="image_post_id",referencedColumnName = "post_id") )
     private List<Images> images = new ArrayList<>();
 
     @ElementCollection
-    @CollectionTable (name = "content", joinColumns = @JoinColumn(name="post_id",referencedColumnName = "post_id") )
+    @CollectionTable (name = "content", joinColumns = @JoinColumn(name="content_post_id",referencedColumnName = "post_id") )
     private List<Content> content = new ArrayList<>();
 
     private int likeCount;
