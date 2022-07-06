@@ -1,10 +1,10 @@
-/*package com.spring.ribborn.repository;
+package com.spring.ribborn.repository;
 
+import com.spring.ribborn.model.Contents;
 import com.spring.ribborn.model.Images;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 
-public interface ImagesRepository extends JpaRepository<Images, String> {
+public interface ImagesRepository extends JpaRepository<Images, Long> {
     Images findTop1ByPostIdOrderByCreateAtDesc(Long postId);
-}*/
+}

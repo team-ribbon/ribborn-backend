@@ -1,5 +1,6 @@
 package com.spring.ribborn.dto.responseDto;
 
+import com.spring.ribborn.dto.queryDto.ContentsQueryDto;
 import com.spring.ribborn.model.Content;
 import com.spring.ribborn.model.Images;
 import lombok.Data;
@@ -11,7 +12,7 @@ import java.util.List;
 public class PostDetailResponseDto {
     private Long id;
     private String nickname;
-    private List<Images> images;
+    private List<String> images;
     private String title;
     private String category;
     private String content;
@@ -20,13 +21,19 @@ public class PostDetailResponseDto {
 
     private List<ReviewResponseDto> reviews;
 
-    public PostDetailResponseDto(Long id, String nickname, String title, String category, String content, LocalDateTime createAt, LocalDateTime modifyAt) {
+    public PostDetailResponseDto(Long id, String nickname, String title, String category, LocalDateTime createAt, LocalDateTime modifyAt) {
         this.id = id;
         this.nickname = nickname;
         this.title = title;
         this.category = category;
-        this.content = content;
         this.createAt = createAt;
         this.modifyAt = modifyAt;
+    }
+
+    public void ContentSetting(List<ContentsQueryDto> contentsQueryDtos){
+        content = contentsQueryDtos.get(0).getContent();
+        for(ContentsQueryDto contentsQueryDto : contentsQueryDtos){
+            images.add(contentsQueryDto.getImage());
+        }
     }
 }

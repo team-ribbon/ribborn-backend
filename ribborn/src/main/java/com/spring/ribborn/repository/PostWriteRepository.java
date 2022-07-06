@@ -19,12 +19,14 @@ public class PostWriteRepository {
     private final EntityManager em;
     public void postWrite(PostWriteRequestDto postWriteRequestDto, User user) {
         Post post = new Post();
-        Contents contents = new Contents();
-        contents.setContent(postWriteRequestDto.getContent());
         for(String image : postWriteRequestDto.getImages()){
+            Contents contents = new Contents();
             contents.setImage(image);
+            contents.setContent(postWriteRequestDto.getContent());
             post.setContents(contents);
         }
+
+
         post.setUser(user);
 
         //post.setLikeCount();
@@ -40,10 +42,13 @@ public class PostWriteRepository {
 
     public void lookBookPostWrite(LookBookPostWriteDto lookBookPostWriteDto, User user) {
         Post post = new Post();
-        List<Content> contents = lookBookPostWriteDto.getContent();
-        post.setContent(contents);
+        for(int i = 0; i < lookBookPostWriteDto.getContent().size(); i++){
+            Contents contents = new Contents();
+            contents.setImage(lookBookPostWriteDto.getImages().get(i));
+            contents.setContent(lookBookPostWriteDto.getContent().get(i));
+            post.setContents(contents);
+        }
         post.setUser(user);
-        post.setImages(lookBookPostWriteDto.getImages());
         post.setPostCate(lookBookPostWriteDto.getPostCategory());
         post.setCategory(lookBookPostWriteDto.getCategory());
         em.persist(post);
