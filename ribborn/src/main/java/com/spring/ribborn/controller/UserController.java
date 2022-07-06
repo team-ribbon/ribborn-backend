@@ -66,6 +66,16 @@ public class UserController {
         }
     }
 
+    // 마이페이지
+    @GetMapping("/api/users/mypage")
+    public UserResponseDto userinfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        Long id = userDetails.getUserId();
+        System.out.println("id = " + id);
+        return userService.userInfo(id);
+    }
+
+
+
     // 유저 정보 수정
     @PutMapping("/api/users/mypage")
     public ResponseEntity<ApiResponseMessage> updateUser(@RequestBody UserUpdateRequestDto userUpdateRequestDto , @AuthenticationPrincipal UserDetailsImpl userDetails){

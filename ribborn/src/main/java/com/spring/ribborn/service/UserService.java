@@ -76,13 +76,22 @@ public class UserService {
         }
     }
 
-    // 유저 상세 정보
+    // 유저 상세 정보 , 마이 페이지
     public UserResponseDto userInfo(Long id) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new NullPointerException("해당 아이디가 존재하지 않습니다.")
         );
         return new UserResponseDto(user);
     }
+
+//    // 마이페이지
+//    public UserResponseDto userMyPage(Long userId) {
+//        User user = userRepository.findById(userId).orElseThrow(
+//                () -> new NullPointerException("해당 아이디가 존재하지 않습니다.")
+//        );
+//        return new UserResponseDto(user);
+//    }
+//
 
     // 유저 정보 수정
     public void updateUser(UserUpdateRequestDto userUpdateRequestDto, Long userId) {
@@ -117,4 +126,6 @@ public class UserService {
             throw new IllegalArgumentException("기존 비밀번호가 틀렸습니다");
         }
     }
+
+
 }
