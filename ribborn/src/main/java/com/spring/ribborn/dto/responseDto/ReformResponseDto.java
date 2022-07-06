@@ -4,7 +4,7 @@ import com.spring.ribborn.model.Content;
 import com.spring.ribborn.model.Contents;
 import com.spring.ribborn.model.Images;
 import com.spring.ribborn.model.Post;
-import com.spring.ribborn.repository.ImagesRepository;
+import com.spring.ribborn.repository.ContentsRepository;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,11 +13,11 @@ import java.util.List;
 
 @Data
 public class ReformResponseDto {
-    private static ImagesRepository imagesRepository;
+    private static ContentsRepository contentsRepository;
     @Builder
     public static class ReformMain {
         private Long id;
-        private Images image;
+        private Contents image;
         private String nickname;
         private String title;
         private String category;
@@ -25,7 +25,7 @@ public class ReformResponseDto {
         private String process;
 
         public static ReformMain from(Post post) {
-            Images viewImage = imagesRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
+            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
             return ReformMain.builder()
                     .id(post.getId())
                     .image(viewImage)

@@ -4,7 +4,7 @@ import com.spring.ribborn.model.Content;
 import com.spring.ribborn.model.Contents;
 import com.spring.ribborn.model.Images;
 import com.spring.ribborn.model.Post;
-import com.spring.ribborn.repository.ImagesRepository;
+import com.spring.ribborn.repository.ContentsRepository;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -12,11 +12,11 @@ import java.util.List;
 
 @Data
 public class PostWriteResponseDto {
-    private static ImagesRepository imagesRepository;
+    private static ContentsRepository contentsRepository;
     @Builder
     public static class WriteMain {
         private Long id;
-        private Images image;
+        private Contents image;
         private int likeCount;
         private int commentCount;
         private String nickname;
@@ -24,7 +24,7 @@ public class PostWriteResponseDto {
         private String category;
 
         public static WriteMain from(Post post) {
-            Images viewImage = imagesRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
+            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
             return WriteMain.builder()
                     .id(post.getId())
                     .image(viewImage)

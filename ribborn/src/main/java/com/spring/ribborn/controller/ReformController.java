@@ -29,14 +29,4 @@ public class ReformController {
         Page<Post> reformList = reformService.getReforms(pageable);
         return reformList.map(ReformResponseDto.ReformMain::from);
     }
-
-    // 리폼견적 상세페이지 조회
-    @GetMapping("/api/reformPost/{postid}")
-    public ResponseEntity<ReformResponseDto> getReformPost(@PathVariable Long postId) {
-        try{
-            return new ResponseEntity(reformService.getDetail(postId), HttpStatus.OK);
-        }catch(IllegalArgumentException e){
-            return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
 }
