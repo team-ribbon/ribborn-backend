@@ -2,7 +2,6 @@ package com.spring.ribborn.repository;
 
 import com.spring.ribborn.dto.requestDto.LookBookPostWriteDto;
 import com.spring.ribborn.dto.requestDto.PostWriteRequestDto;
-import com.spring.ribborn.model.Content;
 import com.spring.ribborn.model.Contents;
 import com.spring.ribborn.model.Post;
 import com.spring.ribborn.model.User;
@@ -10,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
