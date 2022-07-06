@@ -85,8 +85,8 @@ public class PostWriteService {
                 .category(post.getCategory())
                 .content(post.getContent())
                 .likeCount(post.getLikeCount())
-                .createdAt(post.getCreatedAt())
-                .modifiedAt(post.getModifiedAt())
+                .createAt(post.getCreateAt())
+                .modifyAt(post.getModifyAt())
                 .build();
         return detailDto;
     }

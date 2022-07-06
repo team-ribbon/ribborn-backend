@@ -29,7 +29,7 @@ public class ReformResponseDto {
         private String category;
         private List<Content> content;
         private String region;
-        private LocalDateTime createdAt;
-        private LocalDateTime modifiedAt;
+        private LocalDateTime createAt;
+        private LocalDateTime modifyAt;
     }
 }

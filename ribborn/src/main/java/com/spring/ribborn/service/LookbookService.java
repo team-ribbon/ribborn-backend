@@ -39,7 +39,7 @@ public class LookbookService {
                     .nickname(post.getUser().getNickname())
                     .category(post.getCategory())
                     .likeCount(post.getLikeCount())
-                    .createdAt(post.getCreatedAt())
+                    .createdAt(post.getCreateAt())
                     .build();
             lookbookList.add(mainDto);
         }
@@ -60,8 +60,8 @@ public class LookbookService {
                 .category(post.getCategory())
                 .content(post.getContent())
                 .likeCount(post.getLikeCount())
-                .createdAt(post.getCreatedAt())
-                .modifiedAt(post.getModifiedAt())
+                .createAt(post.getCreateAt())
+                .modifyAt(post.getModifyAt())
                 .build();
         return detailDto;
     }

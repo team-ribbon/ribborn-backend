@@ -61,8 +61,8 @@ public class ReformService {
                 .category(post.getCategory())
                 .content(post.getContent())
                 .region(post.getRegion())
-                .createdAt(post.getCreatedAt())
-                .modifiedAt(post.getModifiedAt())
+                .createAt(post.getCreateAt())
+                .modifyAt(post.getModifyAt())
                 .build();
         return detailDto;
     }

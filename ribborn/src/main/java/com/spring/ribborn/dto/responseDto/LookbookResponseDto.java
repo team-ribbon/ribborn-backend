@@ -27,7 +27,7 @@ public class LookbookResponseDto {
         private String category;
         private List<Content> content;
         private int likeCount;
-        private LocalDateTime createdAt;
-        private LocalDateTime modifiedAt;
+        private LocalDateTime createAt;
+        private LocalDateTime modifyAt;
     }
 }
