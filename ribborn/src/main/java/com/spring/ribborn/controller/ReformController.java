@@ -2,10 +2,13 @@ package com.spring.ribborn.controller;
 
 import com.spring.ribborn.dto.responseDto.LookbookResponseDto;
 import com.spring.ribborn.dto.responseDto.ReformResponseDto;
+import com.spring.ribborn.model.Post;
 import com.spring.ribborn.security.UserDetailsImpl;
 import com.spring.ribborn.service.ReformService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +23,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReformController {
     private final ReformService reformService;
 
-    // 룩북 목록페이지 조회
+    // 리폼견적 목록페이지 조회
     @GetMapping("/api/reformList")
-    public ResponseEntity<ReformResponseDto.ReformMain> getReformList(
+    public Page<ReformResponseDto.ReformMain> getReformList(
             @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6) Pageable pageable) {
-        ResponseEntity<ReformResponseDto.ReformMain> lookList = reformService.getReforms(pageable, userDetails);
-        return lookList;
+        Page<Post> reformList = reformService.getReforms(pageable);
+        return reformList.map(ReformResponseDto.ReformMain::from);
     }
 
-    // 룩북 상세페이지 조회
+    // 리폼견적 상세페이지 조회
     @GetMapping("/api/reformPost/{postid}")
     public ResponseEntity<ReformResponseDto> getReformPost(@PathVariable Long postId) {
         try{

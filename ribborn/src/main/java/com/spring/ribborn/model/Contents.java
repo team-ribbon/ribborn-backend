@@ -1,8 +1,14 @@
 package com.spring.ribborn.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Getter
+@Setter
 public class Contents {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -11,6 +17,8 @@ public class Contents {
 
     private String image;
     private String content;
+
+    private LocalDateTime createAt;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "post_id")
