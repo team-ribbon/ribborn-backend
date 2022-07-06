@@ -44,24 +44,5 @@ public class PostWriteService {
         return postRepository.findAll(pageable);
     }
 
-    // 후기 & 질문 상세페이지 조회
-//    @Transactional
-//    public PostWriteResponseDto.WriteDetail getDetail(Long postId) {
-//        Post post = postRepository.findById(postId).orElseThrow(
-//                () -> new NullPointerException("게시글이 존재하지 않습니다.")
-//        );
-//
-//        PostWriteResponseDto.WriteDetail detailDto = PostWriteResponseDto.WriteDetail.builder()
-//                .id(post.getId())
-//                .nickname(post.getUser().getNickname())
-//                .images(post.getImages())
-//                .title(post.getTitle())
-//                .category(post.getCategory())
-//                .content(post.getContent())
-//                .likeCount(post.getLikeCount())
-//                .createAt(post.getCreateAt())
-//                .modifyAt(post.getModifyAt())
-//                .build();
-//        return detailDto;
-//    }
+
 }
