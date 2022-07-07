@@ -22,10 +22,17 @@ public class ReformController {
     private final ReformService reformService;
 
     // 리폼견적 목록페이지 조회
+//    @GetMapping("/api/reformList")
+//    public Page<ReformResponseDto.ReformMain> getReformList(
+//            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6) Pageable pageable) {
+//        Page<Post> reformList = reformService.getReforms(pageable);
+//        return reformList.map(ReformResponseDto.ReformMain::from);
+//    }
+
     @GetMapping("/api/reformList")
-    public Page<ReformResponseDto.ReformMain> getReformList(
+    public ResponseEntity<ReformResponseDto.ReformMain> getReformList(
             @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6) Pageable pageable) {
-        Page<Post> reformList = reformService.getReforms(pageable);
-        return reformList.map(ReformResponseDto.ReformMain::from);
+        ResponseEntity<ReformResponseDto.ReformMain> lookList = reformService.getReforms(pageable, userDetails);
+        return lookList;
     }
 }
