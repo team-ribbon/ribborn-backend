@@ -1,5 +1,6 @@
 package com.spring.ribborn.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ public class Contents extends TimeStamp {
     private String image;
     private String content;
 
+    @JsonBackReference // 순환참조 방지
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id")
     private Post post;

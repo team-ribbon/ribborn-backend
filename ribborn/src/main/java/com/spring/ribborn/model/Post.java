@@ -1,6 +1,7 @@
 package com.spring.ribborn.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +22,8 @@ public class Post extends TimeStamp{
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonIgnore
+    //@JsonIgnore
+    @JsonManagedReference // 직렬화 허용 어노테이션
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Contents> contents = new ArrayList<>();
 
