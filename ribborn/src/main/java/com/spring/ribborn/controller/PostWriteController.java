@@ -22,18 +22,32 @@ public class PostWriteController {
     private final PostWriteService postWriteService;
 
     // 질문 목록페이지 조회
+//    @GetMapping("/api/qnaList")
+//    public Page<PostWriteResponseDto.WriteMain> getQnaList(
+//            @PageableDefault(size = 6, sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable) {
+//        Page<Post> qnaList = postWriteService.getWrite(pageable);
+//        return qnaList.map(PostWriteResponseDto.WriteMain::from);
+//    }
+//
     @GetMapping("/api/qnaList")
-    public Page<PostWriteResponseDto.WriteMain> getQnaList(
-            @PageableDefault(size = 6, sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<Post> qnaList = postWriteService.getWrite(pageable);
-        return qnaList.map(PostWriteResponseDto.WriteMain::from);
+    public ResponseEntity<PostWriteResponseDto.WriteMain> getQnaList(
+            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6) Pageable pageable) {
+        ResponseEntity<PostWriteResponseDto.WriteMain> qnaList = postWriteService.getQna(pageable, userDetails);
+        return qnaList;
     }
-
-    // 후기 목록페이지 조회
+//
+//    // 후기 목록페이지 조회
+//    @GetMapping("/api/reviewList")
+//    public Page<PostWriteResponseDto.WriteMain> getReviewList(
+//            @PageableDefault(size = 12, sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable) {
+//        Page<Post> reviewList = postWriteService.getWrite(pageable);
+//        return reviewList.map(PostWriteResponseDto.WriteMain::from);
+//    }
+//
     @GetMapping("/api/reviewList")
-    public Page<PostWriteResponseDto.WriteMain> getReviewList(
-            @PageableDefault(size = 12, sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<Post> reviewList = postWriteService.getWrite(pageable);
-        return reviewList.map(PostWriteResponseDto.WriteMain::from);
+    public ResponseEntity<PostWriteResponseDto.WriteMain> getReviewList(
+            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 12) Pageable pageable) {
+        ResponseEntity<PostWriteResponseDto.WriteMain> reviewList = postWriteService.getReview(pageable, userDetails);
+        return reviewList;
     }
 }

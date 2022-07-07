@@ -9,27 +9,28 @@ import java.time.LocalDateTime;
 
 @Data
 public class LookbookResponseDto {
-    private static ContentsRepository contentsRepository;
     @Builder
+    @Data
     public static class LookbookMain {
         private Long id;
         private Contents image;
         private String nickname;
         private String category;
         private int likeCount;
-        private LocalDateTime createdAt;
+        private LocalDateTime createAt;
 
-        public static LookbookMain from(Post post) {
-            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
-            return LookbookMain.builder()
-                    .id(post.getId())
-                    .image(viewImage)
-                    .nickname(post.getUser().getNickname())
-                    .category(post.getCategory())
-                    .likeCount(post.getLikeCount())
-                    .createdAt(post.getCreateAt())
-                    .build();
-        }
+//        public static LookbookMain from(Post post) {
+//            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
+//            return LookbookMain.builder()
+//                    .id(post.getId())
+//                    .postCate(post.getPostCate())
+//                    .image(viewImage)
+//                    .nickname(post.getUser().getNickname())
+//                    .category(post.getCategory())
+//                    .likeCount(post.getLikeCount())
+//                    .createdAt(post.getCreateAt())
+//                    .build();
+//        }
     }
 
 }

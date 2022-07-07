@@ -10,6 +10,7 @@ import lombok.Data;
 public class ReformResponseDto {
     private static ContentsRepository contentsRepository;
     @Builder
+    @Data
     public static class ReformMain {
         private Long id;
         private Contents image;
@@ -19,18 +20,19 @@ public class ReformResponseDto {
         private String region;
         private String process;
 
-        public static ReformMain from(Post post) {
-            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
-            return ReformMain.builder()
-                    .id(post.getId())
-                    .image(viewImage)
-                    .nickname(post.getUser().getNickname())
-                    .title(post.getTitle())
-                    .category(post.getCategory())
-                    .region(post.getRegion())
-                    .process(post.getProcess())
-                    .build();
-        }
+//        public static ReformMain from(Post post) {
+//            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
+//            return ReformMain.builder()
+//                    .id(post.getId())
+//                    .postCate(post.getPostCate())
+//                    .image(viewImage)
+//                    .nickname(post.getUser().getNickname())
+//                    .title(post.getTitle())
+//                    .category(post.getCategory())
+//                    .region(post.getRegion())
+//                    .process(post.getProcess())
+//                    .build();
+//        }
     }
 
 }

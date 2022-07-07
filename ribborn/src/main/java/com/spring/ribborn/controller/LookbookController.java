@@ -22,10 +22,17 @@ public class LookbookController {
     private final LookbookService lookbookService;
 
     // 룩북 목록페이지 조회
+//    @GetMapping("/api/lookList")
+//    public Page<LookbookResponseDto.LookbookMain> getLookbooks(
+//            @PageableDefault(size = 6, sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable) {
+//        Page<Post> lookList = lookbookService.getLookbooks(pageable);
+//        return lookList.map(LookbookResponseDto.LookbookMain::from);
+//    }
+
     @GetMapping("/api/lookList")
-    public Page<LookbookResponseDto.LookbookMain> getLookbooks(
-            @PageableDefault(size = 6, sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<Post> lookList = lookbookService.getLookbooks(pageable);
-        return lookList.map(LookbookResponseDto.LookbookMain::from);
+    public ResponseEntity<LookbookResponseDto.LookbookMain> getLookList(
+            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6) Pageable pageable) {
+        ResponseEntity<LookbookResponseDto.LookbookMain> lookList = lookbookService.getLookbooks(pageable, userDetails);
+        return lookList;
     }
 }
