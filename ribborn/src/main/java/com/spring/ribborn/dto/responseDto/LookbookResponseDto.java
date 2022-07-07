@@ -13,7 +13,7 @@ public class LookbookResponseDto {
     @Data
     public static class LookbookMain {
         private Long id;
-        private Contents image;
+        private String image;
         private String nickname;
         private String category;
         private int likeCount;

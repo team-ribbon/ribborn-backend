@@ -40,7 +40,7 @@ public class ReformService {
             Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
             ReformResponseDto.ReformMain mainDto = ReformResponseDto.ReformMain.builder()
                     .id(post.getId())
-                    .image(viewImage)
+                    .image(viewImage.getImage())
                     .nickname(post.getUser().getNickname())
                     .title(post.getTitle())
                     .category(post.getCategory())

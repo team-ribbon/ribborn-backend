@@ -14,7 +14,7 @@ public class PostWriteResponseDto {
     @Data
     public static class WriteMain {
         private Long id;
-        private Contents image;
+        private String image;
         private int likeCount;
         private int commentCount;
         private String nickname;

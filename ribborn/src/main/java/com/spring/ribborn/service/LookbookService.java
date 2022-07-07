@@ -38,7 +38,7 @@ public class LookbookService {
             Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
             LookbookResponseDto.LookbookMain mainDto = LookbookResponseDto.LookbookMain.builder()
                     .id(post.getId())
-                    .image(viewImage)
+                    .image(viewImage.getImage())
                     .nickname(post.getUser().getNickname())
                     .category(post.getCategory())
                     .likeCount(post.getLikeCount())

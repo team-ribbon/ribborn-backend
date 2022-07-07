@@ -13,7 +13,7 @@ public class ReformResponseDto {
     @Data
     public static class ReformMain {
         private Long id;
-        private Contents image;
+        private String image;
         private String nickname;
         private String title;
         private String category;

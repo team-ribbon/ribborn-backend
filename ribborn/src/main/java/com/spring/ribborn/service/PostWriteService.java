@@ -62,7 +62,7 @@ public class PostWriteService {
             Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
             PostWriteResponseDto.WriteMain mainDto = PostWriteResponseDto.WriteMain.builder()
                     .id(post.getId())
-                    .image(viewImage)
+                    .image(viewImage.getImage())
                     .likeCount(post.getLikeCount())
                     .commentCount(post.getCommentCount())
                     .nickname(post.getUser().getNickname())
@@ -83,7 +83,7 @@ public class PostWriteService {
             Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
             PostWriteResponseDto.WriteMain mainDto = PostWriteResponseDto.WriteMain.builder()
                     .id(post.getId())
-                    .image(viewImage)
+                    .image(viewImage.getImage())
                     .likeCount(post.getLikeCount())
                     .commentCount(post.getCommentCount())
                     .nickname(post.getUser().getNickname())
