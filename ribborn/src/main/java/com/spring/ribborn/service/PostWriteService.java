@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -54,8 +55,8 @@ public class PostWriteService {
 //    }
 
     @Transactional
-    public ResponseEntity<PostWriteResponseDto.WriteMain> getQna(Pageable pageable, UserDetailsImpl userDetails) {
-        List<Post> posts = postRepository.findAllByOrderByCreateAtDesc(pageable);
+    public ResponseEntity<PostWriteResponseDto.WriteMain> getQna(Pageable pageable) {
+        List<Post> posts = postRepository.findAllByPostCate("질문게시판", pageable);
         List<PostWriteResponseDto.WriteMain> qnaList = new ArrayList<>();
 
         for (Post post : posts) {
@@ -75,8 +76,8 @@ public class PostWriteService {
     }
 
     @Transactional
-    public ResponseEntity<PostWriteResponseDto.WriteMain> getReview(Pageable pageable, UserDetailsImpl userDetails) {
-        List<Post> posts = postRepository.findAllByOrderByCreateAtDesc(pageable);
+    public ResponseEntity<PostWriteResponseDto.WriteMain> getReview(Pageable pageable) {
+        List<Post> posts = postRepository.findAllByPostCate("리뷰게시판", pageable);
         List<PostWriteResponseDto.WriteMain> reviewList = new ArrayList<>();
 
         for (Post post : posts) {

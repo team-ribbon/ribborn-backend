@@ -28,26 +28,28 @@ public class PostWriteController {
 //        Page<Post> qnaList = postWriteService.getWrite(pageable);
 //        return qnaList.map(PostWriteResponseDto.WriteMain::from);
 //    }
-//
+
     @GetMapping("/api/qnaList")
     public ResponseEntity<PostWriteResponseDto.WriteMain> getQnaList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6) Pageable pageable) {
-        ResponseEntity<PostWriteResponseDto.WriteMain> qnaList = postWriteService.getQna(pageable, userDetails);
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PageableDefault(size = 6, sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        ResponseEntity<PostWriteResponseDto.WriteMain> qnaList = postWriteService.getQna(pageable);
         return qnaList;
     }
-//
-//    // 후기 목록페이지 조회
+
+    // 후기 목록페이지 조회
 //    @GetMapping("/api/reviewList")
 //    public Page<PostWriteResponseDto.WriteMain> getReviewList(
 //            @PageableDefault(size = 12, sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable) {
 //        Page<Post> reviewList = postWriteService.getWrite(pageable);
 //        return reviewList.map(PostWriteResponseDto.WriteMain::from);
 //    }
-//
+
     @GetMapping("/api/reviewList")
     public ResponseEntity<PostWriteResponseDto.WriteMain> getReviewList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 12) Pageable pageable) {
-        ResponseEntity<PostWriteResponseDto.WriteMain> reviewList = postWriteService.getReview(pageable, userDetails);
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PageableDefault(size = 12, sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        ResponseEntity<PostWriteResponseDto.WriteMain> reviewList = postWriteService.getReview(pageable);
         return reviewList;
     }
 }

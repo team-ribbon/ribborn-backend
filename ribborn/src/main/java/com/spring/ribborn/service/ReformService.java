@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -32,8 +33,8 @@ public class ReformService {
 //    }
 
     @Transactional
-    public ResponseEntity<ReformResponseDto.ReformMain> getReforms(Pageable pageable, UserDetailsImpl userDetails) {
-        List<Post> posts = postRepository.findAllByOrderByCreateAtDesc(pageable);
+    public ResponseEntity<ReformResponseDto.ReformMain> getReforms(Pageable pageable) {
+        List<Post> posts = postRepository.findAllByPostCate("리폼게시판", pageable);
         List<ReformResponseDto.ReformMain> ReformList = new ArrayList<>();
 
         for (Post post : posts) {

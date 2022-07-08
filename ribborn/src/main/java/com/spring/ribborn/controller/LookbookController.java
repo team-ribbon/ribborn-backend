@@ -31,8 +31,9 @@ public class LookbookController {
 
     @GetMapping("/api/lookList")
     public ResponseEntity<LookbookResponseDto.LookbookMain> getLookList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6) Pageable pageable) {
-        ResponseEntity<LookbookResponseDto.LookbookMain> lookList = lookbookService.getLookbooks(pageable, userDetails);
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PageableDefault(size = 6, sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        ResponseEntity<LookbookResponseDto.LookbookMain> lookList = lookbookService.getLookbooks(pageable);
         return lookList;
     }
 }

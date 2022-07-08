@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class ReformResponseDto {
-    private static ContentsRepository contentsRepository;
+    //private static ContentsRepository contentsRepository;
     @Builder
     @Data
     public static class ReformMain {
@@ -21,11 +21,10 @@ public class ReformResponseDto {
         private String process;
 
 //        public static ReformMain from(Post post) {
-//            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
+//            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
 //            return ReformMain.builder()
 //                    .id(post.getId())
-//                    .postCate(post.getPostCate())
-//                    .image(viewImage)
+//                    .image(viewImage.getImage())
 //                    .nickname(post.getUser().getNickname())
 //                    .title(post.getTitle())
 //                    .category(post.getCategory())
@@ -34,5 +33,4 @@ public class ReformResponseDto {
 //                    .build();
 //        }
     }
-
 }

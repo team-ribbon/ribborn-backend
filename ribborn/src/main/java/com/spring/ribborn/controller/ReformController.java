@@ -31,8 +31,9 @@ public class ReformController {
 
     @GetMapping("/api/reformList")
     public ResponseEntity<ReformResponseDto.ReformMain> getReformList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6) Pageable pageable) {
-        ResponseEntity<ReformResponseDto.ReformMain> lookList = reformService.getReforms(pageable, userDetails);
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            @PageableDefault(size = 6, sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        ResponseEntity<ReformResponseDto.ReformMain> lookList = reformService.getReforms(pageable);
         return lookList;
     }
 }
