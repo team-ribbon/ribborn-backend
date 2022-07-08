@@ -19,7 +19,9 @@ public class UserDetailsImpl implements UserDetails {
         return user;
     }
 
-
+    public String getIntroduction(){
+        return user.getIntroduction();
+    }
     public String getNickname() {
         return user.getNickname();
     }
