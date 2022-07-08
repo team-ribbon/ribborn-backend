@@ -1,10 +1,7 @@
 package com.spring.ribborn.service;
 
 import com.spring.ribborn.dto.queryDto.ContentsQueryDto;
-import com.spring.ribborn.dto.responseDto.CommentResponseDto;
-import com.spring.ribborn.dto.responseDto.LookBookDetailResponseDto;
-import com.spring.ribborn.dto.responseDto.PostDetailResponseDto;
-import com.spring.ribborn.dto.responseDto.ReformPostDetailResponseDto;
+import com.spring.ribborn.dto.responseDto.*;
 import com.spring.ribborn.repository.PostDetailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,17 +20,21 @@ public class PostDetailService {
     private final CommentService commentService;
 
     @Transactional
-    public PostDetailResponseDto postDetailView(Long postId, Pageable pageable) {
+    public PostDetailResponseMsg postDetailView(Long postId, Pageable pageable) {
         PostDetailResponseDto postDetail = postDetailRepository.findPostDetail(postId);
+
         List<ContentsQueryDto> contents = postDetailRepository.findContents(postId);
         Page<CommentResponseDto> commentResponseDtos = commentService.commendFind(postId, pageable);
 
+        PostDetailResponseMsg msg = new PostDetailResponseMsg();
+
         postDetail.contentSetting(contents);
-        postDetail.setComment(commentResponseDtos.getContent());
         postDetail.setTotalPage(commentResponseDtos.getTotalPages());
         postDetail.setPageNumber(commentResponseDtos.getPageable().getPageNumber());
 
-        return postDetail;
+        msg.setComment(commentResponseDtos.getContent());
+        msg.setPost(postDetail);
+        return msg;
     }
 
 

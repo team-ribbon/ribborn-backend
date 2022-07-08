@@ -1,10 +1,9 @@
 package com.spring.ribborn.controller;
 
-import com.spring.ribborn.dto.responseDto.IntroductionDto;
-import com.spring.ribborn.dto.responseDto.LookBookDetailResponseDto;
-import com.spring.ribborn.dto.responseDto.PostDetailResponseDto;
-import com.spring.ribborn.dto.responseDto.ReformPostDetailResponseDto;
+import com.spring.ribborn.dto.responseDto.*;
 import com.spring.ribborn.exception.ApiResponseMessage;
+import com.spring.ribborn.repository.UserRepository;
+import com.spring.ribborn.security.UserDetailsImpl;
 import com.spring.ribborn.service.CommentService;
 import com.spring.ribborn.service.PostDetailService;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +19,10 @@ import org.springframework.web.bind.annotation.*;
 public class PostDetailController {
     private final PostDetailService postDetailService;
 
-
     //질문게시판, 후기게시판 상세조회
 
     @GetMapping(value = {"/api/qnaList/{postId}", "/api/reviewPosts/{postId}"})
-    public PostDetailResponseDto postDetailView(@PathVariable("postId") Long postId,@PageableDefault(page = 0,size = 5) final Pageable pageable){
+    public PostDetailResponseMsg postDetailView(@PathVariable("postId") Long postId, @PageableDefault(page = 0,size = 5) final Pageable pageable){
         return postDetailService.postDetailView(postId, pageable);
     }
 
@@ -41,10 +39,12 @@ public class PostDetailController {
     }
 
     //룩북 게시판 접근시
-    /*@GetMapping("/api/lookPosts")
-    public IntroductionDto introduction(@AuthenticationPrincipal){
-
-    }*/
+    @GetMapping("/api/lookPosts")
+    public IntroductionDto introduction(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        IntroductionDto introductionDto = new IntroductionDto();
+        introductionDto.setIntroduction(userDetails.getIntroduction());
+        return introductionDto;
+    }
     //게시글 삭제
     @DeleteMapping("/api/post/{postId}")
     public ResponseEntity<ApiResponseMessage> postDelete(@PathVariable("postId") Long postId){

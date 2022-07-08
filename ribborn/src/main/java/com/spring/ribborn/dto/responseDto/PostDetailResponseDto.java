@@ -18,10 +18,9 @@ public class PostDetailResponseDto {
     private LocalDateTime createAt;
     private LocalDateTime modifyAt;
 
-    private List<CommentResponseDto> comment;
-
     private int totalPage;
     private int pageNumber;
+
 
     public PostDetailResponseDto(Long id, String nickname, String title, String category, LocalDateTime createAt, LocalDateTime modifyAt) {
         this.id = id;
