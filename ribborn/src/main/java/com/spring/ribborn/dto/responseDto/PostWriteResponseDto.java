@@ -5,32 +5,36 @@ import com.spring.ribborn.model.Post;
 import com.spring.ribborn.repository.ContentsRepository;
 import lombok.*;
 
+import java.util.List;
+
 @Data
 public class PostWriteResponseDto {
-    private static ContentsRepository contentsRepository;
+    //public static ContentsRepository contentsRepository;
     @Builder
+    @Data
     public static class WriteMain {
         private Long id;
-        private Contents image;
+        private String image;
         private int likeCount;
         private int commentCount;
         private String nickname;
         private String title;
         private String category;
 
-        public static WriteMain from(Post post) {
 
-            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
-            return WriteMain.builder()
-                    .id(post.getId())
-                    .image(viewImage)
-                    .likeCount(post.getLikeCount())
-                    .commentCount(post.getCommentCount())
-                    .nickname(post.getUser().getNickname())
-                    .title(post.getTitle())
-                    .category(post.getCategory())
-                    .build();
-        }
+//        public static WriteMain from(Post post) {
+//            //Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
+//            return WriteMain.builder()
+//                    .id(post.getId())
+//                    .postCate(post.getPostCate())
+//                    //.image(viewImage)
+//                    .likeCount(post.getLikeCount())
+//                    .commentCount(post.getCommentCount())
+//                    .nickname(post.getUser().getNickname())
+//                    .title(post.getTitle())
+//                    .category(post.getCategory())
+//                    .build();
+//        }
+
     }
-
 }
