@@ -19,6 +19,7 @@ public class PostWriteResponseDto {
         private String category;
 
         public static WriteMain from(Post post) {
+
             Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
             return WriteMain.builder()
                     .id(post.getId())
