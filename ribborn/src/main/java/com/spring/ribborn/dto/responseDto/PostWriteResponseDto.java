@@ -21,6 +21,7 @@ public class PostWriteResponseDto {
         private String title;
         private String category;
 
+
 //        public static WriteMain from(Post post) {
 //            //Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
 //            return WriteMain.builder()
@@ -34,5 +35,6 @@ public class PostWriteResponseDto {
 //                    .category(post.getCategory())
 //                    .build();
 //        }
+
     }
 }
