@@ -55,13 +55,13 @@ public class PostWriteService {
 //    }
 
     @Transactional
-    public ResponseEntity<PostWriteResponseDto.WriteMain> getQna(Pageable pageable) {
+    public ResponseEntity<PostWriteResponseDto.WritePost> getQna(Pageable pageable) {
         List<Post> posts = postRepository.findAllByPostCate("질문게시판", pageable);
-        List<PostWriteResponseDto.WriteMain> qnaList = new ArrayList<>();
+        List<PostWriteResponseDto.WritePost> qnaList = new ArrayList<>();
 
         for (Post post : posts) {
             Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
-            PostWriteResponseDto.WriteMain mainDto = PostWriteResponseDto.WriteMain.builder()
+            PostWriteResponseDto.WritePost mainDto = PostWriteResponseDto.WritePost.builder()
                     .id(post.getId())
                     .image(viewImage.getImage())
                     .likeCount(post.getLikeCount())
@@ -76,13 +76,13 @@ public class PostWriteService {
     }
 
     @Transactional
-    public ResponseEntity<PostWriteResponseDto.WriteMain> getReview(Pageable pageable) {
+    public ResponseEntity<PostWriteResponseDto.WritePost> getReview(Pageable pageable) {
         List<Post> posts = postRepository.findAllByPostCate("리뷰게시판", pageable);
-        List<PostWriteResponseDto.WriteMain> reviewList = new ArrayList<>();
+        List<PostWriteResponseDto.WritePost> reviewList = new ArrayList<>();
 
         for (Post post : posts) {
             Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
-            PostWriteResponseDto.WriteMain mainDto = PostWriteResponseDto.WriteMain.builder()
+            PostWriteResponseDto.WritePost mainDto = PostWriteResponseDto.WritePost.builder()
                     .id(post.getId())
                     .image(viewImage.getImage())
                     .likeCount(post.getLikeCount())

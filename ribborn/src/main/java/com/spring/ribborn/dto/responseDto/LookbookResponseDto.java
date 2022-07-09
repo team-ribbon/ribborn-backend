@@ -12,7 +12,7 @@ public class LookbookResponseDto {
     //public static ContentsRepository contentsRepository;
     @Builder
     @Data
-    public static class LookbookMain {
+    public static class Lookbook {
         private Long id;
         private String image;
         private String nickname;
@@ -20,9 +20,9 @@ public class LookbookResponseDto {
         private int likeCount;
         private LocalDateTime createAt;
 
-//        public static LookbookMain from(Post post) {
+//        public static Lookbook from(Post post) {
 //            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
-//            return LookbookMain.builder()
+//            return Lookbook.builder()
 //                    .id(post.getId())
 //                    .image(viewImage.getImage())
 //                    .nickname(post.getUser().getNickname())

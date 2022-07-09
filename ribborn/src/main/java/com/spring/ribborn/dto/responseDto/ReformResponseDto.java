@@ -11,7 +11,7 @@ public class ReformResponseDto {
     //private static ContentsRepository contentsRepository;
     @Builder
     @Data
-    public static class ReformMain {
+    public static class Reform {
         private Long id;
         private String image;
         private String nickname;
@@ -20,7 +20,7 @@ public class ReformResponseDto {
         private String region;
         private String process;
 
-//        public static ReformMain from(Post post) {
+//        public static Reform from(Post post) {
 //            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
 //            return ReformMain.builder()
 //                    .id(post.getId())

@@ -12,7 +12,7 @@ public class PostWriteResponseDto {
     //public static ContentsRepository contentsRepository;
     @Builder
     @Data
-    public static class WriteMain {
+    public static class WritePost {
         private Long id;
         private String image;
         private int likeCount;
@@ -22,7 +22,7 @@ public class PostWriteResponseDto {
         private String category;
 
 
-//        public static WriteMain from(Post post) {
+//        public static WritePost from(Post post) {
 //            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
 //            return WriteMain.builder()
 //                    .id(post.getId())

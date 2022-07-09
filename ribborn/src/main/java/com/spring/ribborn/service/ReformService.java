@@ -33,13 +33,13 @@ public class ReformService {
 //    }
 
     @Transactional
-    public ResponseEntity<ReformResponseDto.ReformMain> getReforms(Pageable pageable) {
+    public ResponseEntity<ReformResponseDto.Reform> getReforms(Pageable pageable) {
         List<Post> posts = postRepository.findAllByPostCate("리폼게시판", pageable);
-        List<ReformResponseDto.ReformMain> ReformList = new ArrayList<>();
+        List<ReformResponseDto.Reform> ReformList = new ArrayList<>();
 
         for (Post post : posts) {
             Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
-            ReformResponseDto.ReformMain mainDto = ReformResponseDto.ReformMain.builder()
+            ReformResponseDto.Reform mainDto = ReformResponseDto.Reform.builder()
                     .id(post.getId())
                     .image(viewImage.getImage())
                     .nickname(post.getUser().getNickname())

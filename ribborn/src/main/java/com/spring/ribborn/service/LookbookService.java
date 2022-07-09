@@ -31,13 +31,13 @@ public class LookbookService {
 //    }
 
     @Transactional
-    public ResponseEntity<LookbookResponseDto.LookbookMain> getLookbooks(Pageable pageable) {
+    public ResponseEntity<LookbookResponseDto.Lookbook> getLookbooks(Pageable pageable) {
         List<Post> posts = postRepository.findAllByPostCate("룩북게시판", pageable);
-        List<LookbookResponseDto.LookbookMain> lookbookList = new ArrayList<>();
+        List<LookbookResponseDto.Lookbook> lookbookList = new ArrayList<>();
 
         for (Post post : posts) {
             Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
-            LookbookResponseDto.LookbookMain mainDto = LookbookResponseDto.LookbookMain.builder()
+            LookbookResponseDto.Lookbook mainDto = LookbookResponseDto.Lookbook.builder()
                     .id(post.getId())
                     .image(viewImage.getImage())
                     .nickname(post.getUser().getNickname())
