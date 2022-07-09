@@ -1,11 +1,13 @@
 package com.spring.ribborn.dto.requestDto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@NoArgsConstructor
 public class PostWriteRequestDto {
     private String title;
     private String category;
@@ -18,12 +20,12 @@ public class PostWriteRequestDto {
 
     private List<String> images = new ArrayList<>();
 
-    public PostWriteRequestDto(String title, String category, String content) {
-
-        this.title = title;
-        this.category = category;
-        this.content = content;
-    }
+//    public PostWriteRequestDto(String title, String category, String content) {
+//
+//        this.title = title;
+//        this.category = category;
+//        this.content = content;
+//    }
 
 
 }

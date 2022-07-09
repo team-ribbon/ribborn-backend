@@ -35,4 +35,5 @@ public class LookbookController {
         ResponseEntity<LookbookResponseDto.LookbookMain> lookList = lookbookService.getLookbooks(pageable, userDetails);
         return lookList;
     }
+
 }
