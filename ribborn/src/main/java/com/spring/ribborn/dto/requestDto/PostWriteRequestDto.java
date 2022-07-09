@@ -19,7 +19,6 @@ public class PostWriteRequestDto {
     private List<String> images = new ArrayList<>();
 
     public PostWriteRequestDto(String title, String category, String content) {
-
         this.title = title;
         this.category = category;
         this.content = content;
