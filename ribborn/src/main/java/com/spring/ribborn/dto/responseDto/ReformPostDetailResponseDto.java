@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class PostDetailResponseDto {
+public class ReformPostDetailResponseDto {
     private Long id;
     private String nickname;
     private List<String> image = new ArrayList<>();
@@ -17,20 +17,20 @@ public class PostDetailResponseDto {
     private String content;
     private LocalDateTime createAt;
     private LocalDateTime modifyAt;
+    private String region;
+    private String process;
 
-    private int totalPage;
-    private int pageNumber;
 
-
-    public PostDetailResponseDto(Long id, String nickname, String title, String category, LocalDateTime createAt, LocalDateTime modifyAt) {
+    public ReformPostDetailResponseDto(Long id, String nickname, String title, String category, LocalDateTime createAt, LocalDateTime modifyAt, String region, String process) {
         this.id = id;
         this.nickname = nickname;
         this.title = title;
         this.category = category;
         this.createAt = createAt;
         this.modifyAt = modifyAt;
+        this.region = region;
+        this.process = process;
     }
-
     public void contentSetting(List<ContentsQueryDto> contentsQueryDtos){
         content = contentsQueryDtos.get(0).getContent();
         for(ContentsQueryDto contentsQueryDto : contentsQueryDtos){
