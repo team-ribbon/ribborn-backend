@@ -7,6 +7,9 @@
 <image width="800" src="https://user-images.githubusercontent.com/76610357/160749647-ba24cedc-c447-4628-9c6a-a7f92b87971b.png"/>
 <!-- 
  
+ 
+ 
+ 웹소켓 오류
 8. 웹소켓 연결 시도 시 토큰 인증 에러가 나는 문제
 ❓ 원인 : Bearer Token을 사용한 후 Bearer 타입까지 포함된 토큰 문자열을 인증하려고 하였기 때문
 
