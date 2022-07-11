@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,16 +24,18 @@ public class LookbookController {
 
     // 룩북 목록페이지 조회
 //    @GetMapping("/api/lookList")
-//    public Page<LookbookResponseDto.LookbookMain> getLookbooks(
+//    public Page<LookbookResponseDto.Lookbook> getLookbooks(
 //            @PageableDefault(size = 6, sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable) {
 //        Page<Post> lookList = lookbookService.getLookbooks(pageable);
-//        return lookList.map(LookbookResponseDto.LookbookMain::from);
+//        return lookList.map(LookbookResponseDto.Lookbook::from);
 //    }
 
     @GetMapping("/api/lookList")
-    public ResponseEntity<LookbookResponseDto.LookbookMain> getLookList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6) Pageable pageable) {
-        ResponseEntity<LookbookResponseDto.LookbookMain> lookList = lookbookService.getLookbooks(pageable, userDetails);
+    public ResponseEntity<LookbookResponseDto.Lookbook> getLookList(
+            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6)
+            @SortDefault.SortDefaults({@SortDefault(sort = "createAt", direction = Sort.Direction.DESC),
+                    @SortDefault(sort = "likeCount", direction = Sort.Direction.DESC)}) Pageable pageable) {
+        ResponseEntity<LookbookResponseDto.Lookbook> lookList = lookbookService.getLookbooks(pageable);
         return lookList;
     }
 

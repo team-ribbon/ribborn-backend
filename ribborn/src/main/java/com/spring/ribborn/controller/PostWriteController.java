@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,31 +24,35 @@ public class PostWriteController {
 
     // 질문 목록페이지 조회
 //    @GetMapping("/api/qnaList")
-//    public Page<PostWriteResponseDto.WriteMain> getQnaList(
+//    public Page<PostWriteResponseDto.WritePost> getQnaList(
 //            @PageableDefault(size = 6, sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable) {
 //        Page<Post> qnaList = postWriteService.getWrite(pageable);
-//        return qnaList.map(PostWriteResponseDto.WriteMain::from);
+//        return qnaList.map(PostWriteResponseDto.WritePost::from);
 //    }
-//
+
     @GetMapping("/api/qnaList")
-    public ResponseEntity<PostWriteResponseDto.WriteMain> getQnaList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6) Pageable pageable) {
-        ResponseEntity<PostWriteResponseDto.WriteMain> qnaList = postWriteService.getQna(pageable, userDetails);
+    public ResponseEntity<PostWriteResponseDto.WritePost> getQnaList(
+            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6)
+            @SortDefault.SortDefaults({@SortDefault(sort = "createAt", direction = Sort.Direction.DESC),
+                    @SortDefault(sort = "likeCount", direction = Sort.Direction.DESC)}) Pageable pageable) {
+        ResponseEntity<PostWriteResponseDto.WritePost> qnaList = postWriteService.getQna(pageable);
         return qnaList;
     }
-//
-//    // 후기 목록페이지 조회
+
+    // 후기 목록페이지 조회
 //    @GetMapping("/api/reviewList")
-//    public Page<PostWriteResponseDto.WriteMain> getReviewList(
+//    public Page<PostWriteResponseDto.WritePost> getReviewList(
 //            @PageableDefault(size = 12, sort = "createAt", direction = Sort.Direction.DESC) Pageable pageable) {
 //        Page<Post> reviewList = postWriteService.getWrite(pageable);
-//        return reviewList.map(PostWriteResponseDto.WriteMain::from);
+//        return reviewList.map(PostWriteResponseDto.WritePost::from);
 //    }
-//
+
     @GetMapping("/api/reviewList")
-    public ResponseEntity<PostWriteResponseDto.WriteMain> getReviewList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 12) Pageable pageable) {
-        ResponseEntity<PostWriteResponseDto.WriteMain> reviewList = postWriteService.getReview(pageable, userDetails);
+    public ResponseEntity<PostWriteResponseDto.WritePost> getReviewList(
+            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 12)
+            @SortDefault.SortDefaults({@SortDefault(sort = "createAt", direction = Sort.Direction.DESC),
+                    @SortDefault(sort = "likeCount", direction = Sort.Direction.DESC)}) Pageable pageable) {
+        ResponseEntity<PostWriteResponseDto.WritePost> reviewList = postWriteService.getReview(pageable);
         return reviewList;
     }
 }
