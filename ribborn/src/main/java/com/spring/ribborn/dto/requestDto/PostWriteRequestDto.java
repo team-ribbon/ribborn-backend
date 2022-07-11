@@ -1,6 +1,7 @@
 package com.spring.ribborn.dto.requestDto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class PostWriteRequestDto {
         this.category = category;
         this.content = content;
     }
+
 
 
 }
