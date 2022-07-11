@@ -1,7 +1,7 @@
 # ribborn-backend
 패션 공유 사이트 리본 백엔드
 
-<image src="https://img.shields.io/website?down_message=DOWN&up_message=UP&label=server&url=http://13.125.117.133:8080/health"/>  
+<image src="https://img.shields.io/website?down_message=DOWN&up_message=UP&label=server&url=http://3.35.49.121:8080/health"/>  
 
 ### ⚙️ 아키텍쳐!
 <image width="800" src="https://user-images.githubusercontent.com/76610357/160749647-ba24cedc-c447-4628-9c6a-a7f92b87971b.png"/>
