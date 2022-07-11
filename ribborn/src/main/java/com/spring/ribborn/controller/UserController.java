@@ -59,13 +59,19 @@ public class UserController {
     @GetMapping("/api/users/auth")
     public UserTokenResponseDto userInfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
         Long id = userDetails.getUserId();
-        return userService.userAuth(id);
+        if(!(id == null)) {
+            System.out.println("id = " + id);
+            return userService.userAuth(id);
+        } else {
+            throw new IllegalArgumentException("만료된 토큰입니다");
+        }
     }
 
     // 유저 상세페이지
     @GetMapping("/api/users/userinfo/{id}")
     public UserResponseDto userinfo(@PathVariable("id") Long id , @AuthenticationPrincipal UserDetailsImpl userDetails){
         String username = userDetails.getUsername();
+        System.out.println("username = " + username);
         if(id.equals(userDetails.getUser().getId())){
             return userService.userInfo(id);
         } else {
@@ -77,6 +83,7 @@ public class UserController {
     @GetMapping("/api/users/mypage")
     public UserResponseDto userinfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
         Long id = userDetails.getUserId();
+        System.out.println("id = " + id);
         return userService.userInfo(id);
     }
 

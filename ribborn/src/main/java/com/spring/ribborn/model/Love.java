@@ -1,6 +1,8 @@
 package com.spring.ribborn.model;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -8,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Love {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +25,10 @@ public class Love {
     @JoinColumn(name = "post_id")
     private Post post;
 
+    public static Love makeLove(User user, Post post){
+        Love love = new Love();
+        love.setUser(user);
+        love.setPost(post);
+        return love;
+    }
 }
