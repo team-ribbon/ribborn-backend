@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,16 +24,18 @@ public class ReformController {
 
     // 리폼견적 목록페이지 조회
 //    @GetMapping("/api/reformList")
-//    public Page<ReformResponseDto.ReformMain> getReformList(
+//    public Page<ReformResponseDto.Reform> getReformList(
 //            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6) Pageable pageable) {
 //        Page<Post> reformList = reformService.getReforms(pageable);
-//        return reformList.map(ReformResponseDto.ReformMain::from);
+//        return reformList.map(ReformResponseDto.Reform::from);
 //    }
 
     @GetMapping("/api/reformList")
-    public ResponseEntity<ReformResponseDto.ReformMain> getReformList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6) Pageable pageable) {
-        ResponseEntity<ReformResponseDto.ReformMain> lookList = reformService.getReforms(pageable, userDetails);
+    public ResponseEntity<ReformResponseDto.Reform> getReformList(
+            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6)
+            @SortDefault.SortDefaults({@SortDefault(sort = "createAt", direction = Sort.Direction.DESC),
+                    @SortDefault(sort = "likeCount", direction = Sort.Direction.DESC)}) Pageable pageable) {
+        ResponseEntity<ReformResponseDto.Reform> lookList = reformService.getReforms(pageable);
         return lookList;
     }
 }

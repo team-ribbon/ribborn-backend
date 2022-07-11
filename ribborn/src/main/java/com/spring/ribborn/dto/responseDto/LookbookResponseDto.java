@@ -9,9 +9,10 @@ import java.time.LocalDateTime;
 
 @Data
 public class LookbookResponseDto {
+    //public static ContentsRepository contentsRepository;
     @Builder
     @Data
-    public static class LookbookMain {
+    public static class Lookbook {
         private Long id;
         private String image;
         private String nickname;
@@ -19,16 +20,15 @@ public class LookbookResponseDto {
         private int likeCount;
         private LocalDateTime createAt;
 
-//        public static LookbookMain from(Post post) {
-//            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtDesc(post.getId());
-//            return LookbookMain.builder()
+//        public static Lookbook from(Post post) {
+//            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
+//            return Lookbook.builder()
 //                    .id(post.getId())
-//                    .postCate(post.getPostCate())
-//                    .image(viewImage)
+//                    .image(viewImage.getImage())
 //                    .nickname(post.getUser().getNickname())
 //                    .category(post.getCategory())
 //                    .likeCount(post.getLikeCount())
-//                    .createdAt(post.getCreateAt())
+//                    .createAt(post.getCreateAt())
 //                    .build();
 //        }
     }
