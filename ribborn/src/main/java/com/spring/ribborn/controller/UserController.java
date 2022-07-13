@@ -28,7 +28,6 @@ public class UserController {
     @PostMapping("/api/users/register/users")
     public ResponseEntity<ApiResponseMessage> registerUser(@RequestBody UserRequestDto userRequestDto) {
         userService.registerUser(userRequestDto);
-
         ApiResponseMessage message = new ApiResponseMessage("Success", "회원가입이 완료되었습니다", "", "");
         return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
     }
@@ -47,9 +46,7 @@ public class UserController {
     public ResponseEntity<String> login(final HttpServletResponse response, @RequestBody LoginRequestDto loginRequestDto) {
         if (userService.login(loginRequestDto)) {
             String token = jwtTokenProvider.createToken(loginRequestDto.getUsername());
-            System.out.println("token = " + token);
-            response.addHeader("Authorization", token);
-            return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
+            return new ResponseEntity<>(token, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("로그인 실패 : username 또는 password 를 확인해주세요.", HttpStatus.BAD_REQUEST);
         }
@@ -60,7 +57,6 @@ public class UserController {
     public UserTokenResponseDto userInfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
         Long id = userDetails.getUserId();
         if(!(id == null)) {
-            System.out.println("id = " + id);
             return userService.userAuth(id);
         } else {
             throw new IllegalArgumentException("만료된 토큰입니다");
@@ -70,8 +66,6 @@ public class UserController {
     // 유저 상세페이지
     @GetMapping("/api/users/userinfo/{id}")
     public UserResponseDto userinfo(@PathVariable("id") Long id , @AuthenticationPrincipal UserDetailsImpl userDetails){
-        String username = userDetails.getUsername();
-        System.out.println("username = " + username);
         if(id.equals(userDetails.getUser().getId())){
             return userService.userInfo(id);
         } else {

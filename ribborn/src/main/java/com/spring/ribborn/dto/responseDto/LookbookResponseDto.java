@@ -18,6 +18,7 @@ public class LookbookResponseDto {
         private String nickname;
         private String category;
         private int likeCount;
+        private String content;
         private LocalDateTime createAt;
 
 //        public static Lookbook from(Post post) {

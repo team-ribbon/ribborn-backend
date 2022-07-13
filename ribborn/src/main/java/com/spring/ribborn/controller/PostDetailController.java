@@ -2,12 +2,11 @@ package com.spring.ribborn.controller;
 
 import com.spring.ribborn.dto.responseDto.*;
 import com.spring.ribborn.exception.ApiResponseMessage;
-import com.spring.ribborn.repository.UserRepository;
 import com.spring.ribborn.security.UserDetailsImpl;
-import com.spring.ribborn.service.CommentService;
 import com.spring.ribborn.service.PostDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +19,9 @@ public class PostDetailController {
     private final PostDetailService postDetailService;
 
     //질문게시판, 후기게시판 상세조회
-
-    @GetMapping(value = {"/api/qnaList/{postId}", "/api/reviewPosts/{postId}"})
-    public PostDetailResponseMsg postDetailView(@PathVariable("postId") Long postId, @PageableDefault(page = 0,size = 5) final Pageable pageable){
-        return postDetailService.postDetailView(postId, pageable);
+    @GetMapping(value = {"/api/qnaPosts/{postId}", "/api/reviewPosts/{postId}"})
+    public PostDetailResponseMsg postDetailView(@PathVariable("postId") Long postId, @PageableDefault(page = 0,size = 5, sort = "id", direction = Sort.Direction.DESC) final Pageable pageable, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return postDetailService.postDetailView(postId, pageable, userDetails);
     }
 
     //리폼 견적 게시판 조회
@@ -34,8 +32,8 @@ public class PostDetailController {
 
     //룩북 게시판 조회
     @GetMapping("/api/lookPosts/{postId}")
-    public LookBookDetailResponseDto lookBookPostDetailView(@PathVariable("postId") Long postId){
-        return postDetailService.lookBookPostDetailView(postId);
+    public LookBookDetailResponseDto lookBookPostDetailView(@PathVariable("postId") Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return postDetailService.lookBookPostDetailView(postId, userDetails);
     }
 
     //룩북 게시판 접근시

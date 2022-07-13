@@ -18,13 +18,16 @@ public class LoveService {
     private final PostRepository postRepository;
     @Transactional
     public void loveClick(Long postId, LoveRequestDto loveRequestDto, UserDetailsImpl userDetails) {
+        Post post = postRepository.findById(postId).orElse(null);
         if(loveRequestDto.isLove()){
             //좋아요 저장
-            Post post = postRepository.findById(postId).orElse(null);
+
+            post.setLikeCount(post.getLikeCount()+1);
             Love love = Love.makeLove(userDetails.getUser(),post);
             loveRepository.makeLove(love);
         }else{
             //좋아요 삭제
+            post.setLikeCount(post.getLikeCount()-1);
             loveRepository.deleteLove(userDetails.getUserId(),postId);
         }
     }

@@ -17,14 +17,18 @@ public class PostWriteRepository {
     private final EntityManager em;
     public void postWrite(PostWriteRequestDto postWriteRequestDto, User user) {
         Post post = new Post();
-        for(String image : postWriteRequestDto.getImages()){
+        if(postWriteRequestDto.getImages().isEmpty()){
             Contents contents = new Contents();
-            contents.setImage(image);
             contents.setContent(postWriteRequestDto.getContent());
             post.setContents(contents);
+        }else{
+            for(String image : postWriteRequestDto.getImages()){
+                Contents contents = new Contents();
+                contents.setImage(image);
+                contents.setContent(postWriteRequestDto.getContent());
+                post.setContents(contents);
+            }
         }
-
-
         post.setUser(user);
 
         //post.setLikeCount();
@@ -32,6 +36,10 @@ public class PostWriteRepository {
         if(postWriteRequestDto.getRegion() != null){
             post.setRegion(postWriteRequestDto.getRegion());
         }
+        if(postWriteRequestDto.getProcess() != null){
+            post.setProcess(postWriteRequestDto.getProcess());
+        }
+
         post.setPostCate(postWriteRequestDto.getPostCategory());
         post.setTitle(postWriteRequestDto.getTitle());
         post.setCategory(postWriteRequestDto.getCategory());

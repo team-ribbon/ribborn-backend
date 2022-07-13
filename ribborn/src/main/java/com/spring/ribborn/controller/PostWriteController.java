@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,10 +33,10 @@ public class PostWriteController {
 
     @GetMapping("/api/qnaList")
     public ResponseEntity<PostWriteResponseDto.WritePost> getQnaList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6)
-            @SortDefault.SortDefaults({@SortDefault(sort = "createAt", direction = Sort.Direction.DESC),
-                    @SortDefault(sort = "likeCount", direction = Sort.Direction.DESC)}) Pageable pageable) {
-        ResponseEntity<PostWriteResponseDto.WritePost> qnaList = postWriteService.getQna(pageable);
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            Pageable pageable,
+            @RequestParam(name = "category") String category) {
+        ResponseEntity<PostWriteResponseDto.WritePost> qnaList = postWriteService.getQna(pageable,category);
         return qnaList;
     }
 
@@ -49,10 +50,10 @@ public class PostWriteController {
 
     @GetMapping("/api/reviewList")
     public ResponseEntity<PostWriteResponseDto.WritePost> getReviewList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 12)
-            @SortDefault.SortDefaults({@SortDefault(sort = "createAt", direction = Sort.Direction.DESC),
-                    @SortDefault(sort = "likeCount", direction = Sort.Direction.DESC)}) Pageable pageable) {
-        ResponseEntity<PostWriteResponseDto.WritePost> reviewList = postWriteService.getReview(pageable);
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            Pageable pageable,
+            @RequestParam(name = "category") String category) {
+        ResponseEntity<PostWriteResponseDto.WritePost> reviewList = postWriteService.getReview(pageable,category);
         return reviewList;
     }
 }

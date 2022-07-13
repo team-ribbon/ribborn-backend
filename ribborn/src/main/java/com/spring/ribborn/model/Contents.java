@@ -3,6 +3,7 @@ package com.spring.ribborn.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ public class Contents extends TimeStamp {
     @Column(name = "contents_id")
     private Long id;
 
+    @Nullable
     private String image;
     private String content;
 
