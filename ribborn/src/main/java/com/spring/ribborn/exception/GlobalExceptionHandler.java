@@ -41,6 +41,16 @@ public class GlobalExceptionHandler {
         return ErrorResponse.of(path, ErrorCode.MISSING_REQUEST_BODY);
     }
 
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler
+    public ErrorResponse handleNullPointerExceptionHandle(
+            NullPointerException e, HttpServletRequest request) {
+
+        log.error("handleNullPointerExceptionHandle", e);
+        String path = request.getRequestURI();
+        return ErrorResponse.of(path, ErrorCode.MISSING_REQUEST_BODY);
+    }
+
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler
     public ErrorResponse handleAccessDeniedException(
@@ -64,8 +74,7 @@ public class GlobalExceptionHandler {
 
     /**
      * @Valid 검증 실패시 발생하는 예외
-     * -> Bean Validation 검증 실패시 발생
-     */
+     * Bean Validation 검증 실패시 발생 */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler
     public ErrorResponse handleMethodArgumentNotValidException(
@@ -77,8 +86,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * 처리하지 못한 모든 예외는 여기서 핸들링
-     */
+     * 처리하지 못한 모든 예외는 여기서 핸들링 */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler
     public ErrorResponse handleException(Exception e, HttpServletRequest request) {

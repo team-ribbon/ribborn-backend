@@ -9,7 +9,6 @@ public enum ErrorCode {
     MISSING_REQUEST_BODY(400, "C002", "missing request body"),
     INTERNAL_SERVER_ERROR(500, "C003", "internal server error"),
 
-
     // Authentication
     DUPLICATE_USERNAME(400, "A001", "the username already exists."),
     DUPLICATE_NICKNAME(400, "A002", "the nickname already exists."),
