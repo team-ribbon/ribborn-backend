@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -32,10 +33,10 @@ public class ReformController {
 
     @GetMapping("/api/reformList")
     public ResponseEntity<ReformResponseDto.Reform> getReformList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails, @PageableDefault(size = 6)
-            @SortDefault.SortDefaults({@SortDefault(sort = "createAt", direction = Sort.Direction.DESC),
-                    @SortDefault(sort = "likeCount", direction = Sort.Direction.DESC)}) Pageable pageable) {
-        ResponseEntity<ReformResponseDto.Reform> lookList = reformService.getReforms(pageable);
+            @AuthenticationPrincipal UserDetailsImpl userDetails,
+            Pageable pageable,
+            @RequestParam(name = "category") String category) {
+        ResponseEntity<ReformResponseDto.Reform> lookList = reformService.getReforms(pageable,category);
         return lookList;
     }
 }

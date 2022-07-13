@@ -10,8 +10,10 @@ import com.spring.ribborn.service.PostWriteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
@@ -20,6 +22,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
+@Validated
 public class PostController {
 
     private final AwsS3Service awsS3Service;
@@ -29,12 +32,14 @@ public class PostController {
 
     //질문,후기,리폼견적 게시판 작성
     @PostMapping(value = {"/api/qnaPosts","/api/reviewPosts","/api/reform-Posts"})
-    public ResponseEntity<ApiResponseMessage> qnaPostWrite(@RequestPart(value = "file", required = false) List<MultipartFile> multipartFile,
+    public ResponseEntity<ApiResponseMessage> qnaPostWrite(@RequestPart(value = "file", required = false) @Nullable List<MultipartFile> multipartFile,
                                                            @RequestPart(value = "key")PostWriteRequestDto postWriteRequestDto,
                                                            @AuthenticationPrincipal UserDetailsImpl userDetails){
 
-        List<String> strings = awsS3Service.uploadFile(multipartFile);
-        postWriteRequestDto.setImages(strings);
+        if(multipartFile != null){
+            List<String> strings = awsS3Service.uploadFile(multipartFile);
+            postWriteRequestDto.setImages(strings);
+        }
         postWriteRequestDto.setUsername(userDetails.getUsername());
         postWriteService.postWrite(postWriteRequestDto);
 
@@ -47,8 +52,9 @@ public class PostController {
     public ResponseEntity<ApiResponseMessage> lookPostWrite(@RequestPart(value = "file", required = false) List<MultipartFile> multipartFile,
                                                             @RequestPart(value = "key") LookBookPostWriteDto lookBookPostWriteDto,
                                                             @AuthenticationPrincipal UserDetailsImpl userDetails){
-        List<String> strings = awsS3Service.uploadFile(multipartFile);
 
+
+        List<String> strings = awsS3Service.uploadFile(multipartFile);
         lookBookPostWriteDto.setImages(strings);
         lookBookPostWriteDto.setUsername(userDetails.getUsername());
         postWriteService.lookBookPostWrite(lookBookPostWriteDto);

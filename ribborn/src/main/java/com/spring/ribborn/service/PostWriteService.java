@@ -10,9 +10,7 @@ import com.spring.ribborn.repository.ContentsRepository;
 import com.spring.ribborn.repository.PostRepository;
 import com.spring.ribborn.repository.PostWriteRepository;
 import com.spring.ribborn.repository.UserRepository;
-import com.spring.ribborn.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -55,8 +52,15 @@ public class PostWriteService {
 //    }
 
     @Transactional
-    public ResponseEntity<PostWriteResponseDto.WritePost> getQna(Pageable pageable) {
-        List<Post> posts = postRepository.findAllByPostCate("질문게시판", pageable);
+    public ResponseEntity<PostWriteResponseDto.WritePost> getQna(Pageable pageable, String category) {
+        List<Post> posts;
+        if(category.equals("all")){
+            posts = postRepository.findAllByPostCate("qna",pageable);
+        }else{
+            posts = postRepository.findAllByPostCateAndCategory("qna",pageable,category);
+        }
+
+
         List<PostWriteResponseDto.WritePost> qnaList = new ArrayList<>();
 
         for (Post post : posts) {
@@ -64,6 +68,7 @@ public class PostWriteService {
             PostWriteResponseDto.WritePost mainDto = PostWriteResponseDto.WritePost.builder()
                     .id(post.getId())
                     .image(viewImage.getImage())
+                    .content(viewImage.getContent())
                     .likeCount(post.getLikeCount())
                     .commentCount(post.getCommentCount())
                     .nickname(post.getUser().getNickname())
@@ -76,8 +81,16 @@ public class PostWriteService {
     }
 
     @Transactional
-    public ResponseEntity<PostWriteResponseDto.WritePost> getReview(Pageable pageable) {
-        List<Post> posts = postRepository.findAllByPostCate("리뷰게시판", pageable);
+    public ResponseEntity<PostWriteResponseDto.WritePost> getReview(Pageable pageable,String category) {
+        List<Post> posts;
+
+        if(category.equals("all")){
+            posts = postRepository.findAllByPostCate("review", pageable);
+        }else{
+            posts = postRepository.findAllByPostCateAndCategory("review", pageable,category);
+        }
+
+
         List<PostWriteResponseDto.WritePost> reviewList = new ArrayList<>();
 
         for (Post post : posts) {
@@ -85,6 +98,7 @@ public class PostWriteService {
             PostWriteResponseDto.WritePost mainDto = PostWriteResponseDto.WritePost.builder()
                     .id(post.getId())
                     .image(viewImage.getImage())
+                    .content(viewImage.getContent())
                     .likeCount(post.getLikeCount())
                     .commentCount(post.getCommentCount())
                     .nickname(post.getUser().getNickname())
