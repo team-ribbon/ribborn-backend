@@ -16,6 +16,7 @@ public class PostWriteRequestDto {
     private String content;
     private String username;
     private String region;
+    private String process;
 
     private List<String> images = new ArrayList<>();
 

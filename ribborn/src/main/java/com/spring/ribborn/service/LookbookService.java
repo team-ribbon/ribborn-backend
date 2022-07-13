@@ -31,8 +31,15 @@ public class LookbookService {
 //    }
 
     @Transactional
-    public ResponseEntity<LookbookResponseDto.Lookbook> getLookbooks(Pageable pageable) {
-        List<Post> posts = postRepository.findAllByPostCate("룩북게시판", pageable);
+    public ResponseEntity<LookbookResponseDto.Lookbook> getLookbooks(Pageable pageable, String category) {
+        List<Post> posts;
+        if(category.equals("all")){
+         posts = postRepository.findAllByPostCate("lookbook", pageable);
+        }else{
+         posts = postRepository.findAllByPostCateAndCategory("lookbook", pageable,category);
+        }
+
+
         List<LookbookResponseDto.Lookbook> lookbookList = new ArrayList<>();
 
         for (Post post : posts) {
@@ -40,6 +47,7 @@ public class LookbookService {
             LookbookResponseDto.Lookbook mainDto = LookbookResponseDto.Lookbook.builder()
                     .id(post.getId())
                     .image(viewImage.getImage())
+                    .content(viewImage.getContent())
                     .nickname(post.getUser().getNickname())
                     .category(post.getCategory())
                     .likeCount(post.getLikeCount())

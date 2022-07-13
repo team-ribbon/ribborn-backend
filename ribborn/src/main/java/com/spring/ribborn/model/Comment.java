@@ -22,16 +22,18 @@ public class Comment extends TimeStamp{
     @JoinColumn(name = "post_id")
     private Post post;
 
-    private String writer;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     private String comments;
 
 
-    public static Comment createComment(Post post, CommentWriteRequestDto commentWriteRequestDto, String writer){
+    public static Comment createComment(Post post, CommentWriteRequestDto commentWriteRequestDto, User user){
         Comment comment = new Comment();
         comment.setPost(post);
         comment.setComments(commentWriteRequestDto.getComment());
-        comment.setWriter(writer);
+        comment.setUser(user);
         return comment;
     }
 

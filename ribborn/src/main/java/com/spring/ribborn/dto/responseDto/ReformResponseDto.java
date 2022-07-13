@@ -19,6 +19,7 @@ public class ReformResponseDto {
         private String category;
         private String region;
         private String process;
+        private String content;
 
 //        public static Reform from(Post post) {
 //            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());

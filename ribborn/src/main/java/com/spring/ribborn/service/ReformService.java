@@ -25,6 +25,8 @@ public class ReformService {
     private final PostRepository postRepository;
     private final ContentsRepository contentsRepository;
 
+
+
     // 리폼견적 목록페이지 조회
 //    @Transactional
 //    public Page<Post> getReforms(Pageable pageable){
@@ -33,8 +35,14 @@ public class ReformService {
 //    }
 
     @Transactional
-    public ResponseEntity<ReformResponseDto.Reform> getReforms(Pageable pageable) {
-        List<Post> posts = postRepository.findAllByPostCate("리폼게시판", pageable);
+    public ResponseEntity<ReformResponseDto.Reform> getReforms(Pageable pageable, String category) {
+        List<Post> posts;
+        if(category.equals("all")){
+            posts = postRepository.findAllByPostCate("reform", pageable);
+        }else{
+            posts = postRepository.findAllByPostCateAndCategory("reform", pageable,category);
+        }
+
         List<ReformResponseDto.Reform> ReformList = new ArrayList<>();
 
         for (Post post : posts) {
@@ -42,6 +50,8 @@ public class ReformService {
             ReformResponseDto.Reform mainDto = ReformResponseDto.Reform.builder()
                     .id(post.getId())
                     .image(viewImage.getImage())
+                    .content(viewImage.getContent())
+                    .process(post.getProcess())
                     .nickname(post.getUser().getNickname())
                     .title(post.getTitle())
                     .category(post.getCategory())

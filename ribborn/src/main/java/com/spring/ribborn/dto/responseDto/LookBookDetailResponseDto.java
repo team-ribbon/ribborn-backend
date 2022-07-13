@@ -10,16 +10,20 @@ import java.util.List;
 @Data
 public class LookBookDetailResponseDto {
     private Long id;
+    private Long userid;
     private String nickname;
-
+    private int likeCount;
+    private boolean liked;
     private List<String> image = new ArrayList<>();
     private String category;
     private List<String> content = new ArrayList<>();
     private LocalDateTime createAt;
     private LocalDateTime modifyAt;
 
-    public LookBookDetailResponseDto(Long id, String nickname, String category, LocalDateTime createAt, LocalDateTime modifyAt) {
+    public LookBookDetailResponseDto(Long id, Long userid, int likeCount, String nickname, String category, LocalDateTime createAt, LocalDateTime modifyAt) {
         this.id = id;
+        this.userid = userid;
+        this.likeCount = likeCount;
         this.nickname = nickname;
         this.createAt = createAt;
         this.modifyAt = modifyAt;

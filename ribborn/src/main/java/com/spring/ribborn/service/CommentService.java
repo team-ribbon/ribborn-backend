@@ -6,6 +6,7 @@ import com.spring.ribborn.model.Comment;
 import com.spring.ribborn.model.Post;
 import com.spring.ribborn.repository.CommentRepository;
 import com.spring.ribborn.repository.PostRepository;
+import com.spring.ribborn.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,9 +25,10 @@ public class CommentService {
 
     //댓글 작성
     @Transactional
-    public void commentWrite(Long postId, CommentWriteRequestDto commentWriteRequestDto, String userName) {
+    public void commentWrite(Long postId, CommentWriteRequestDto commentWriteRequestDto, UserDetailsImpl userDetails) {
         Post post = postRepository.findById(postId).orElse(null);
-        Comment comment = Comment.createComment(post,commentWriteRequestDto,userName);
+        post.setCommentCount(post.getCommentCount()+1);
+        Comment comment = Comment.createComment(post,commentWriteRequestDto,userDetails.getUser());
         commentRepository.save(comment);
     }
 
@@ -45,7 +47,9 @@ public class CommentService {
 
     //댓글 삭제
     @Transactional
-    public void commentDelete(Long commentId) {
+    public void commentDelete(Long commentId,Long postId) {
+        Post post = postRepository.findById(postId).orElse(null);
+        post.setCommentCount(post.getCommentCount()-1);
         commentRepository.deleteById(commentId);
     }
 }
