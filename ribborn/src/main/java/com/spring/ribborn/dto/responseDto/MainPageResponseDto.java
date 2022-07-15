@@ -7,25 +7,24 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 public class MainPageResponseDto {
 
+    private String banner = "https://marketkurly-imageupload.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88.jpg";
+    private Long co2Count = 156L;
+    private Long co2Reduce = 1235L;
+    private List<MainPostDto> reviewList;
+    private List<LookBookPostDto> lookbookList;
+    private List<MainPostDto> reformList;
 
-    @Builder
-    @Data
-    public static class mainPage {
-
-        private List<Post> qnaList;
-        private List<Post> reviewList;
-        private List<Post> lookbookList;
-        private List<Post> reformList;
-
+    public MainPageResponseDto(List<MainPostDto> reviewList, List<LookBookPostDto> lookbookList, List<MainPostDto> reformList) {
+        this.reviewList = reviewList;
+        this.lookbookList = lookbookList;
+        this.reformList = reformList;
     }
-
-
-
 }
 

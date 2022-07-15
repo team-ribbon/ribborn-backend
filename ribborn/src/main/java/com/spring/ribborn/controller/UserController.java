@@ -10,6 +10,9 @@ import com.spring.ribborn.jwt.JwtTokenProvider;
 import com.spring.ribborn.security.UserDetailsImpl;
 import com.spring.ribborn.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,7 +31,6 @@ public class UserController {
     @PostMapping("/api/users/register/users")
     public ResponseEntity<ApiResponseMessage> registerUser(@RequestBody UserRequestDto userRequestDto) {
         userService.registerUser(userRequestDto);
-
         ApiResponseMessage message = new ApiResponseMessage("Success", "회원가입이 완료되었습니다", "", "");
         return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
     }
@@ -47,7 +49,6 @@ public class UserController {
     public ResponseEntity<String> login(final HttpServletResponse response, @RequestBody LoginRequestDto loginRequestDto) {
         if (userService.login(loginRequestDto)) {
             String token = jwtTokenProvider.createToken(loginRequestDto.getUsername());
-            System.out.println("token = " + token);
             return new ResponseEntity<>(token, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("로그인 실패 : username 또는 password 를 확인해주세요.", HttpStatus.BAD_REQUEST);
@@ -59,7 +60,6 @@ public class UserController {
     public UserTokenResponseDto userInfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
         Long id = userDetails.getUserId();
         if(!(id == null)) {
-            System.out.println("id = " + id);
             return userService.userAuth(id);
         } else {
             throw new IllegalArgumentException("만료된 토큰입니다");
@@ -68,22 +68,19 @@ public class UserController {
 
     // 유저 상세페이지
     @GetMapping("/api/users/userinfo/{id}")
-    public UserResponseDto userinfo(@PathVariable("id") Long id , @AuthenticationPrincipal UserDetailsImpl userDetails){
-        String username = userDetails.getUsername();
-        System.out.println("username = " + username);
-        if(id.equals(userDetails.getUser().getId())){
-            return userService.userInfo(id);
-        } else {
-        throw new IllegalArgumentException("로그인 해주세요");
-        }
+    public UserResponseDto userinfo(@PathVariable("id") Long id,
+                                    @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                    @RequestParam(name = "postCategory") String postCategory){
+        return userService.userInfo(pageable,id,postCategory);
     }
 
     // 마이페이지
     @GetMapping("/api/users/mypage")
-    public UserResponseDto userinfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        Long id = userDetails.getUserId();
-        System.out.println("id = " + id);
-        return userService.userInfo(id);
+    public UserResponseDto userinfo(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                    @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                    @RequestParam(name = "postCategory") String postCategory){
+
+        return userService.userInfo(pageable,userDetails.getUserId(),postCategory);
     }
 
     // 유저 정보 수정

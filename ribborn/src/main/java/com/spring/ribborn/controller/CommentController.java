@@ -8,6 +8,7 @@ import com.spring.ribborn.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class CommentController {
     @PostMapping("/api/post/{postId}/comment")
     public ResponseEntity<ApiResponseMessage> commentWrite(@PathVariable("postId") Long postId, @RequestBody CommentWriteRequestDto commentWriteRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
 
-        commentService.commentWrite(postId,commentWriteRequestDto,userDetails.getUsername());
+        commentService.commentWrite(postId,commentWriteRequestDto,userDetails);
 
         ApiResponseMessage message = new ApiResponseMessage("Success", "댓글이 작성 되었습니다.", "", "");
         return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
@@ -31,7 +32,7 @@ public class CommentController {
 
     //리뷰 조회(페이징)
     @GetMapping("/api/comments/{postId}")
-    public Page<CommentResponseDto> commentResponse(@PathVariable("postId") Long postId,@PageableDefault(page = 0,size = 5) final Pageable pageable){
+    public Page<CommentResponseDto> commentResponse(@PathVariable("postId") Long postId,@PageableDefault(page = 0,size = 5, sort = "id", direction = Sort.Direction.DESC) final Pageable pageable){
         return commentService.commendFind(postId, pageable);
     }
 
@@ -49,7 +50,7 @@ public class CommentController {
     @DeleteMapping("/api/post/{postId}/comment/{commentId}")
     public ResponseEntity<ApiResponseMessage> commentDelete(@PathVariable("postId") Long postId, @PathVariable("commentId") Long commentId){
 
-        commentService.commentDelete(commentId);
+        commentService.commentDelete(commentId,postId);
         ApiResponseMessage message = new ApiResponseMessage("Success", "댓글이 삭제 되었습니다.", "", "");
         return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
     }

@@ -20,7 +20,7 @@ public class PostWriteResponseDto {
         private String nickname;
         private String title;
         private String category;
-
+        private String content;
 
 //        public static WritePost from(Post post) {
 //            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());

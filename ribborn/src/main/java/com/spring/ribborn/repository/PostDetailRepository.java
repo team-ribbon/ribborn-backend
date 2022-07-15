@@ -2,12 +2,14 @@ package com.spring.ribborn.repository;
 
 import com.spring.ribborn.dto.queryDto.ContentsQueryDto;
 import com.spring.ribborn.dto.responseDto.LookBookDetailResponseDto;
+import com.spring.ribborn.dto.responseDto.MainPostDto;
 import com.spring.ribborn.dto.responseDto.PostDetailResponseDto;
 import com.spring.ribborn.dto.responseDto.ReformPostDetailResponseDto;
 import com.spring.ribborn.model.Contents;
 import com.spring.ribborn.model.Post;
 import com.spring.ribborn.service.AwsS3Service;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -24,7 +26,7 @@ public class PostDetailRepository {
     public PostDetailResponseDto findPostDetail(Long postId) {
         return em.createQuery(
                 " select new com.spring.ribborn.dto.responseDto.PostDetailResponseDto(" +
-                        "p.id, u.nickname,p.title, p.category,p.createAt,p.modifyAt)" +
+                        "p.id,u.id,p.likeCount, u.nickname,p.title, p.category,p.createAt,p.modifyAt)" +
                         " from Post p" +
                         " join p.user u" +
                         " where p.id = :postId", PostDetailResponseDto.class)
@@ -32,11 +34,37 @@ public class PostDetailRepository {
                 .getSingleResult();
     }
 
+    //게시글 찾기
+
+    public List<Post> findPostMainV2(String postCate) {
+        return em.createQuery(
+                "select distinct p from Post p" +
+                        " join fetch p.user u" +
+                        " join fetch p.contents c" +
+                        " where p.postCate = :postCate" +
+                        " order by p.likeCount desc ", Post.class)
+                .setParameter("postCate", postCate)
+                .setFirstResult(0)
+                .setMaxResults(6)
+                .getResultList();
+    }
+
+    public List<Post> findMyPost(Pageable pageable, String postCate, Long id) {
+        return em.createQuery(
+                        "select distinct p from Post p" +
+                                " join fetch p.user u" +
+                                " join fetch p.contents c" +
+                                " where p.postCate = :postCate and u.id = :id", Post.class)
+                .setParameter("postCate", postCate)
+                .setParameter("id", id)
+                .getResultList();
+    }
+
     //리폼 게시글 찾기
     public ReformPostDetailResponseDto reformPostDetail(Long postId) {
         return em.createQuery(
                         " select new com.spring.ribborn.dto.responseDto.ReformPostDetailResponseDto(" +
-                                "p.id, u.nickname,p.title, p.category,p.createAt,p.modifyAt,p.region,p.process)" +
+                                "p.id,u.id, u.nickname,p.title, p.category,p.createAt,p.modifyAt,p.region,p.process)" +
                                 " from Post p" +
                                 " join p.user u" +
                                 " where p.id = :postId", ReformPostDetailResponseDto.class)
@@ -48,7 +76,7 @@ public class PostDetailRepository {
     public LookBookDetailResponseDto lookBookPostDetail(Long postId) {
         return em.createQuery(
                         " select new com.spring.ribborn.dto.responseDto.LookBookDetailResponseDto(" +
-                                "p.id, u.nickname,p.category,p.createAt,p.modifyAt)" +
+                                "p.id,u.id,p.likeCount,u.nickname,p.category,p.introduction,u.addressCategory,u.addressDetail,p.createAt,p.modifyAt)" +
                                 " from Post p" +
                                 " join p.user u" +
                                 " where p.id = :postId", LookBookDetailResponseDto.class)
@@ -71,9 +99,14 @@ public class PostDetailRepository {
     //게시글 삭제
     public void deletePost(Long postId) {
         Post post = em.find(Post.class, postId);
+
         for(Contents con : post.getContents()){
-            awsS3Service.deleteFile(con.getImage());
+            if(con.getImage() != null){
+                String[] split = con.getImage().split("com/");
+                awsS3Service.deleteFile(split[1]);
+            }
         }
+
         em.remove(post);
     }
 }

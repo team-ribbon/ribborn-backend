@@ -12,16 +12,17 @@ public class LookBookPostWriteDto {
 
     private String postCategory;
 
-    private List<String> content;
+    private String content;
     private String username;
     private String introduction;
 
     private List<String> images = new ArrayList<>();
 
-    public LookBookPostWriteDto(String title, String category, List<String> content) {
+    public LookBookPostWriteDto(String title, String category, String content, String introduction) {
         this.title = title;
         this.category = category;
         this.content = content;
+        this.introduction = introduction;
     }
 
 

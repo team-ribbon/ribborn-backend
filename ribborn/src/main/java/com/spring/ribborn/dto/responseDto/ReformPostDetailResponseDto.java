@@ -10,6 +10,8 @@ import java.util.List;
 @Data
 public class ReformPostDetailResponseDto {
     private Long id;
+
+    private Long userid;
     private String nickname;
     private List<String> image = new ArrayList<>();
     private String title;
@@ -21,8 +23,9 @@ public class ReformPostDetailResponseDto {
     private String process;
 
 
-    public ReformPostDetailResponseDto(Long id, String nickname, String title, String category, LocalDateTime createAt, LocalDateTime modifyAt, String region, String process) {
+    public ReformPostDetailResponseDto(Long id, Long userid, String nickname, String title, String category, LocalDateTime createAt, LocalDateTime modifyAt, String region, String process) {
         this.id = id;
+        this.userid = userid;
         this.nickname = nickname;
         this.title = title;
         this.category = category;
