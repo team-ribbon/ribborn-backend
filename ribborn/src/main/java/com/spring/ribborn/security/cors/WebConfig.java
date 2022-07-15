@@ -12,6 +12,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
+
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
@@ -27,7 +28,9 @@ public class WebConfig implements WebMvcConfigurer {
                         "https://s3.ap-northeast-2.amazonaws.com/marketkurly-imageupload",
                         "http://ribborn.s3-website.ap-northeast-2.amazonaws.com"
                         )
+                .allowedOriginPatterns("*")
                 .allowedMethods("POST", "GET","PATCH", "DELETE", "HEAD", "OPTIONS")
+//                .exposedHeaders("*")
                 .allowCredentials(true);
     }
 
@@ -46,4 +49,18 @@ public class WebConfig implements WebMvcConfigurer {
         copy.getFactory().setCharacterEscapes(new HtmlCharacterEscapes());
         return new MappingJackson2HttpMessageConverter(copy);
     }
+
+//    @Bean
+//    public CorsConfigurationSource corsConfigurationSource() {
+//        CorsConfiguration configuration = new CorsConfiguration();
+//
+//        configuration.addAllowedOrigin("http://13.125.117.133:8888");
+//        configuration.addAllowedHeader("*");
+//        configuration.addAllowedMethod("*");
+//        configuration.setAllowCredentials(true);
+//
+//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+//        source.registerCorsConfiguration("/**", configuration);
+//        return source;
+//    }
 }

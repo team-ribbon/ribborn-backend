@@ -11,7 +11,7 @@ public class UserTokenResponseDto {
     private Long id;
     private String nickname;
     private int userType;
-    private int unreadMsg;
+//    private int unreadMsg;
 
     public UserTokenResponseDto(User user) {
         this.username = user.getUsername();

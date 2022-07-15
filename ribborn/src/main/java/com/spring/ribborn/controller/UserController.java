@@ -48,8 +48,7 @@ public class UserController {
         if (userService.login(loginRequestDto)) {
             String token = jwtTokenProvider.createToken(loginRequestDto.getUsername());
             System.out.println("token = " + token);
-            response.addHeader("Authorization", token);
-            return new ResponseEntity<>("로그인 성공", HttpStatus.OK);
+            return new ResponseEntity<>(token, HttpStatus.OK);
         } else {
             return new ResponseEntity<>("로그인 실패 : username 또는 password 를 확인해주세요.", HttpStatus.BAD_REQUEST);
         }

@@ -1,10 +1,9 @@
 package com.spring.ribborn.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,8 +13,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.Base64;
 import java.util.Date;
+import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Component
@@ -73,4 +74,51 @@ public class JwtTokenProvider {
             return false;
         }
     }
+
+
+    public final String HEADER_PREFIX = "Bearer ";
+
+//    public String extract(String header, HttpServletRequest request) throws IOException {
+//
+//        if (header == null || header.equals("") || header.length() < HEADER_PREFIX.length()) {
+//            System.out.println("error request : " + request.getRequestURI());
+//            throw new NoSuchElementException("올바른 JWT 정보가 아닙니다.");
+//        }
+//
+//        return header.substring(
+//                HEADER_PREFIX.length(),
+//                header.length()
+//        );
+//    }
+
+    public String extract(String header) throws IOException {
+        if (header == null || header.equals("") || header.length() < HEADER_PREFIX.length()) {
+            throw new NoSuchElementException("올바른 JWT 정보가 아닙니다.");
+        }
+
+        return header.substring(
+                HEADER_PREFIX.length(),
+                header.length()
+        );
+    }
+
+
+
+//    public boolean validateToken(String authToken) throws JwtException {
+//
+//        try {
+//            System.out.println("Secret Key : " + JwtTokenUtils.JWT_SECRET);
+//            System.out.println("JwtTokenUtils.JWT_SECRET.getBytes : " + Arrays.toString(JwtTokenUtils.JWT_SECRET.getBytes()));
+//            Jwts.parserBuilder()
+//                    .setSigningKey(JwtTokenUtils.JWT_SECRET.getBytes())
+//                    .build()
+//                    .parseClaimsJws(authToken);
+//            return true;
+//        } catch (JwtException e) {
+//            System.out.println("토큰 검증 실패!! 토큰(" + authToken + ")");
+//            e.printStackTrace();
+//        }
+//        return false;
+//    }
+
 }
