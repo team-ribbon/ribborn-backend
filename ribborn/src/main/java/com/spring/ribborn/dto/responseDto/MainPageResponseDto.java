@@ -14,7 +14,7 @@ import java.util.List;
 @Setter
 public class MainPageResponseDto {
 
-    private String banner = "https://marketkurly-imageupload.s3.ap-northeast-2.amazonaws.com/%EC%83%81%EB%8B%A8%EC%9D%B4%EB%AF%B8%EC%A7%802.PNG";
+    private String banner = "https://marketkurly-imageupload.s3.ap-northeast-2.amazonaws.com/%EB%B0%B0%EB%84%88.jpg";
     private Long co2Count = 156L;
     private Long co2Reduce = 1235L;
     private List<MainPostDto> reviewList;

@@ -2,6 +2,7 @@ package com.spring.ribborn.service;
 
 import com.spring.ribborn.dto.queryDto.ContentsQueryDto;
 import com.spring.ribborn.dto.requestDto.PostChangeRequestDto;
+import com.spring.ribborn.dto.requestDto.ReformChangeRequestDto;
 import com.spring.ribborn.dto.responseDto.*;
 import com.spring.ribborn.model.Contents;
 import com.spring.ribborn.model.Love;
@@ -62,7 +63,40 @@ public class PostDetailService {
         return msg;
     }
 
+    //리폼 게시글 수정
+    @Transactional
+    public void reformDetailChange(Long postId, ReformChangeRequestDto reformChangeRequestDto) {
+        Post post = postRepository.findById(postId).orElse(null);
+        int a =0;
+        int before = post.getContents().size()-1;
 
+        for(int i = 0; i < reformChangeRequestDto.getImageUrl().size(); i++){
+            Contents content;
+            if(i > before){
+                content = new Contents();
+            }else{
+                content = post.getContents().get(i);
+                String[] split = content.getImage().split("com/");
+                awsS3Service.deleteFile(split[1]);
+            }
+
+            if(reformChangeRequestDto.getImageUrl().get(i).isEmpty()){
+                content.setImage(reformChangeRequestDto.getFileUrl().get(a));
+                content.setContent(reformChangeRequestDto.getContent());
+                a += 1;
+            }else{
+                content.setImage(reformChangeRequestDto.getImageUrl().get(i));
+                content.setContent(reformChangeRequestDto.getContent());
+            }
+            post.settingContents(content);
+        }
+
+        post.setTitle(reformChangeRequestDto.getTitle());
+        post.setCategory(reformChangeRequestDto.getCategory());
+        post.setRegion(reformChangeRequestDto.getRegion());
+    }
+
+    //나머지 게시글 수정
     @Transactional
     public void postDetailChange(Long postId, PostChangeRequestDto postChangeRequestDto){
         Post post = postRepository.findById(postId).orElse(null);
@@ -126,4 +160,6 @@ public class PostDetailService {
     public void deletePost(Long postId) {
         postDetailRepository.deletePost(postId);
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.spring.ribborn.controller;
 
 import com.spring.ribborn.dto.requestDto.PostChangeRequestDto;
+import com.spring.ribborn.dto.requestDto.ReformChangeRequestDto;
 import com.spring.ribborn.dto.responseDto.*;
 import com.spring.ribborn.exception.ApiResponseMessage;
 import com.spring.ribborn.security.UserDetailsImpl;
@@ -51,7 +52,7 @@ public class PostDetailController {
     }
 
     //게시글 수정
-    @PutMapping("/api/qnaPosts/{postId}")
+    @PutMapping(value = {"/api/qnaPosts/{postId}","/api/reviewPosts/{postId}","/api/lookPosts/{postid}"})
     public ResponseEntity<ApiResponseMessage> postChange(@PathVariable("postId") Long postId,
                                                          @RequestPart(value = "file", required = false) List<MultipartFile> fileList,
                                                          @RequestPart(value = "key") PostChangeRequestDto postChangeRequestDto){
@@ -59,6 +60,18 @@ public class PostDetailController {
         List<String> strings = awsS3Service.uploadFile(fileList);
         postChangeRequestDto.setFileUrl(strings);
         postDetailService.postDetailChange(postId,postChangeRequestDto);
+        ApiResponseMessage message = new ApiResponseMessage("Success", "게시글이 수정 되었습니다.", "", "");
+        return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
+    }
+
+    @PutMapping("/api/reformPosts/{postId}")
+    public ResponseEntity<ApiResponseMessage> reformPostChange(@PathVariable("postId") Long postId,
+                                                               @RequestPart(value = "file", required = false) List<MultipartFile> fileList,
+                                                               @RequestPart(value = "key")ReformChangeRequestDto reformChangeRequestDto){
+
+        List<String> strings = awsS3Service.uploadFile(fileList);
+        reformChangeRequestDto.setFileUrl(strings);
+        postDetailService.reformDetailChange(postId, reformChangeRequestDto);
         ApiResponseMessage message = new ApiResponseMessage("Success", "게시글이 수정 되었습니다.", "", "");
         return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
     }
