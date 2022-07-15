@@ -1,6 +1,5 @@
 package com.spring.ribborn.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,8 +34,9 @@ public class Post extends TimeStamp{
     private String item;
     private String postCate;
     private String process;
+    private String introduction;
 
-    public void setContents(Contents content){
+    public void settingContents(Contents content){
         contents.add(content);
         content.setPost(this);
     }

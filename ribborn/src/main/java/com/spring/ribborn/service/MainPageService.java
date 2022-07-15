@@ -1,5 +1,6 @@
 package com.spring.ribborn.service;
 
+import com.spring.ribborn.dto.responseDto.LookBookPostDto;
 import com.spring.ribborn.dto.responseDto.MainPageResponseDto;
 import com.spring.ribborn.dto.responseDto.MainPostDto;
 import com.spring.ribborn.model.Post;
@@ -20,25 +21,21 @@ import java.util.stream.Collectors;
 public class MainPageService {
     private final PostDetailRepository postDetailRepository;
 
-    public MainPageResponseDto getPostList(Pageable pageable) {
-        List<Post> qna1 = postDetailRepository.findPostMainV2(pageable, "qna");
-        List<Post> review1 = postDetailRepository.findPostMainV2(pageable, "review");
-        List<Post> lookbook1 = postDetailRepository.findPostMainV2(pageable, "lookbook");
-        List<Post> reform1 = postDetailRepository.findPostMainV2(pageable, "reform");
+    public MainPageResponseDto getPostList() {
+        List<Post> review1 = postDetailRepository.findPostMainV2("review");
+        List<Post> lookbook1 = postDetailRepository.findPostMainV2("lookbook");
+        List<Post> reform1 = postDetailRepository.findPostMainV2("reform");
 
-        List<MainPostDto> qna = qna1.stream()
-                .map(MainPostDto::new)
-                .collect(Collectors.toList());
         List<MainPostDto> review = review1.stream()
                 .map(MainPostDto::new)
                 .collect(Collectors.toList());
-        List<MainPostDto> lookbook = lookbook1.stream()
-                .map(MainPostDto::new)
+        List<LookBookPostDto> lookbook = lookbook1.stream()
+                .map(LookBookPostDto::new)
                 .collect(Collectors.toList());
         List<MainPostDto> reform = reform1.stream()
                 .map(MainPostDto::new)
                 .collect(Collectors.toList());
 
-        return new MainPageResponseDto(qna,review,lookbook,reform);
+        return new MainPageResponseDto(review,lookbook,reform);
     }
 }

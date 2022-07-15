@@ -20,13 +20,13 @@ public class PostWriteRepository {
         if(postWriteRequestDto.getImages().isEmpty()){
             Contents contents = new Contents();
             contents.setContent(postWriteRequestDto.getContent());
-            post.setContents(contents);
+            post.settingContents(contents);
         }else{
             for(String image : postWriteRequestDto.getImages()){
                 Contents contents = new Contents();
                 contents.setImage(image);
                 contents.setContent(postWriteRequestDto.getContent());
-                post.setContents(contents);
+                post.settingContents(contents);
             }
         }
         post.setUser(user);
@@ -48,15 +48,18 @@ public class PostWriteRepository {
 
     public void lookBookPostWrite(LookBookPostWriteDto lookBookPostWriteDto, User user) {
         Post post = new Post();
-        for(int i = 0; i < lookBookPostWriteDto.getContent().size(); i++){
+        for(int i = 0; i < lookBookPostWriteDto.getImages().size(); i++){
             Contents contents = new Contents();
             contents.setImage(lookBookPostWriteDto.getImages().get(i));
-            contents.setContent(lookBookPostWriteDto.getContent().get(i));
-            post.setContents(contents);
+            contents.setContent(lookBookPostWriteDto.getContent());
+            post.settingContents(contents);
         }
+        user.setIntroduction(lookBookPostWriteDto.getIntroduction());
         post.setUser(user);
         post.setPostCate(lookBookPostWriteDto.getPostCategory());
         post.setCategory(lookBookPostWriteDto.getCategory());
+        post.setIntroduction(lookBookPostWriteDto.getIntroduction());
+
         em.persist(post);
     }
 }

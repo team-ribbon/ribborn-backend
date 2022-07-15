@@ -19,8 +19,8 @@ public class MainPageController {
     private final MainPageService mainPageService;
 
     @GetMapping("/api/home")
-    public MainPageResponseDto getLookList(@PageableDefault(size = 6, sort = "likeCount", direction = Sort.Direction.DESC) Pageable pageable) {
-        return mainPageService.getPostList(pageable);
+    public MainPageResponseDto getLookList() {
+        return mainPageService.getPostList();
     }
 
 

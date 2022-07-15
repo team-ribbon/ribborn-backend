@@ -1,10 +1,14 @@
 package com.spring.ribborn.service;
 
 import com.spring.ribborn.dto.queryDto.ContentsQueryDto;
+import com.spring.ribborn.dto.requestDto.PostChangeRequestDto;
 import com.spring.ribborn.dto.responseDto.*;
+import com.spring.ribborn.model.Contents;
 import com.spring.ribborn.model.Love;
+import com.spring.ribborn.model.Post;
 import com.spring.ribborn.repository.LoveFindRepository;
 import com.spring.ribborn.repository.PostDetailRepository;
+import com.spring.ribborn.repository.PostRepository;
 import com.spring.ribborn.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -12,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,12 +25,15 @@ import java.util.List;
 public class PostDetailService {
 
     private final PostDetailRepository postDetailRepository;
+    private final AwsS3Service awsS3Service;
     private final CommentService commentService;
+    private final PostRepository postRepository;
 
     private final LoveFindRepository loveFindRepository;
 
     @Transactional
     public PostDetailResponseMsg postDetailView(Long postId, Pageable pageable, UserDetailsImpl userDetails) {
+
         PostDetailResponseDto postDetail = postDetailRepository.findPostDetail(postId);
 
         List<ContentsQueryDto> contents = postDetailRepository.findContents(postId);
@@ -54,6 +62,38 @@ public class PostDetailService {
         return msg;
     }
 
+
+    @Transactional
+    public void postDetailChange(Long postId, PostChangeRequestDto postChangeRequestDto){
+        Post post = postRepository.findById(postId).orElse(null);
+        int a =0;
+        int before = post.getContents().size()-1;
+
+        for(int i = 0; i < postChangeRequestDto.getImageUrl().size(); i++){
+            Contents content;
+            if(i > before){
+                content = new Contents();
+            }else{
+                content = post.getContents().get(i);
+                String[] split = content.getImage().split("com/");
+                awsS3Service.deleteFile(split[1]);
+            }
+
+            if(postChangeRequestDto.getImageUrl().get(i).isEmpty()){
+                content.setImage(postChangeRequestDto.getFileUrl().get(a));
+                content.setContent(postChangeRequestDto.getContent());
+                a += 1;
+            }else{
+                content.setImage(postChangeRequestDto.getImageUrl().get(i));
+                content.setContent(postChangeRequestDto.getContent());
+            }
+            post.settingContents(content);
+        }
+
+        post.setTitle(postChangeRequestDto.getTitle());
+        post.setCategory(postChangeRequestDto.getCategory());
+
+    }
 
     //리폼 상세페이지 조회 서비스
     public ReformPostDetailResponseDto reformPostDetailView(Long postId) {
