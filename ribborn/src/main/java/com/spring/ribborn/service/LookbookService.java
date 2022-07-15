@@ -48,6 +48,7 @@ public class LookbookService {
                     .id(post.getId())
                     .image(viewImage.getImage())
                     .content(viewImage.getContent())
+                    .introduction(post.getIntroduction())
                     .nickname(post.getUser().getNickname())
                     .category(post.getCategory())
                     .likeCount(post.getLikeCount())

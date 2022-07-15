@@ -36,16 +36,29 @@ public class PostDetailRepository {
 
     //게시글 찾기
 
-    public List<Post> findPostMainV2(Pageable pageable, String postCate) {
+    public List<Post> findPostMainV2(String postCate) {
         return em.createQuery(
                 "select distinct p from Post p" +
                         " join fetch p.user u" +
                         " join fetch p.contents c" +
-                        " where p.postCate = :postCate", Post.class)
+                        " where p.postCate = :postCate" +
+                        " order by p.likeCount desc ", Post.class)
                 .setParameter("postCate", postCate)
+                .setFirstResult(0)
+                .setMaxResults(6)
                 .getResultList();
     }
 
+    public List<Post> findMyPost(Pageable pageable, String postCate, Long id) {
+        return em.createQuery(
+                        "select distinct p from Post p" +
+                                " join fetch p.user u" +
+                                " join fetch p.contents c" +
+                                " where p.postCate = :postCate and u.id = :id", Post.class)
+                .setParameter("postCate", postCate)
+                .setParameter("id", id)
+                .getResultList();
+    }
 
     //리폼 게시글 찾기
     public ReformPostDetailResponseDto reformPostDetail(Long postId) {
@@ -63,7 +76,7 @@ public class PostDetailRepository {
     public LookBookDetailResponseDto lookBookPostDetail(Long postId) {
         return em.createQuery(
                         " select new com.spring.ribborn.dto.responseDto.LookBookDetailResponseDto(" +
-                                "p.id,u.id,p.likeCount,u.nickname,p.category,p.createAt,p.modifyAt)" +
+                                "p.id,u.id,p.likeCount,u.nickname,p.category,p.introduction,u.addressCategory,u.addressDetail,p.createAt,p.modifyAt)" +
                                 " from Post p" +
                                 " join p.user u" +
                                 " where p.id = :postId", LookBookDetailResponseDto.class)

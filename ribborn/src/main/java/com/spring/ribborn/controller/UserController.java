@@ -10,6 +10,9 @@ import com.spring.ribborn.jwt.JwtTokenProvider;
 import com.spring.ribborn.security.UserDetailsImpl;
 import com.spring.ribborn.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -65,20 +68,19 @@ public class UserController {
 
     // 유저 상세페이지
     @GetMapping("/api/users/userinfo/{id}")
-    public UserResponseDto userinfo(@PathVariable("id") Long id , @AuthenticationPrincipal UserDetailsImpl userDetails){
-        if(id.equals(userDetails.getUser().getId())){
-            return userService.userInfo(id);
-        } else {
-        throw new IllegalArgumentException("로그인 해주세요");
-        }
+    public UserResponseDto userinfo(@PathVariable("id") Long id,
+                                    @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                    @RequestParam(name = "postCategory") String postCategory){
+        return userService.userInfo(pageable,id,postCategory);
     }
 
     // 마이페이지
     @GetMapping("/api/users/mypage")
-    public UserResponseDto userinfo(@AuthenticationPrincipal UserDetailsImpl userDetails){
-        Long id = userDetails.getUserId();
-        System.out.println("id = " + id);
-        return userService.userInfo(id);
+    public UserResponseDto userinfo(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                    @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
+                                    @RequestParam(name = "postCategory") String postCategory){
+
+        return userService.userInfo(pageable,userDetails.getUserId(),postCategory);
     }
 
     // 유저 정보 수정

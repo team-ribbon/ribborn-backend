@@ -3,17 +3,24 @@ package com.spring.ribborn.service;
 import com.spring.ribborn.dto.requestDto.LoginRequestDto;
 import com.spring.ribborn.dto.requestDto.UserRequestDto;
 import com.spring.ribborn.dto.requestDto.UserUpdateRequestDto;
+import com.spring.ribborn.dto.responseDto.MainPostDto;
+import com.spring.ribborn.dto.responseDto.UserInfoDto;
 import com.spring.ribborn.dto.responseDto.UserResponseDto;
 import com.spring.ribborn.dto.responseDto.UserTokenResponseDto;
+import com.spring.ribborn.model.Post;
 import com.spring.ribborn.model.User;
+import com.spring.ribborn.repository.PostDetailRepository;
 import com.spring.ribborn.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -22,6 +29,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final BCryptPasswordEncoder encoder;
+    private final PostDetailRepository postDetailRepository;
 
     //회원 가입 처리
     public void registerUser(UserRequestDto userRequestDto) {
@@ -84,11 +92,46 @@ public class UserService {
     }
 
     // 유저 상세 정보 , 마이 페이지
-    public UserResponseDto userInfo(Long id) {
+    public UserResponseDto userInfo(Pageable pageable, Long id, String postCate) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new NullPointerException("해당 아이디가 존재하지 않습니다.")
         );
-        return new UserResponseDto(user);
+        UserResponseDto userResponseDto = new UserResponseDto();
+        UserInfoDto userInfoDto = new UserInfoDto(user);
+        userResponseDto.setUsers(userInfoDto);
+
+        if(postCate.equals("all")){
+            List<Post> qna1 = postDetailRepository.findMyPost(pageable, "qna", id);
+            List<Post> review1 = postDetailRepository.findMyPost(pageable, "review", id);
+            List<Post> lookbook1 = postDetailRepository.findMyPost(pageable, "lookbook", id);
+            List<Post> reform1 = postDetailRepository.findMyPost(pageable, "reform", id);
+
+            List<MainPostDto> qna = qna1.stream()
+                    .map(MainPostDto::new)
+                    .collect(Collectors.toList());
+            List<MainPostDto> review = review1.stream()
+                    .map(MainPostDto::new)
+                    .collect(Collectors.toList());
+            List<MainPostDto> lookbook = lookbook1.stream()
+                    .map(MainPostDto::new)
+                    .collect(Collectors.toList());
+            List<MainPostDto> reform = reform1.stream()
+                    .map(MainPostDto::new)
+                    .collect(Collectors.toList());
+
+            userResponseDto.setQnaList(qna);
+            userResponseDto.setReviewList(review);
+            userResponseDto.setLookbookList(lookbook);
+            userResponseDto.setReformList(reform);
+        }else{
+            List<Post> posts = postDetailRepository.findMyPost(pageable, postCate, id);
+            List<MainPostDto> post = posts.stream()
+                    .map(MainPostDto::new)
+                    .collect(Collectors.toList());
+            userResponseDto.setPosts(post);
+        }
+
+        return userResponseDto;
     }
 
 //    // 마이페이지

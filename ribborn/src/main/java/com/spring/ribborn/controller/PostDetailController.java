@@ -1,8 +1,10 @@
 package com.spring.ribborn.controller;
 
+import com.spring.ribborn.dto.requestDto.PostChangeRequestDto;
 import com.spring.ribborn.dto.responseDto.*;
 import com.spring.ribborn.exception.ApiResponseMessage;
 import com.spring.ribborn.security.UserDetailsImpl;
+import com.spring.ribborn.service.AwsS3Service;
 import com.spring.ribborn.service.PostDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -12,11 +14,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class PostDetailController {
     private final PostDetailService postDetailService;
+    private final AwsS3Service awsS3Service;
 
     //질문게시판, 후기게시판 상세조회
     @GetMapping(value = {"/api/qnaPosts/{postId}", "/api/reviewPosts/{postId}"})
@@ -43,6 +49,20 @@ public class PostDetailController {
         introductionDto.setIntroduction(userDetails.getIntroduction());
         return introductionDto;
     }
+
+    //게시글 수정
+    @PutMapping("/api/qnaPosts/{postId}")
+    public ResponseEntity<ApiResponseMessage> postChange(@PathVariable("postId") Long postId,
+                                                         @RequestPart(value = "file", required = false) List<MultipartFile> fileList,
+                                                         @RequestPart(value = "key") PostChangeRequestDto postChangeRequestDto){
+
+        List<String> strings = awsS3Service.uploadFile(fileList);
+        postChangeRequestDto.setFileUrl(strings);
+        postDetailService.postDetailChange(postId,postChangeRequestDto);
+        ApiResponseMessage message = new ApiResponseMessage("Success", "게시글이 수정 되었습니다.", "", "");
+        return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
+    }
+
     //게시글 삭제
     @DeleteMapping("/api/post/{postId}")
     public ResponseEntity<ApiResponseMessage> postDelete(@PathVariable("postId") Long postId){
