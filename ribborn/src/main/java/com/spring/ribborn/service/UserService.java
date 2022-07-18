@@ -153,8 +153,38 @@ public class UserService {
         if(encoder.matches(userUpdateRequestDto.getCurrentPassword() , user.getPassword() )) {
             String password = userUpdateRequestDto.getNewPassword();
             //비밀번호 다시 암호화
-            userUpdateRequestDto.setNewPassword(passwordEncoder.encode(password));
-            user.update(userUpdateRequestDto);
+            if(password != null){
+                userUpdateRequestDto.setNewPassword(passwordEncoder.encode(password));
+            }
+
+            if(userUpdateRequestDto.getNickname() != null){
+                user.setNickname(userUpdateRequestDto.getNickname());
+            }
+            if(userUpdateRequestDto.getNewPassword() != null){
+                user.setPassword(userUpdateRequestDto.getNewPassword());
+            }
+
+            if(userUpdateRequestDto.getCompanyNum() != null){
+                user.setCompanyNum(userUpdateRequestDto.getCompanyNum());
+            }
+
+            if(userUpdateRequestDto.getPhoneNum() != null){
+                user.setPhoneNum(userUpdateRequestDto.getPhoneNum());
+            }
+
+            if(userUpdateRequestDto.getAddressCategory() != null){
+                user.setAddressCategory(userUpdateRequestDto.getAddressCategory());
+            }
+
+            if(userUpdateRequestDto.getAddressDetail() != null){
+                user.setAddressDetail(userUpdateRequestDto.getAddressDetail());
+            }
+
+            if(userUpdateRequestDto.getIntroduction() != null){
+                user.setIntroduction(userUpdateRequestDto.getIntroduction());
+            }
+
+
         }else{
             throw new IllegalArgumentException("기존 비밀번호가 틀렸습니다");
         }
