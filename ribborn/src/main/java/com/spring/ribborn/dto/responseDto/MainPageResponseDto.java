@@ -19,9 +19,9 @@ public class MainPageResponseDto {
     private Long co2Reduce = 1235L;
     private List<MainPostDto> reviewList;
     private List<LookBookPostDto> lookbookList;
-    private List<MainPostDto> reformList;
+    private List<ReformPostDto> reformList;
 
-    public MainPageResponseDto(List<MainPostDto> reviewList, List<LookBookPostDto> lookbookList, List<MainPostDto> reformList) {
+    public MainPageResponseDto(List<MainPostDto> reviewList, List<LookBookPostDto> lookbookList, List<ReformPostDto> reformList) {
         this.reviewList = reviewList;
         this.lookbookList = lookbookList;
         this.reformList = reformList;

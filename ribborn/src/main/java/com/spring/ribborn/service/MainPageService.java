@@ -3,6 +3,7 @@ package com.spring.ribborn.service;
 import com.spring.ribborn.dto.responseDto.LookBookPostDto;
 import com.spring.ribborn.dto.responseDto.MainPageResponseDto;
 import com.spring.ribborn.dto.responseDto.MainPostDto;
+import com.spring.ribborn.dto.responseDto.ReformPostDto;
 import com.spring.ribborn.model.Post;
 import com.spring.ribborn.repository.PostDetailRepository;
 import com.spring.ribborn.repository.PostRepository;
@@ -32,8 +33,8 @@ public class MainPageService {
         List<LookBookPostDto> lookbook = lookbook1.stream()
                 .map(LookBookPostDto::new)
                 .collect(Collectors.toList());
-        List<MainPostDto> reform = reform1.stream()
-                .map(MainPostDto::new)
+        List<ReformPostDto> reform = reform1.stream()
+                .map(ReformPostDto::new)
                 .collect(Collectors.toList());
 
         return new MainPageResponseDto(review,lookbook,reform);
