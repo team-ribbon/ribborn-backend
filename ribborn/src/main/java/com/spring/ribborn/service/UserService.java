@@ -7,6 +7,7 @@ import com.spring.ribborn.dto.responseDto.MainPostDto;
 import com.spring.ribborn.dto.responseDto.UserInfoDto;
 import com.spring.ribborn.dto.responseDto.UserResponseDto;
 import com.spring.ribborn.dto.responseDto.UserTokenResponseDto;
+import com.spring.ribborn.jwt.JwtTokenProvider;
 import com.spring.ribborn.model.Post;
 import com.spring.ribborn.model.User;
 import com.spring.ribborn.repository.PostDetailRepository;
@@ -30,6 +31,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final BCryptPasswordEncoder encoder;
     private final PostDetailRepository postDetailRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     //회원 가입 처리
     public void registerUser(UserRequestDto userRequestDto) {
@@ -61,17 +63,22 @@ public class UserService {
     }
 
     // 로그인
-    public Boolean login(LoginRequestDto loginRequestDto) {
-        User user = userRepository.findByUsername(loginRequestDto.getUsername())
-                .orElse(null);
-        if (user != null) {
-            if (!passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
-                return false;
-            }
+    public String login(LoginRequestDto loginRequestDto) {
+//        User user = userRepository.findByUsername(loginRequestDto.getUsername()).orElseThrow(
+//                () -> new NullPointerException("해당 아이디가 존재하지 않습니다.");
+        User user = userRepository.findByUsername(loginRequestDto.getUsername()).orElseThrow(
+                () -> new NullPointerException("해당 아이디가 존재하지 않습니다.")
+        );
+        System.out.println("user = " + user);
+//        if (user != null) {
+            if (passwordEncoder.matches(loginRequestDto.getPassword(), user.getPassword())) {
+                String token = jwtTokenProvider.createToken(user.getUsername() ,user.getNickname(), user.getId() );
+                return token;
+//            }
         } else {
-            return false;
+            throw new IllegalArgumentException("사용자가 존재하지 않습니다");
         }
-        return true;
+//        throw new IllegalArgumentException("오류!");
     }
 
     //아이디 중복 체크

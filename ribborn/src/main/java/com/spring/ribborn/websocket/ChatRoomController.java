@@ -2,7 +2,6 @@ package com.spring.ribborn.websocket;
 
 
 import com.spring.ribborn.dto.requestDto.UserRequestDto;
-//import com.spring.ribborn.websocket.chatDto.BannedUserDto;
 import com.spring.ribborn.dto.OkDto;
 import com.spring.ribborn.websocket.chatDto.MessageResponseDto;
 import com.spring.ribborn.websocket.chatDto.RoomResponseDto;
@@ -10,7 +9,6 @@ import com.spring.ribborn.security.UserDetailsImpl;
 import com.spring.ribborn.websocket.chat.ChatMessageService;
 import com.spring.ribborn.websocket.chat.ChatRoomService;
 import lombok.RequiredArgsConstructor;
-//import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -30,22 +28,25 @@ public class ChatRoomController {
     @PostMapping("/room")
     public Long createRoom(@AuthenticationPrincipal UserDetailsImpl userDetails,
                            @RequestBody UserRequestDto requestDto) {
+        
         Long acceptorId = requestDto.getUserid();
-        String testname = requestDto.getUsername();
-        String testnick = requestDto.getNickname();
-        String test1 = requestDto.getPhoneNum();
-
-        System.out.println("test1 = " + test1);
-        System.out.println("testnick = " + testnick);
-        System.out.println("testname = " + testname);
-
-
-        System.out.println("acceptorId = " + acceptorId);
         Long userid = userDetails.getUserId();
+        System.out.println("------ 주는 쪽 userid = " + userid);
+        System.out.println("------받는쪽  acceptorId = " + acceptorId);
+
+//
+//        String testname = requestDto.getUsername();
+//        System.out.println("------test1 = " + testname);
+//
+//        String testnick = requestDto.getNickname();
+//        System.out.println("-------testnick = " + testnick);
+//
+//        String test1 = requestDto.getPhoneNum();
+//        System.out.println("------testname = " + test1);
+
+
         return roomService.createRoom(userid, acceptorId);
     }
-
-
 
     // 채팅방 만들기
 
@@ -70,7 +71,10 @@ public class ChatRoomController {
     @GetMapping("/rooms")
     public List<RoomResponseDto> getRooms(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         Long userId = userDetails.getUserId();
-        return roomService.getRooms(userId);
+        String nickname = userDetails.getNickname();
+        System.out.println(" 전체 채팅방 목록 가져오기 userId = " + userId);
+        System.out.println(" 전체 채팅방 목록 가져오기 nickname = " + nickname);
+        return roomService.getRooms(userId , nickname);
     }
 
     // 개별 채팅방 메시지 불러오기
@@ -79,8 +83,10 @@ public class ChatRoomController {
                                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
 //                                               @PageableDefault(page = 1, size = 20) Pageable pageable) {
         Long userid = userDetails.getUserId();
-        System.out.println(userid);
-        return messageService.getMessage(roomId, userid);
+        String nickname = userDetails.getNickname();
+        System.out.println("개별 채팅방 메시지 가져오기 " + userid);
+        System.out.println("개별 채팅방 메시지 가져오기 닉닉닉닉닉닉닉닉닉닉닉닉닉닉닉닉닉닉닉 " + nickname);
+        return messageService.getMessage(roomId, userid, nickname);
     }
 
     // 채팅방 나가기

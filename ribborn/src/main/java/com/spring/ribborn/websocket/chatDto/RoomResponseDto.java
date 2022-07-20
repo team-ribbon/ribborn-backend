@@ -17,6 +17,7 @@ public class RoomResponseDto {
     private Long userId;
     private String nickname;
 //    private String profile;
+    private String senderName;
     private String message;
     private LocalDateTime date;
     private Boolean isRead;
@@ -28,11 +29,13 @@ public class RoomResponseDto {
         RoomResponseDto responseDto = new RoomResponseDto();
 
         responseDto.roomId = dto.getRoomId();
+        responseDto.nickname = dto.getAccNickname();
         responseDto.message = dto.getMessage();
         responseDto.date = dto.getDate();
         responseDto.isRead = dto.getIsRead();
         responseDto.isBanned = isBanned;
         responseDto.unreadCnt = unreadCnt;
+        responseDto.senderName = dto.getAccNickname();
 
         switch ( flag ) {
 

@@ -47,12 +47,17 @@ public class UserController {
     // 로그인
     @PostMapping("/api/users/login")
     public ResponseEntity<String> login(final HttpServletResponse response, @RequestBody LoginRequestDto loginRequestDto) {
-        if (userService.login(loginRequestDto)) {
-            String token = jwtTokenProvider.createToken(loginRequestDto.getUsername());
-            return new ResponseEntity<>(token, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("로그인 실패 : username 또는 password 를 확인해주세요.", HttpStatus.BAD_REQUEST);
-        }
+        String login = userService.login(loginRequestDto);
+        System.out.println("###################################### login = " + login);
+        return new ResponseEntity<>(login ,HttpStatus.OK);
+
+
+        //        if (userService.login(loginRequestDto)) {
+////            String token = jwtTokenProvider.createToken(loginRequestDto.getUsername() ,loginRequestDto.getNickname(), loginRequestDto.getId() );
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>("로그인 실패 : username 또는 password 를 확인해주세요.", HttpStatus.BAD_REQUEST);
+//        }
     }
 
     // 유저 정보 조회(토큰)

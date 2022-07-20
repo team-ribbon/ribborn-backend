@@ -11,7 +11,9 @@ import java.util.List;
 
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
 
-    List<ChatMessage> findAllByRoomIdOrderByIdDesc(Long roomId);
+//    List<ChatMessage> findAllByRoomIdOrderByIdDesc(Long roomId);
+//    List<ChatMessage> findAllByRoomIdOrderByAsc(Long roomId);
+    List<ChatMessage> findAllByRoomIdOrderByIdAsc(Long roomId);
 
     // 메시지 안읽은 갯수 카운트 쿼리
     @Query("SELECT count(msg) FROM ChatMessage msg WHERE msg.senderId =:userId AND msg.roomId =:roomId AND msg.isRead = false")
@@ -22,5 +24,6 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
     @Transactional
     @Query("UPDATE ChatMessage msg SET msg.isRead = true WHERE msg.roomId = :roomId AND msg.senderId <> :userId AND msg.isRead = false")
     void updateChatMessage(Long roomId, Long userId);
+
 
 }

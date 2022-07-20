@@ -1,15 +1,25 @@
 package com.spring.ribborn.security;
 
+import com.spring.ribborn.dto.requestDto.UserRequestDto;
 import com.spring.ribborn.model.User;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
 
+@NoArgsConstructor
+@Getter
 public class UserDetailsImpl implements UserDetails {
 
-    private final User user;
+    private User user;
+
+    private Long userId;
+    private String nickname;
+
 
     public UserDetailsImpl(User user) {
         this.user = user;
@@ -25,7 +35,7 @@ public class UserDetailsImpl implements UserDetails {
     public String getNickname() {
         return user.getNickname();
     }
-    
+
     public Long getUserId() {
         return user.getId();
     }
@@ -65,5 +75,38 @@ public class UserDetailsImpl implements UserDetails {
         return Collections.emptyList();
     }
 
+
+    // UserRequestDto로부터 UserDetailsImpl 생성
+    public static UserDetailsImpl fromUserRequestDto(UserRequestDto requestDto){
+
+        UserDetailsImpl userDetails = new UserDetailsImpl();
+
+        userDetails.userId = requestDto.getUserid();
+        userDetails.nickname = requestDto.getNickname();
+
+        return userDetails;
+    }
+
+    // User로부터 UserDetailsImpl 생성
+    public static UserDetailsImpl fromUser(User user){
+
+        UserDetailsImpl userDetails = new UserDetailsImpl();
+
+        userDetails.userId = user.getId();
+        userDetails.nickname = user.getNickname();
+
+        return userDetails;
+    }
+
+    // 비어있는 UserDetailsImpl 생성
+    public static UserDetailsImpl createEmpty(){
+
+        UserDetailsImpl userDetails = new UserDetailsImpl();
+
+        userDetails.userId = null;
+        userDetails.nickname = null;
+
+        return userDetails;
+    }
 
 }

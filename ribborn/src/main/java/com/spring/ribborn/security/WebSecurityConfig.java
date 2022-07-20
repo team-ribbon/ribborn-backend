@@ -19,9 +19,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 @Configuration
 @EnableWebSecurity // 스프링 Security 지원을 가능하게 함
@@ -30,7 +27,6 @@ import java.util.List;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
-//    private final HeaderTokenExtractor headerTokenExtractor;
 
     @Bean   // 비밀번호 암호화
     public BCryptPasswordEncoder encodePassword() {
@@ -57,10 +53,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         // 시큐리티에 cors를 맞춘다
         http.cors();
-//        // 만든 것으로는 작동하지 않는다. Filter를 등록해야지 사용이 가능하다.
-//        http
-//                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
-
         http.headers().frameOptions().disable();
         http.authorizeRequests()
                 // api 요청 접근허용
@@ -71,9 +63,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers("/api/**").permitAll()
                 .antMatchers("/pub/**").permitAll()
+                .antMatchers("/sub/**").permitAll()
 
                 .antMatchers(HttpMethod.POST,"/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/**").permitAll()
+
+                .antMatchers(HttpMethod.POST,"/api/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/**").permitAll()
 
                 .antMatchers(HttpMethod.POST,"/chat/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/chat/**").permitAll()
@@ -86,6 +82,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .antMatchers(HttpMethod.POST,"/pub/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/pub/**").permitAll()
+
+                .antMatchers(HttpMethod.POST,"/sub/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/sub/**").permitAll()
 
                 .antMatchers(HttpMethod.GET,"/ws-stomp/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/ws-stomp/**").permitAll()
@@ -106,6 +105,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     CorsConfiguration configuration = new CorsConfiguration();
 
                     configuration.addAllowedOrigin("http://13.125.117.133:8888");
+                    configuration.addAllowedOrigin("http://13.125.117.133:6379");
                     configuration.addAllowedOrigin("http://localhost:3000");
                     configuration.addAllowedHeader("*");
                     configuration.addAllowedMethod("*");
@@ -116,40 +116,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     source.registerCorsConfiguration("/**", configuration);
                     return source;
                 }
-
-//                private JwtAuthFilter jwtFilter() throws Exception {
-//                    List<String> skipPathList = new ArrayList<>();
-//                    //소켓통신을 위한 허용
-//                    skipPathList.add("GET,/ws-stomp/**");
-//                    skipPathList.add("POST,/ws-stomp/**");
-//
-//                    skipPathList.add("GET,/pub/**");
-//                    skipPathList.add("GET,/sub/**");
-//
-//                    skipPathList.add("GET,/chat/**");
-//                    skipPathList.add("POST,/chat/**");
-//
-//                    skipPathList.add("GET,/chat/room/**");
-//                    skipPathList.add("POST,/chat/room/**");
-//
-//                    skipPathList.add("GET,/room/**");
-//                    skipPathList.add("POST,/room/**");
-//
-//                    skipPathList.add("GET,/api/**");
-//                    skipPathList.add("GET,/**");
-//
-//                    FilterSkipMatcher matcher = new FilterSkipMatcher(
-//                            skipPathList,
-//                            "/**"
-//                    );
-//                    JwtAuthFilter filter = new JwtAuthFilter (
-//                            matcher,
-//                            headerTokenExtractor
-//                    );
-//                    filter.setAuthenticationManager(super.authenticationManagerBean());
-//                    return filter;
-//                }
-//
 
 
 

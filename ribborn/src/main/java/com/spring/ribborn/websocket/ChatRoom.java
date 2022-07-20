@@ -20,7 +20,6 @@ public class ChatRoom extends TimeStamp {
     @Column(name = "room_id", nullable = false)
     private Long id;
 
-    // PK만 넣지 말고 관련 정보들이 같이 넣어 두는 게 어떨까요?
     @ManyToOne
     @JoinColumn(nullable = false)
     private User requester;
