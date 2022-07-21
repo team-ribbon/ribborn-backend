@@ -22,7 +22,4 @@ public class MainPageController {
     public MainPageResponseDto getLookList() {
         return mainPageService.getPostList();
     }
-
-
-
 }

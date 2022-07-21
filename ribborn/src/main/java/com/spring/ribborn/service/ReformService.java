@@ -46,11 +46,16 @@ public class ReformService {
         List<ReformResponseDto.Reform> ReformList = new ArrayList<>();
 
         for (Post post : posts) {
-            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
+            /**
+             * 반복문을 돌면서 쿼리가 지속 발생하는 문제 해결
+             * 어차피 image와 content는 0번만 필요하기 때문에, 프록시 상태의 Contents를 get 하면서 쿼리를 발생시킨 후,
+             * 이후 영속성 컨텍스트에 올라가 있는 Contents를 이용한다.
+             */
+            /*Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());*/
             ReformResponseDto.Reform mainDto = ReformResponseDto.Reform.builder()
                     .id(post.getId())
-                    .image(viewImage.getImage())
-                    .content(viewImage.getContent())
+                    .image(post.getContents().get(0).getImage())
+                    .content(post.getContents().get(0).getContent())
                     .process(post.getProcess())
                     .nickname(post.getUser().getNickname())
                     .title(post.getTitle())

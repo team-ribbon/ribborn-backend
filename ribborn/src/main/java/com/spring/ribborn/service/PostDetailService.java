@@ -17,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -36,7 +35,6 @@ public class PostDetailService {
     public PostDetailResponseMsg postDetailView(Long postId, Pageable pageable, UserDetailsImpl userDetails) {
 
         PostDetailResponseDto postDetail = postDetailRepository.findPostDetail(postId);
-
         List<ContentsQueryDto> contents = postDetailRepository.findContents(postId);
         Page<CommentResponseDto> commentResponseDtos = commentService.commendFind(postId, pageable);
 
@@ -50,7 +48,6 @@ public class PostDetailService {
             }
         }
 
-
         PostDetailResponseMsg msg = new PostDetailResponseMsg();
 
         postDetail.contentSetting(contents);
@@ -61,72 +58,6 @@ public class PostDetailService {
         msg.setComment(commentResponseDtos.getContent());
         msg.setPost(postDetail);
         return msg;
-    }
-
-    //리폼 게시글 수정
-    @Transactional
-    public void reformDetailChange(Long postId, ReformChangeRequestDto reformChangeRequestDto) {
-        Post post = postRepository.findById(postId).orElse(null);
-        int a =0;
-        int before = post.getContents().size()-1;
-
-        for(int i = 0; i < reformChangeRequestDto.getImageUrl().size(); i++){
-            Contents content;
-            if(i > before){
-                content = new Contents();
-            }else{
-                content = post.getContents().get(i);
-                String[] split = content.getImage().split("com/");
-                awsS3Service.deleteFile(split[1]);
-            }
-
-            if(reformChangeRequestDto.getImageUrl().get(i).isEmpty()){
-                content.setImage(reformChangeRequestDto.getFileUrl().get(a));
-                content.setContent(reformChangeRequestDto.getContent());
-                a += 1;
-            }else{
-                content.setImage(reformChangeRequestDto.getImageUrl().get(i));
-                content.setContent(reformChangeRequestDto.getContent());
-            }
-            post.settingContents(content);
-        }
-
-        post.setTitle(reformChangeRequestDto.getTitle());
-        post.setCategory(reformChangeRequestDto.getCategory());
-        post.setRegion(reformChangeRequestDto.getRegion());
-    }
-
-    //나머지 게시글 수정
-    @Transactional
-    public void postDetailChange(Long postId, PostChangeRequestDto postChangeRequestDto){
-        Post post = postRepository.findById(postId).orElse(null);
-        int a =0;
-        int before = post.getContents().size()-1;
-
-        for(int i = 0; i < postChangeRequestDto.getImageUrl().size(); i++){
-            Contents content;
-            if(i > before){
-                content = new Contents();
-            }else{
-                content = post.getContents().get(i);
-                String[] split = content.getImage().split("com/");
-                awsS3Service.deleteFile(split[1]);
-            }
-
-            if(postChangeRequestDto.getImageUrl().get(i).isEmpty()){
-                content.setImage(postChangeRequestDto.getFileUrl().get(a));
-                content.setContent(postChangeRequestDto.getContent());
-                a += 1;
-            }else{
-                content.setImage(postChangeRequestDto.getImageUrl().get(i));
-                content.setContent(postChangeRequestDto.getContent());
-            }
-            post.settingContents(content);
-        }
-
-        post.setTitle(postChangeRequestDto.getTitle());
-        post.setCategory(postChangeRequestDto.getCategory());
-
     }
 
     //리폼 상세페이지 조회 서비스
@@ -154,7 +85,61 @@ public class PostDetailService {
 
         return postDetail;
     }
+    //리폼 게시글 수정
+    @Transactional
+    public void reformDetailChange(Long postId, ReformChangeRequestDto reformChangeRequestDto) {
+        Post post = postRepository.findById(postId).orElse(null);
+        int a =0;
+        int before = post.getContents().size()-1;
 
+        for(int i = 0; i < reformChangeRequestDto.getImageUrl().size(); i++){
+            Contents content;
+            if(i > before){
+                content = Contents.emptyContent();
+            }else{
+                content = post.getContents().get(i);
+                String[] split = content.getImage().split("com/");
+                awsS3Service.deleteFile(split[1]);
+            }
+
+            if(reformChangeRequestDto.getImageUrl().get(i).isEmpty()){
+                content.contentsChange(reformChangeRequestDto.getFileUrl().get(a), reformChangeRequestDto.getContent());
+                a += 1;
+            }else{
+                content.contentsChange(reformChangeRequestDto.getImageUrl().get(i), reformChangeRequestDto.getContent());
+            }
+            post.settingContents(content);
+        }
+        post.reformPostChange(reformChangeRequestDto.getTitle(), reformChangeRequestDto.getCategory(), reformChangeRequestDto.getRegion());
+    }
+
+    //나머지 게시글 수정
+    @Transactional
+    public void postDetailChange(Long postId, PostChangeRequestDto postChangeRequestDto){
+        Post post = postRepository.findById(postId).orElse(null);
+        int a =0;
+        int before = post.getContents().size()-1;
+
+        for(int i = 0; i < postChangeRequestDto.getImageUrl().size(); i++){
+            Contents content;
+            if(i > before){
+                content = Contents.emptyContent();
+            }else{
+                content = post.getContents().get(i);
+                String[] split = content.getImage().split("com/");
+                awsS3Service.deleteFile(split[1]);
+            }
+
+            if(postChangeRequestDto.getImageUrl().get(i).isEmpty()){
+                content.contentsChange(postChangeRequestDto.getFileUrl().get(a), postChangeRequestDto.getContent());
+                a += 1;
+            }else{
+                content.contentsChange(postChangeRequestDto.getImageUrl().get(i), postChangeRequestDto.getContent());
+            }
+            post.settingContents(content);
+        }
+        post.normalPostChange(postChangeRequestDto.getTitle(), postChangeRequestDto.getCategory());
+    }
     //게시글 삭제
     @Transactional
     public void deletePost(Long postId) {

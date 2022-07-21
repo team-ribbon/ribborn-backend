@@ -8,7 +8,6 @@ import com.spring.ribborn.model.Post;
 import com.spring.ribborn.model.User;
 import com.spring.ribborn.repository.ContentsRepository;
 import com.spring.ribborn.repository.PostRepository;
-import com.spring.ribborn.repository.PostWriteRepository;
 import com.spring.ribborn.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +23,6 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PostWriteService {
-    private final PostWriteRepository postWriteRepository;
     private final UserRepository userRepository;
     private final PostRepository postRepository;
     private final ContentsRepository contentsRepository;
@@ -33,14 +31,43 @@ public class PostWriteService {
     @Transactional
     public void postWrite(PostWriteRequestDto postWriteRequestDto) {
         User user = userRepository.findByUsername(postWriteRequestDto.getUsername()).orElse(null);
-        postWriteRepository.postWrite(postWriteRequestDto,user);
+        Post post = Post.createNormalPost(
+                user,
+                postWriteRequestDto.getRegion(),
+                postWriteRequestDto.getProcess(),
+                postWriteRequestDto.getPostCategory(),
+                postWriteRequestDto.getTitle(),
+                postWriteRequestDto.getCategory()
+        );
+
+        if(postWriteRequestDto.getImages().isEmpty()){
+            Contents contents = Contents.noImageContent(postWriteRequestDto.getContent());
+            post.settingContents(contents);
+        }else{
+            for(String image : postWriteRequestDto.getImages()){
+                Contents contents = Contents.imageAndContent(image,postWriteRequestDto.getContent());
+                post.settingContents(contents);
+            }
+        }
+
     }
 
     //룩북 작성
     @Transactional
     public void lookBookPostWrite(LookBookPostWriteDto lookBookPostWriteDto) {
         User user = userRepository.findByUsername(lookBookPostWriteDto.getUsername()).orElse(null);
-        postWriteRepository.lookBookPostWrite(lookBookPostWriteDto,user);
+        user.settingIntroduction(lookBookPostWriteDto.getIntroduction());
+        Post post = Post.createLookBookPost(
+                user,
+                lookBookPostWriteDto.getPostCategory(),
+                lookBookPostWriteDto.getCategory(),
+                lookBookPostWriteDto.getIntroduction()
+        );
+        for(int i = 0; i < lookBookPostWriteDto.getImages().size(); i++){
+            Contents contents = Contents.imageAndContent(lookBookPostWriteDto.getImages().get(i), lookBookPostWriteDto.getContent());
+            post.settingContents(contents);
+        }
+        postRepository.save(post);
     }
 
 //---------------------------------------------------------------------------------------------------------------
@@ -51,7 +78,6 @@ public class PostWriteService {
 //        return postRepository.findAll(pageable);
 //    }
 
-    @Transactional
     public ResponseEntity<PostWriteResponseDto.WritePost> getQna(Pageable pageable, String category) {
         List<Post> posts;
         if(category.equals("all")){
@@ -60,15 +86,19 @@ public class PostWriteService {
             posts = postRepository.findAllByPostCateAndCategory("qna",pageable,category);
         }
 
-
         List<PostWriteResponseDto.WritePost> qnaList = new ArrayList<>();
 
         for (Post post : posts) {
-            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
+            /**
+             * 반복문을 돌면서 쿼리가 지속 발생하는 문제 해결
+             * 어차피 image와 content는 0번만 필요하기 때문에, 프록시 상태의 Contents를 get 하면서 쿼리를 발생시킨 후,
+             * 이후 영속성 컨텍스트에 올라가 있는 Contents를 이용한다.
+             */
+            /*Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());*/
             PostWriteResponseDto.WritePost mainDto = PostWriteResponseDto.WritePost.builder()
                     .id(post.getId())
-                    .image(viewImage.getImage())
-                    .content(viewImage.getContent())
+                    .image(post.getContents().get(0).getImage())
+                    .content(post.getContents().get(0).getContent())
                     .likeCount(post.getLikeCount())
                     .commentCount(post.getCommentCount())
                     .nickname(post.getUser().getNickname())
@@ -89,16 +119,19 @@ public class PostWriteService {
         }else{
             posts = postRepository.findAllByPostCateAndCategory("review", pageable,category);
         }
-
-
         List<PostWriteResponseDto.WritePost> reviewList = new ArrayList<>();
 
         for (Post post : posts) {
-            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
+            /**
+             * 반복문을 돌면서 쿼리가 지속 발생하는 문제 해결
+             * 어차피 image와 content는 0번만 필요하기 때문에, 프록시 상태의 Contents를 get 하면서 쿼리를 발생시킨 후,
+             * 이후 영속성 컨텍스트에 올라가 있는 Contents를 이용한다.
+             */
+            /*Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());*/
             PostWriteResponseDto.WritePost mainDto = PostWriteResponseDto.WritePost.builder()
                     .id(post.getId())
-                    .image(viewImage.getImage())
-                    .content(viewImage.getContent())
+                    .image(post.getContents().get(0).getImage())
+                    .content(post.getContents().get(0).getContent())
                     .likeCount(post.getLikeCount())
                     .commentCount(post.getCommentCount())
                     .nickname(post.getUser().getNickname())

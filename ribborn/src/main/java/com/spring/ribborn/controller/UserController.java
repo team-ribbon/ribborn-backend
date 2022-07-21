@@ -36,13 +36,13 @@ public class UserController {
     }
 
     // 아이디 중복체크
-    @PostMapping("/api/users/register/idCheck")
+ /*   @PostMapping("/api/users/register/idCheck")
     public ResponseEntity<ApiResponseMessage> idCheck(@RequestBody LoginRequestDto userRequestDto){
         userService.useridCheck(userRequestDto);
 
         ApiResponseMessage message = new ApiResponseMessage("Success", "사용가능한 아이디입니다", "", "");
         return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
-    }
+    }*/
 
     // 로그인
     @PostMapping("/api/users/login")
@@ -69,18 +69,16 @@ public class UserController {
     // 유저 상세페이지
     @GetMapping("/api/users/userinfo/{id}")
     public UserResponseDto userinfo(@PathVariable("id") Long id,
-                                    @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                     @RequestParam(name = "postCategory") String postCategory){
-        return userService.userInfo(pageable,id,postCategory);
+        return userService.userInfo(id,postCategory);
     }
 
     // 마이페이지
     @GetMapping("/api/users/mypage")
     public UserResponseDto userinfo(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                    @PageableDefault(size = 3, sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                                     @RequestParam(name = "postCategory") String postCategory){
 
-        return userService.userInfo(pageable,userDetails.getUserId(),postCategory);
+        return userService.userInfo(userDetails.getUserId(),postCategory);
     }
 
     // 유저 정보 수정

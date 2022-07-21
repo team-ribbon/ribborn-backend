@@ -21,13 +21,12 @@ public class LoveService {
         Post post = postRepository.findById(postId).orElse(null);
         if(loveRequestDto.isLove()){
             //좋아요 저장
-
-            post.setLikeCount(post.getLikeCount()+1);
+            post.likeCountUp();
             Love love = Love.makeLove(userDetails.getUser(),post);
             loveRepository.makeLove(love);
         }else{
             //좋아요 삭제
-            post.setLikeCount(post.getLikeCount()-1);
+            post.likeCountDown();
             loveRepository.deleteLove(userDetails.getUserId(),postId);
         }
     }

@@ -27,7 +27,7 @@ public class CommentService {
     @Transactional
     public void commentWrite(Long postId, CommentWriteRequestDto commentWriteRequestDto, UserDetailsImpl userDetails) {
         Post post = postRepository.findById(postId).orElse(null);
-        post.setCommentCount(post.getCommentCount()+1);
+        post.commentCountUp();
         Comment comment = Comment.createComment(post,commentWriteRequestDto,userDetails.getUser());
         commentRepository.save(comment);
     }
@@ -49,7 +49,7 @@ public class CommentService {
     @Transactional
     public void commentDelete(Long commentId,Long postId) {
         Post post = postRepository.findById(postId).orElse(null);
-        post.setCommentCount(post.getCommentCount()-1);
+        post.commentCountDown();
         commentRepository.deleteById(commentId);
     }
 }
