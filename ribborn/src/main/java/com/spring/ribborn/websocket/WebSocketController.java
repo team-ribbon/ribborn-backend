@@ -32,7 +32,7 @@ import java.util.Map;
 public class WebSocketController {
 
     private final ChatMessageService messageService;
-    private final NotificationRepository notificationRepository;
+//    private final NotificationRepository notificationRepository;
     private final SimpMessageSendingOperations messagingTemplate;
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -82,20 +82,20 @@ public class WebSocketController {
 //    }
 
     // 알림 갯수 전달
-    @MessageMapping("/notification")
-    public void setNotification(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+//    @MessageMapping("/notification")
+//    public void setNotification(@AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
 
 //        String jwt = extractor.extract(token);
 //        Long userId = jwtDecoder.decodeTokenByUserId(jwt);
-        Long userId = userDetails.getUserId();
-        System.out.println(" 알림갯수 전달 userId = " + userId);
+//        Long userId = userDetails.getUserId();
+//        System.out.println(" 알림갯수 전달 userId = " + userId);
 
-        Map<String, Integer> map = new HashMap<>();
-        map.put("NotificationCnt", notificationRepository.
-                countNotificationByUserIdAndIsReadIsFalse(userId));
+//        Map<String, Integer> map = new HashMap<>();
+//        map.put("NotificationCnt", notificationRepository.
+//                countNotificationByUserIdAndIsReadIsFalse(userId));
 
-        messagingTemplate.convertAndSend("/sub/notification/" + userId, map);
-    }
+//        messagingTemplate.convertAndSend("/sub/notification/" + userId, map);
+//    }
 
 
     // 해당 어노테이션을 통해 웹소켓으로 pub 되는 모든 메시지를 처리하게 됩니다. URI에 자동으로 접두어 /pub 이 붙습니다.
@@ -115,5 +115,31 @@ public class WebSocketController {
     }
 
 
+//    @MessageMapping("/chat/message")
+//    public void message(@RequestBody MessageRequestDto requestDto,
+//                        @AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
+//        System.out.println("여긴옴??????????????????????????????????????????????????");
+//
+//        System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@requestDto" + requestDto);
+////        String test = requestDto.getMessage();
+////        System.out.println("test = " + test);
+//
+//        System.out.println("userDetails = " + userDetails.getUser());
+//
+////        Long idck = userDetails.getUserId();
+//            Long idck1 = userDetails.getUser().getId();
+////        System.out.println("============================================================================== userDetails.getUserId() = " + idck);
+//            System.out.println("===================================================================userDetails.getUser().getId() = " + idck1);
+//
+//            Long userId = userDetails.getUserId();
+//            String username = userDetails.getUsername();
+//            String nickname = userDetails.getNickname();
+//            System.out.println("======================= 메시지 controller  userId = " + userId);
+//
+//        MessageResponseDto responseDto = messageService.saveMessage(requestDto, username ,  nickname); //DB에 저장
+//        messageService.sendMessage(requestDto, username, responseDto);// 메시지를 sub 주소로 발송해줌
+//
+////        redisTemplate.convertAndSend(channelTopic.getTopice(), message);
+//    }
 
 }

@@ -1,12 +1,12 @@
 package com.spring.ribborn.websocket.chat;
 
 
-import com.spring.ribborn.websocket.NotificationRepository;
-import com.spring.ribborn.websocket.chatDto.NotificationDto;
+//import com.spring.ribborn.websocket.NotificationRepository;
+//import com.spring.ribborn.websocket.chatDto.NotificationDto;
 import com.spring.ribborn.exception.CustomException;
 import com.spring.ribborn.websocket.ChatMessage;
 import com.spring.ribborn.websocket.ChatRoom;
-import com.spring.ribborn.websocket.Notification;
+//import com.spring.ribborn.websocket.Notification;
 import com.spring.ribborn.utils.LanguageFilter;
 import com.spring.ribborn.websocket.chatDto.*;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class ChatMessageService {
     private final LanguageFilter filter;
     private final ChatRoomRepository roomRepository;
     private final ChatMessageRepository messageRepository;
-    private final NotificationRepository notificationRepository;
+//    private final NotificationRepository notificationRepository;
     private final SimpMessageSendingOperations messagingTemplate;
 
     private Map<Long, Integer> roomUsers;
@@ -109,12 +109,12 @@ public class ChatMessageService {
 
     // 채팅 메시지 및 알림 저장하기
     @Transactional
-    public MessageResponseDto saveMessage(@RequestBody MessageRequestDto requestDto,
+    public MessageResponseDto saveMessage(MessageRequestDto requestDto,
 //                                          Long userId
                                           String username,
                                           String nickname
                                             ) {
-
+        System.out.println("requestDto.getRoomId() = " + requestDto.getRoomId());
         ChatRoom chatRoom = roomRepository.findByIdFetch(requestDto.getRoomId())
                 .orElseThrow(() -> new CustomException(NOT_FOUND_CHAT));
 
@@ -130,27 +130,27 @@ public class ChatMessageService {
 
 
 
-        if (chatRoom.getAccOut()) {
-//            // 채팅 알림 저장 및 전달하기
-            Notification notification = notificationRepository.save(Notification.createOf(chatRoom, chatRoom.getAcceptor()));
-            System.out.println("----------------------chatRoom.getAcceptor() = " + chatRoom.getAcceptor());
-            messagingTemplate.convertAndSend(
-                    "/sub/notification/" + chatRoom.getAcceptor().getId(), NotificationDto.createFrom(notification)
-            );
-            chatRoom.accOut(false);
-        }
-        if (chatRoom.getReqOut()) {
-//            // 채팅 알림 저장 및 전달하기
-            Notification notification = notificationRepository.save(Notification.createOf(chatRoom, chatRoom.getRequester())
-            );
-            System.out.println("----------------------2번째 chatRoom.getAcceptor() = " + chatRoom.getAcceptor());
-
-            messagingTemplate.convertAndSend(
-                    "/sub/notification/" + chatRoom.getRequester().getId(), NotificationDto.createFrom(notification)
-            );
-            System.out.println("------------------------3번째 getRequester().getId() = " + chatRoom.getRequester().getId());
-            chatRoom.reqOut(false);
-        }
+//        if (chatRoom.getAccOut()) {
+////            // 채팅 알림 저장 및 전달하기
+//            Notification notification = notificationRepository.save(Notification.createOf(chatRoom, chatRoom.getAcceptor()));
+//            System.out.println("----------------------chatRoom.getAcceptor() = " + chatRoom.getAcceptor());
+//            messagingTemplate.convertAndSend(
+//                    "/sub/notification/" + chatRoom.getAcceptor().getId(), NotificationDto.createFrom(notification)
+//            );
+//            chatRoom.accOut(false);
+//        }
+//        if (chatRoom.getReqOut()) {
+////            // 채팅 알림 저장 및 전달하기
+//            Notification notification = notificationRepository.save(Notification.createOf(chatRoom, chatRoom.getRequester())
+//            );
+//            System.out.println("----------------------2번째 chatRoom.getAcceptor() = " + chatRoom.getAcceptor());
+//
+//            messagingTemplate.convertAndSend(
+//                    "/sub/notification/" + chatRoom.getRequester().getId(), NotificationDto.createFrom(notification)
+//            );
+//            System.out.println("------------------------3번째 getRequester().getId() = " + chatRoom.getRequester().getId());
+//            chatRoom.reqOut(false);
+//        }
         System.out.println("-------------------userId = " + username + "-------------------------");
         return MessageResponseDto.createOf(message, username , nickname);
     }

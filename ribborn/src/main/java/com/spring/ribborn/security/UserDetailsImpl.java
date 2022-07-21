@@ -29,6 +29,7 @@ public class UserDetailsImpl implements UserDetails {
         return user;
     }
 
+
     public String getIntroduction(){
         return user.getIntroduction();
     }
