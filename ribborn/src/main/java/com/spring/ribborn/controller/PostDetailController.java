@@ -64,6 +64,7 @@ public class PostDetailController {
         return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
     }
 
+    //리폼 게시글 수정
     @PutMapping("/api/reformPosts/{postId}")
     public ResponseEntity<ApiResponseMessage> reformPostChange(@PathVariable("postId") Long postId,
                                                                @RequestPart(value = "file", required = false) List<MultipartFile> fileList,
