@@ -49,12 +49,13 @@ public class PostDetailRepository {
                 .getResultList();
     }
 
-    public List<Post> findMyPost(Pageable pageable, String postCate, Long id) {
+    public List<Post> findMyPost(String postCate, Long id) {
         return em.createQuery(
                         "select distinct p from Post p" +
                                 " join fetch p.user u" +
                                 " join fetch p.contents c" +
-                                " where p.postCate = :postCate and u.id = :id", Post.class)
+                                " where p.postCate = :postCate and u.id = :id" +
+                                " order by p.id desc ", Post.class)
                 .setParameter("postCate", postCate)
                 .setParameter("id", id)
                 .getResultList();

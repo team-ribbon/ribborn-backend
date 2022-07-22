@@ -33,7 +33,6 @@ public class PostWriteController {
 
     @GetMapping("/api/qnaList")
     public ResponseEntity<PostWriteResponseDto.WritePost> getQnaList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
             Pageable pageable,
             @RequestParam(name = "category") String category) {
         ResponseEntity<PostWriteResponseDto.WritePost> qnaList = postWriteService.getQna(pageable,category);
@@ -50,7 +49,6 @@ public class PostWriteController {
 
     @GetMapping("/api/reviewList")
     public ResponseEntity<PostWriteResponseDto.WritePost> getReviewList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
             Pageable pageable,
             @RequestParam(name = "category") String category) {
         ResponseEntity<PostWriteResponseDto.WritePost> reviewList = postWriteService.getReview(pageable,category);

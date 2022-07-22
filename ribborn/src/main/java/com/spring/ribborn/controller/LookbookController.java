@@ -33,7 +33,6 @@ public class LookbookController {
 
     @GetMapping("/api/lookList")
     public ResponseEntity<LookbookResponseDto.Lookbook> getLookList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
             Pageable pageable,
             @RequestParam(name = "category") String category) {
         ResponseEntity<LookbookResponseDto.Lookbook> lookList = lookbookService.getLookbooks(pageable,category);

@@ -43,11 +43,16 @@ public class LookbookService {
         List<LookbookResponseDto.Lookbook> lookbookList = new ArrayList<>();
 
         for (Post post : posts) {
-            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
+            /**
+             * 반복문을 돌면서 쿼리가 지속 발생하는 문제 해결
+             * 어차피 image와 content는 0번만 필요하기 때문에, 프록시 상태의 Contents를 get 하면서 쿼리를 발생시킨 후,
+             * 이후 영속성 컨텍스트에 올라가 있는 Contents를 이용한다.
+             */
+            /*Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());*/
             LookbookResponseDto.Lookbook mainDto = LookbookResponseDto.Lookbook.builder()
                     .id(post.getId())
-                    .image(viewImage.getImage())
-                    .content(viewImage.getContent())
+                    .image(post.getContents().get(0).getImage())
+                    .content(post.getContents().get(0).getContent())
                     .introduction(post.getIntroduction())
                     .nickname(post.getUser().getNickname())
                     .category(post.getCategory())

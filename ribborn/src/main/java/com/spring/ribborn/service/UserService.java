@@ -32,16 +32,10 @@ public class UserService {
     private final PostDetailRepository postDetailRepository;
 
     //회원 가입 처리
+    @Transactional
     public void registerUser(UserRequestDto userRequestDto) {
         String username = userRequestDto.getUsername();
-        String password = userRequestDto.getPassword();
-        String nickname = userRequestDto.getNickname();
-        int userType = userRequestDto.getUserType();
-        String companyNum = userRequestDto.getCompanyNum();
-        String phoneNum = userRequestDto.getPhoneNum();
-        String addressCategory = userRequestDto.getAddressCategory();
-        String addressDetail = userRequestDto.getAddressDetail();
-        String introduction = userRequestDto.getIntroduction();
+        String password = passwordEncoder.encode(userRequestDto.getPassword());
 
         // 회원 ID 중복 확인
         Optional<User> found = userRepository.findByUsername(username);
@@ -49,15 +43,35 @@ public class UserService {
             throw new IllegalArgumentException("중복된 사용자 닉네임이 존재합니다.");
         }
         // 패스워드 인코딩
-        password = passwordEncoder.encode(password);
 
         // 유저 정보 저장
-        User user = new User(username , password, nickname ,
-                            userType , companyNum , phoneNum,
-                            addressCategory , addressDetail, introduction);
-        System.out.println("user = " + user);
-        userRepository.save(user);
+        if(userRequestDto.getUserType() == 1){
+            //기술자 회원
+            User user = User.createExpertUser(
+                    userRequestDto.getUsername(),
+                    password,
+                    userRequestDto.getNickname(),
+                    userRequestDto.getUserType(),
+                    userRequestDto.getPhoneNum(),
+                    userRequestDto.getCompanyNum(),
+                    userRequestDto.getAddressCategory(),
+                    userRequestDto.getAddressDetail(),
+                    userRequestDto.getIntroduction()
+            );
+            userRepository.save(user);
 
+        }else{
+            //일반 회원
+            User user = User.createGeneralUser(
+                    userRequestDto.getUsername(),
+                    password,
+                    userRequestDto.getNickname(),
+                    userRequestDto.getUserType(),
+                    userRequestDto.getPhoneNum()
+            );
+            userRepository.save(user);
+
+        }
     }
 
     // 로그인
@@ -74,14 +88,14 @@ public class UserService {
         return true;
     }
 
-    //아이디 중복 체크
+    /*//아이디 중복 체크
     public void useridCheck(LoginRequestDto userRequestDto) {
         String username = userRequestDto.getUsername();
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자 아이디가 존재합니다.");
         }
-    }
+    }*/
 
     // 유저 정보 조회 토큰
     public UserTokenResponseDto userAuth(Long id) {
@@ -92,7 +106,7 @@ public class UserService {
     }
 
     // 유저 상세 정보 , 마이 페이지
-    public UserResponseDto userInfo(Pageable pageable, Long id, String postCate) {
+    public UserResponseDto userInfo(Long id, String postCate) {
         User user = userRepository.findById(id).orElseThrow(
                 () -> new NullPointerException("해당 아이디가 존재하지 않습니다.")
         );
@@ -101,10 +115,10 @@ public class UserService {
         userResponseDto.setUsers(userInfoDto);
 
         if(postCate.equals("all")){
-            List<Post> qna1 = postDetailRepository.findMyPost(pageable, "qna", id);
-            List<Post> review1 = postDetailRepository.findMyPost(pageable, "review", id);
-            List<Post> lookbook1 = postDetailRepository.findMyPost(pageable, "lookbook", id);
-            List<Post> reform1 = postDetailRepository.findMyPost(pageable, "reform", id);
+            List<Post> qna1 = postDetailRepository.findMyPost("qna", id);
+            List<Post> review1 = postDetailRepository.findMyPost("review", id);
+            List<Post> lookbook1 = postDetailRepository.findMyPost("lookbook", id);
+            List<Post> reform1 = postDetailRepository.findMyPost("reform", id);
 
             List<MainPostDto> qna = qna1.stream()
                     .map(MainPostDto::new)
@@ -124,7 +138,7 @@ public class UserService {
             userResponseDto.setLookbookList(lookbook);
             userResponseDto.setReformList(reform);
         }else{
-            List<Post> posts = postDetailRepository.findMyPost(pageable, postCate, id);
+            List<Post> posts = postDetailRepository.findMyPost(postCate, id);
             List<MainPostDto> post = posts.stream()
                     .map(MainPostDto::new)
                     .collect(Collectors.toList());
@@ -156,34 +170,15 @@ public class UserService {
             if(password != null){
                 userUpdateRequestDto.setNewPassword(passwordEncoder.encode(password));
             }
-
-            if(userUpdateRequestDto.getNickname() != null){
-                user.setNickname(userUpdateRequestDto.getNickname());
-            }
-            if(userUpdateRequestDto.getNewPassword() != null){
-                user.setPassword(userUpdateRequestDto.getNewPassword());
-            }
-
-            if(userUpdateRequestDto.getCompanyNum() != null){
-                user.setCompanyNum(userUpdateRequestDto.getCompanyNum());
-            }
-
-            if(userUpdateRequestDto.getPhoneNum() != null){
-                user.setPhoneNum(userUpdateRequestDto.getPhoneNum());
-            }
-
-            if(userUpdateRequestDto.getAddressCategory() != null){
-                user.setAddressCategory(userUpdateRequestDto.getAddressCategory());
-            }
-
-            if(userUpdateRequestDto.getAddressDetail() != null){
-                user.setAddressDetail(userUpdateRequestDto.getAddressDetail());
-            }
-
-            if(userUpdateRequestDto.getIntroduction() != null){
-                user.setIntroduction(userUpdateRequestDto.getIntroduction());
-            }
-
+            user.updateUser(
+                    userUpdateRequestDto.getNewPassword(),
+                    userUpdateRequestDto.getNickname(),
+                    userUpdateRequestDto.getCompanyNum(),
+                    userUpdateRequestDto.getPhoneNum(),
+                    userUpdateRequestDto.getAddressCategory(),
+                    userUpdateRequestDto.getAddressDetail(),
+                    user.getIntroduction()
+            );
 
         }else{
             throw new IllegalArgumentException("기존 비밀번호가 틀렸습니다");

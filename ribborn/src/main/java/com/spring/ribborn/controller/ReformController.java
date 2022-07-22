@@ -33,7 +33,6 @@ public class ReformController {
 
     @GetMapping("/api/reformList")
     public ResponseEntity<ReformResponseDto.Reform> getReformList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails,
             Pageable pageable,
             @RequestParam(name = "category") String category) {
         ResponseEntity<ReformResponseDto.Reform> lookList = reformService.getReforms(pageable,category);
