@@ -1,10 +1,8 @@
 package com.spring.ribborn.websocket.chat;
 
 
-import com.spring.ribborn.dto.requestDto.UserRequestDto;
 import com.spring.ribborn.exception.CustomException;
 import com.spring.ribborn.repository.UserRepository;
-import com.spring.ribborn.security.UserDetailsImpl;
 import com.spring.ribborn.model.User;
 import com.spring.ribborn.websocket.*;
 import com.spring.ribborn.websocket.chatDto.*;
@@ -17,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.spring.ribborn.exception.ErrorCode.*;
+import static com.spring.ribborn.websocket.chat.ChatRoomService.UserTypeEnum.Type.ACCEPTOR;
+import static com.spring.ribborn.websocket.chat.ChatRoomService.UserTypeEnum.Type.REQUESTER;
 //import static com.spring.ribborn.websocket.chatDto.NotificationType.*;
 
 @RequiredArgsConstructor
@@ -146,9 +146,11 @@ public class ChatRoomService {
         );
         System.out.println("***************************************** user = " + user);
         // 방 목록 찾기
+//        List<RoomDto> dtos = roomRepository.findAllWith(user);
         List<RoomDto> dtos = roomRepository.findAllWith(user);
 //        System.out.println("----------1---1---1-------1--1-----1----1------1------dtos = " + dtos);
         System.out.println("llllllllllllllllllllllllllllllllllllllll 사용자별 채팅방 전체 목록 user = " + user);
+        System.out.println("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd dtos = " + dtos.size());
         // 메시지 리스트 만들기
         return getMessages(dtos, userId, nickname);
     }
@@ -175,28 +177,28 @@ public class ChatRoomService {
 
         for (RoomDto dto : roomDtos) {
             // 해당 방의 유저가 나가지 않았을 경우에는 배열에 포함해 줍니다.
-//            if (dto.getAccId().equals(userId)) {
-//                if (!dto.getAccOut()) { // 만약 Acc(내)가 나가지 않았다면
-//                    int unreadCnt = messageRepository.countMsg(dto.getReqId(), dto.getRoomId());
+            if (dto.getAccId().equals(userId)) {
+                if (!dto.getAccOut()) { // 만약 Acc(내)가 나가지 않았다면
+                    int unreadCnt = messageRepository.countMsg(dto.getReqId(), dto.getRoomId());
 //                    Boolean isBanned = bannedRepository.existsBy(dto.getAccId(), dto.getReqId());
-//                    if (dto.getAccFixed()) {
-//                        prefix.add(RoomResponseDto.createOf(ACCEPTOR, dto, unreadCnt, isBanned));
-//                    } else {
-//                        suffix.add(RoomResponseDto.createOf(ACCEPTOR, dto, unreadCnt, isBanned));
-//                    }
-//                }
-//            } else if (dto.getReqId().equals(userId)) {
-//                if (!dto.getReqOut()) { // 만약 Req(내)가 나가지 않았다면
-//                    int unreadCnt = messageRepository.countMsg(dto.getAccId(), dto.getRoomId());
-//                    Boolean isBanned = bannedRepository.existsBy(dto.getAccId(), dto.getReqId());
-//                    if (dto.getReqFixed()) {
-//                        prefix.add(RoomResponseDto.createOf(REQUESTER, dto, unreadCnt, isBanned));
-//                    } else {
-//                        suffix.add(RoomResponseDto.createOf(REQUESTER, dto, unreadCnt, isBanned));
-//                    }
+                    if (dto.getAccFixed()) {
+                        prefix.add(RoomResponseDto.createOf(ACCEPTOR, dto, unreadCnt, false));
+                    } else {
+                        suffix.add(RoomResponseDto.createOf(ACCEPTOR, dto, unreadCnt, false));
+                    }
                 }
-//            }
-//        }
+            } else if (dto.getReqId().equals(userId)) {
+                if (!dto.getReqOut()) { // 만약 Req(내)가 나가지 않았다면
+                    int unreadCnt = messageRepository.countMsg(dto.getAccId(), dto.getRoomId());
+//                    Boolean isBanned = bannedRepository.existsBy(dto.getAccId(), dto.getReqId());
+                    if (dto.getReqFixed()) {
+                        prefix.add(RoomResponseDto.createOf(REQUESTER, dto, unreadCnt, false));
+                    } else {
+                        suffix.add(RoomResponseDto.createOf(REQUESTER, dto, unreadCnt, false));
+                    }
+                }
+            }
+        }
         prefix.addAll(suffix);
         return prefix;
     }

@@ -11,14 +11,14 @@ public interface RoomDto {
     Long getAccId();
     String getAccNickname();
     String getReqNickname();
-//    String getAccProfile();
-//    String getReqProfile();
+    String getAccProfile();
+    String getReqProfile();
     Boolean getReqOut();
     Boolean getAccOut();
     Boolean getIsRead();
-//    Boolean getAccFixed();
-//    Boolean getReqFixed();
-//    Long getIsBanned();
+    Boolean getAccFixed();
+    Boolean getReqFixed();
+    Long getIsBanned();
     LocalDateTime getDate();
     String getMessage();
 
