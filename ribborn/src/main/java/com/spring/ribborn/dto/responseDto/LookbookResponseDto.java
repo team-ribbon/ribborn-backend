@@ -21,18 +21,5 @@ public class LookbookResponseDto {
         private String content;
         private String introduction;
         private LocalDateTime createAt;
-
-//        public static Lookbook from(Post post) {
-//            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
-//            return Lookbook.builder()
-//                    .id(post.getId())
-//                    .image(viewImage.getImage())
-//                    .nickname(post.getUser().getNickname())
-//                    .category(post.getCategory())
-//                    .likeCount(post.getLikeCount())
-//                    .createAt(post.getCreateAt())
-//                    .build();
-//        }
     }
-
 }

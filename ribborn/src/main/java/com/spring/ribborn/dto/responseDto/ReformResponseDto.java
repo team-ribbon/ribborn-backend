@@ -20,18 +20,5 @@ public class ReformResponseDto {
         private String region;
         private String process;
         private String content;
-
-//        public static Reform from(Post post) {
-//            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
-//            return ReformMain.builder()
-//                    .id(post.getId())
-//                    .image(viewImage.getImage())
-//                    .nickname(post.getUser().getNickname())
-//                    .title(post.getTitle())
-//                    .category(post.getCategory())
-//                    .region(post.getRegion())
-//                    .process(post.getProcess())
-//                    .build();
-//        }
     }
 }

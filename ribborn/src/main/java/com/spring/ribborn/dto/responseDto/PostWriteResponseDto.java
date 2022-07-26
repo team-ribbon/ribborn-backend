@@ -21,19 +21,5 @@ public class PostWriteResponseDto {
         private String title;
         private String category;
         private String content;
-
-//        public static WritePost from(Post post) {
-//            Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());
-//            return WriteMain.builder()
-//                    .id(post.getId())
-//                    .image(viewImage.getImage())
-//                    .likeCount(post.getLikeCount())
-//                    .commentCount(post.getCommentCount())
-//                    .nickname(post.getUser().getNickname())
-//                    .title(post.getTitle())
-//                    .category(post.getCategory())
-//                    .build();
-//        }
-
     }
 }
