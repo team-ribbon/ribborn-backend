@@ -30,7 +30,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     // 해당 EndPoint를 통해 HandShake 하게 됩니다. 이 때, 요청을 허락하는 주소를 어디로 할 지 반드시 설정해 줘야 합니다.
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry){
-        registry.addEndpoint("/ws-stomp").setAllowedOrigins("http://13.125.117.133:8888" , "http://localhost:3000" , "http://13.125.117.133:6379")
+        registry.addEndpoint("/ws-stomp").setAllowedOrigins("http://13.209.15.135:8888" , "http://localhost:3000" )
 //        registry.addEndpoint("/ws-stomp").setAllowedOrigins("*")
                 .withSockJS();
     }

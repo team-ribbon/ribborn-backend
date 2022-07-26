@@ -2,11 +2,13 @@ package com.spring.ribborn.service;
 
 import com.spring.ribborn.dto.queryDto.ContentsQueryDto;
 import com.spring.ribborn.dto.requestDto.PostChangeRequestDto;
+import com.spring.ribborn.dto.requestDto.PostProcessChangeRequestDto;
 import com.spring.ribborn.dto.requestDto.ReformChangeRequestDto;
 import com.spring.ribborn.dto.responseDto.*;
 import com.spring.ribborn.model.Contents;
 import com.spring.ribborn.model.Love;
 import com.spring.ribborn.model.Post;
+import com.spring.ribborn.model.User;
 import com.spring.ribborn.repository.LoveFindRepository;
 import com.spring.ribborn.repository.PostDetailRepository;
 import com.spring.ribborn.repository.PostRepository;
@@ -17,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -162,4 +163,37 @@ public class PostDetailService {
     }
 
 
+    @Transactional
+    public void postProcessingChange(Long postId, Long userId) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new NullPointerException("해당 게시긇이 존재하지 않습니다.")
+        );
+        if(post.getProcess().equals("before")){
+            post.setProcess("ing");
+        }
+        else if(post.getProcess().equals("ing")){
+            post.setProcess("before");
+        }else {
+            throw new IllegalArgumentException("다시한번 확인해주세요");
+        }
+
+
+    }
+
+    @Transactional
+    public void postProcessAfterChange(Long postId, Long userId) {
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new NullPointerException("해당 게시긇이 존재하지 않습니다.")
+        );
+        if(post.getProcess().equals("ing")){
+            post.setProcess("after");
+        }
+        else if(post.getProcess().equals("after")){
+            post.setProcess("ing");
+        } else {
+            throw new IllegalArgumentException("다시한번 확인해주세요");
+        }
+
+
+    }
 }

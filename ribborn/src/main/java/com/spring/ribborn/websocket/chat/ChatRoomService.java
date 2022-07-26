@@ -17,13 +17,14 @@ import java.util.List;
 import static com.spring.ribborn.exception.ErrorCode.*;
 import static com.spring.ribborn.websocket.chat.ChatRoomService.UserTypeEnum.Type.ACCEPTOR;
 import static com.spring.ribborn.websocket.chat.ChatRoomService.UserTypeEnum.Type.REQUESTER;
+import static com.spring.ribborn.websocket.chatDto.NotificationType.*;
 //import static com.spring.ribborn.websocket.chatDto.NotificationType.*;
 
 @RequiredArgsConstructor
 @Service
 public class ChatRoomService {
 
-//    private final NotificationRepository notificationRepository;
+    private final NotificationRepository notificationRepository;
     private final ChatRoomRepository roomRepository;
     private final ChatMessageRepository messageRepository;
     private final SimpMessageSendingOperations messagingTemplate;
@@ -49,7 +50,7 @@ public class ChatRoomService {
                 .orElseGet( () -> {
                     ChatRoom c = roomRepository.save(ChatRoom.createOf(requester, acceptor));
 //                    // 채팅방 개설 메시지 생성
-//                    notificationRepository.save(Notification.createOf(c, acceptor)); // 알림 작성 및 전달
+                    notificationRepository.save(Notification.createOf(c, acceptor)); // 알림 작성 및 전달
                     messagingTemplate.convertAndSend("/sub/notification/" + acceptorId,
                             MessageResponseDto.createFrom(
                                     messageRepository.save(ChatMessage.createInitOf(c.getId()))
@@ -62,49 +63,6 @@ public class ChatRoomService {
         return chatRoom.getId();
     }
 
-
-//    // 채팅방 만들기
-//    @Transactional
-//    public Long createRoom(Long userId, Long userIdDto) {
-//        // 유효성 검사
-////        String usernameDto = requestDto.getUsername();
-//        System.out.println("userIdDto = " + userIdDto);
-//        if (userId.equals(userIdDto)) {
-//            throw new CustomException(CANNOT_CHAT_WITH_ME);
-//        }
-//
-//        // 채팅 상대 찾아오기
-//        User acceptor = userRepository.findById(userIdDto)
-//                .orElseThrow(() -> new CustomException(NOT_FOUND_USER)
-//                );
-//        User requester = userRepository.findById(userId)
-//                .orElseThrow(() -> new CustomException(NOT_FOUND_USER)
-//                );
-//
-//        System.out.println("requester = " + requester);
-//        System.out.println("acceptor = " + acceptor);
-//
-//        // 채팅방 차단 회원인지 검색
-////        if (bannedRepository.existsByUsers(acceptor, requester)) {
-////            throw new CustomException(CHAT_USER_BANNED);
-////        }
-//        // 채팅방을 찾아보고, 없을 시 DB에 채팅방 저장, 메시지를 전달할 때 상대 이미지와 프로필 사진을 같이 전달해 줘야 함.
-//        ChatRoom chatRoom = roomRepository.findByUser(requester, acceptor)
-//                .orElseGet(() -> {
-//                    ChatRoom c = roomRepository.save(ChatRoom.createOf(requester, acceptor));
-//                    // 채팅방 개설 메시지 생성
-//////                    notificationRepository.save(Notification.createOf(c, acceptor)); // 알림 작성 및 전달
-////                    messagingTemplate.convertAndSend("/sub/notification/" + userIdDto,
-////                            MessageResponseDto.createFrom(
-////                                    messageRepository.save(ChatMessage.createInitOf(c.getId()))
-////                            )
-////                    );
-//                    return c;
-//                });
-////        chatRoom.enter(); // 채팅방에 들어간 상태로 변경 -> 람다를 사용해 일괄처리할 방법이 있는지 연구해 보도록 합니다.
-//
-//        return chatRoom.getId();
-//    }
 
     // 방을 나간 상태로 변경하기
     @Transactional
@@ -127,7 +85,7 @@ public class ChatRoomService {
 
         if (chatRoom.getAccOut() && chatRoom.getReqOut()) {
             roomRepository.deleteById(chatRoom.getId()); // 둘 다 나간 상태라면 방 삭제
-//            notificationRepository.deleteByChangeIdAndType(chatRoom.getId(), CHAT);
+            notificationRepository.deleteByChangeIdAndType(chatRoom.getId(), CHAT);
         } else {
             // 채팅방 종료 메시지 전달 및 저장
             messagingTemplate.convertAndSend("/sub/chat/room/" + chatRoom.getId(),

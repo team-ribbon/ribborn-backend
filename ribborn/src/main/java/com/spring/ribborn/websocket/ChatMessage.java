@@ -1,7 +1,6 @@
 package com.spring.ribborn.websocket;
 
 import com.spring.ribborn.websocket.chatDto.MessageRequestDto;
-import com.spring.ribborn.websocket.chatDto.MessageTypeEnum;
 import com.spring.ribborn.utils.CreationDate;
 import com.spring.ribborn.model.User;
 import lombok.Getter;
@@ -36,8 +35,8 @@ public class ChatMessage extends CreationDate {
     private String message;
 
     @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private MessageTypeEnum type;
+//    @Enumerated(value = EnumType.STRING)
+    private String type;
 
     @Column(nullable = false)
     private Boolean isRead;
@@ -68,7 +67,7 @@ public class ChatMessage extends CreationDate {
         message.senderId = roomId;
 //        message.message = "채팅방이 개설되었습니다.";
         message.isRead = true;
-        message.type = STATUS;
+        message.type = "STATUS";
 
         return message;
     }
@@ -81,7 +80,7 @@ public class ChatMessage extends CreationDate {
         message.senderId = roomId;
         message.message = user.getNickname() + "님이 채팅방을 나갔습니다.";
         message.isRead = true;
-        message.type = STATUS;
+        message.type = "STATUS";
 
         return message;
     }

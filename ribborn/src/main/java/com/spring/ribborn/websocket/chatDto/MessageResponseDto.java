@@ -19,7 +19,18 @@ public class MessageResponseDto {
     private String message;
     private LocalDateTime date;
     private Boolean isRead = false;
-    private MessageTypeEnum type;
+    private String type;
+
+    public MessageResponseDto(MessageRequestDto messageRequestDto) {
+        this.messageId = Long.valueOf(messageRequestDto.getMessage());
+        this.senderId = messageRequestDto.getSenderId();
+        this.senderNickname = messageRequestDto.getNickname();
+        this.message = messageRequestDto.getMessage();
+//        this.date = messageRequestDto.getDate();
+        this.isRead = messageRequestDto.getIsRead();
+        this.type = messageRequestDto.getType();
+
+    }
 
     public static MessageResponseDto createOf(ChatMessage message, String username, String nickname){
 

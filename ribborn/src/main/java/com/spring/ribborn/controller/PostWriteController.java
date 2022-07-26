@@ -56,4 +56,7 @@ public class PostWriteController {
         ResponseEntity<PostWriteResponseDto.WritePost> reviewList = postWriteService.getReview(pageable,category);
         return reviewList;
     }
+
+
+
 }

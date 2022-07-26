@@ -3,13 +3,17 @@ package com.spring.ribborn.websocket.chat;
 
 //import com.spring.ribborn.websocket.NotificationRepository;
 //import com.spring.ribborn.websocket.chatDto.NotificationDto;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import com.spring.ribborn.exception.CustomException;
-import com.spring.ribborn.websocket.ChatMessage;
-import com.spring.ribborn.websocket.ChatRoom;
+import com.spring.ribborn.websocket.*;
 //import com.spring.ribborn.websocket.Notification;
 import com.spring.ribborn.utils.LanguageFilter;
 import com.spring.ribborn.websocket.chatDto.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,8 +35,12 @@ public class ChatMessageService {
     private final LanguageFilter filter;
     private final ChatRoomRepository roomRepository;
     private final ChatMessageRepository messageRepository;
-//    private final NotificationRepository notificationRepository;
+    private final NotificationRepository notificationRepository;
     private final SimpMessageSendingOperations messagingTemplate;
+    private final NotificationService notificationService;
+//    private final RedisRepository redisRepository;
+    private final RedisTemplate redisTemplate;
+    private final ChannelTopic channelTopic;
 
     private Map<Long, Integer> roomUsers;
 
@@ -112,8 +120,8 @@ public class ChatMessageService {
     public MessageResponseDto saveMessage(MessageRequestDto requestDto,
 //                                          Long userId
                                           String username,
-                                          String nickname
-                                            ) {
+                                          String nickname) throws JsonProcessingException {
+        String topic = channelTopic.getTopic();
         System.out.println("requestDto.getRoomId() = " + requestDto.getRoomId());
         ChatRoom chatRoom = roomRepository.findByIdFetch(requestDto.getRoomId())
                 .orElseThrow(() -> new CustomException(NOT_FOUND_CHAT));
@@ -130,35 +138,49 @@ public class ChatMessageService {
 
 
 
-//        if (chatRoom.getAccOut()) {
-////            // 채팅 알림 저장 및 전달하기
-//            Notification notification = notificationRepository.save(Notification.createOf(chatRoom, chatRoom.getAcceptor()));
-//            System.out.println("----------------------chatRoom.getAcceptor() = " + chatRoom.getAcceptor());
-//            messagingTemplate.convertAndSend(
-//                    "/sub/notification/" + chatRoom.getAcceptor().getId(), NotificationDto.createFrom(notification)
-//            );
-//            chatRoom.accOut(false);
-//        }
-//        if (chatRoom.getReqOut()) {
-////            // 채팅 알림 저장 및 전달하기
-//            Notification notification = notificationRepository.save(Notification.createOf(chatRoom, chatRoom.getRequester())
-//            );
-//            System.out.println("----------------------2번째 chatRoom.getAcceptor() = " + chatRoom.getAcceptor());
-//
-//            messagingTemplate.convertAndSend(
-//                    "/sub/notification/" + chatRoom.getRequester().getId(), NotificationDto.createFrom(notification)
-//            );
-//            System.out.println("------------------------3번째 getRequester().getId() = " + chatRoom.getRequester().getId());
-//            chatRoom.reqOut(false);
-//        }
+        if (chatRoom.getAccOut()) {
+//            // 채팅 알림 저장 및 전달하기
+            Notification notification = notificationRepository.save(Notification.createOf(chatRoom, chatRoom.getAcceptor()));
+            System.out.println("----------------------chatRoom.getAcceptor() = " + chatRoom.getAcceptor());
+            messagingTemplate.convertAndSend(
+                    "/sub/notification/" + chatRoom.getAcceptor().getId(), NotificationDto.createFrom(notification)
+            );
+
+            chatRoom.accOut(false);
+        }
+        if (chatRoom.getReqOut()) {
+//            // 채팅 알림 저장 및 전달하기
+            Notification notification = notificationRepository.save(Notification.createOf(chatRoom, chatRoom.getRequester())
+            );
+            System.out.println("----------------------2번째 chatRoom.getAcceptor() = " + chatRoom.getAcceptor());
+
+            messagingTemplate.convertAndSend(
+                    "/sub/notification/" + chatRoom.getRequester().getId(), NotificationDto.createFrom(notification)
+            );
+            System.out.println("------------------------3번째 getRequester().getId() = " + chatRoom.getRequester().getId());
+
+
+            chatRoom.reqOut(false);
+        }
         System.out.println("-------------------userId = " + username + "-------------------------");
+        ObjectMapper writer = new ObjectMapper();
+
+        System.out.println("writer = " + writer.writeValueAsString(requestDto));
+        redisTemplate.convertAndSend(topic,writer.writeValueAsString(requestDto) );
         return MessageResponseDto.createOf(message, username , nickname);
     }
 
     // 채팅 메시지 발송하기
-    public void sendMessage(MessageRequestDto requestDto, String userId, MessageResponseDto responseDto) {
+    public void sendMessage(MessageRequestDto requestDto, String userId, MessageResponseDto responseDto) throws JsonProcessingException {
         RoomMsgUpdateDto msgUpdateDto = RoomMsgUpdateDto.createFrom(requestDto);
+        String topic = channelTopic.getTopic();
+        ObjectMapper writer = new ObjectMapper();
+        System.out.println("writer = " + writer.writeValueAsString(requestDto));
+        redisTemplate.convertAndSend(topic, writer.writeValueAsString(requestDto));
         messagingTemplate.convertAndSend("/sub/chat/rooms/" + userId, msgUpdateDto); // 개별 채팅 목록 보기 업데이트
         messagingTemplate.convertAndSend("/sub/chat/room/" + requestDto.getRoomId(), responseDto); // 채팅방 내부로 메시지 전송
     }
+
+
+
 }

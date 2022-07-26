@@ -40,4 +40,6 @@ public class Post extends TimeStamp{
         contents.add(content);
         content.setPost(this);
     }
+
+
 }
