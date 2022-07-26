@@ -15,10 +15,6 @@ public class UserRequestDto {
     private String addressCategory;
     private String addressDetail;
     private String introduction;
-
-
-
-
 }
 
 
