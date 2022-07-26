@@ -190,27 +190,4 @@ public class UserService {
         }
     }
 
-    // 아이디 찾기
-    /*public String find_id(HttpServletResponse response, String email) throws Exception {
-        response.setContentType("text/html;charset=utf-8");
-        PrintWriter out = response.getWriter();
-        String id = manager.find_id(email);
-
-        if (id == null) {
-            return null;
-        } else {
-            return id;
-        }
-    }*/
-
-    public boolean userEmailCheck(UserRequestDto userRequestDto) {
-        String username = userRequestDto.getUsername();
-        Optional<User> user = userRepository.findByUsername(username);
-        if(user!=null && user.get().equals(username)) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
 }

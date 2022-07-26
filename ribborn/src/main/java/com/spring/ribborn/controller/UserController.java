@@ -1,6 +1,5 @@
 package com.spring.ribborn.controller;
 
-import com.spring.ribborn.dto.MailDto;
 import com.spring.ribborn.dto.requestDto.LoginRequestDto;
 import com.spring.ribborn.dto.requestDto.UserRequestDto;
 import com.spring.ribborn.dto.requestDto.UserUpdateRequestDto;
@@ -20,8 +19,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -93,23 +90,6 @@ public class UserController {
         userService.updateUser(userUpdateRequestDto, userId);
         ApiResponseMessage message = new ApiResponseMessage("Success", "수정이 완료되었습니다", "", "");
         return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
-    }
+        }
 
-    //Email과 name의 일치여부 확인
-    @GetMapping("/api/users/findPw")
-    public @ResponseBody Map<String, Boolean> pwFind(UserRequestDto userRequestDto){
-        Map<String,Boolean> json = new HashMap<>();
-        boolean pwFindCheck = userService.userEmailCheck(userRequestDto);
-
-        System.out.println(pwFindCheck);
-        json.put("check", pwFindCheck);
-        return json;
-    }
-
-    //등록된 이메일로 임시비밀번호를 발송하고 발송된 임시비밀번호로 사용자의 pw를 변경
-//    @PostMapping("/api/users/findPw/sendEmail")
-//    public @ResponseBody void sendEmail(String userEmail, String userName){
-//        MailDto dto = sendEmailService.createMailAndChangePassword(userEmail, userName);
-//        sendEmailService.mailSend(dto);
-//    }
 }
