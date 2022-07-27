@@ -1,10 +1,10 @@
 package com.spring.ribborn.repository;
 
+import com.spring.ribborn.model.BookMark;
+import com.spring.ribborn.model.Comment;
 import com.spring.ribborn.model.Love;
-import com.spring.ribborn.model.Post;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface LoveFindRepository extends JpaRepository<Love, Long> {
+public interface BookMarkFindRepository extends JpaRepository<BookMark, Long> {
     Love findByPostIdAndUserId(Long postId, Long userId);
-    void deleteAllByPost(Post post);
 }

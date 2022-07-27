@@ -9,6 +9,7 @@ import com.spring.ribborn.model.User;
 import com.spring.ribborn.repository.ContentsRepository;
 import com.spring.ribborn.repository.PostRepository;
 import com.spring.ribborn.repository.UserRepository;
+import com.spring.ribborn.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -49,7 +50,7 @@ public class PostWriteService {
                 post.settingContents(contents);
             }
         }
-
+        postRepository.save(post);
     }
 
     //룩북 작성
@@ -78,7 +79,7 @@ public class PostWriteService {
 //        return postRepository.findAll(pageable);
 //    }
 
-    public ResponseEntity<PostWriteResponseDto.WritePost> getQna(Pageable pageable, String category) {
+    public ResponseEntity<PostWriteResponseDto.WritePost> getQna(Pageable pageable, String category, UserDetailsImpl userDetails) {
         List<Post> posts;
         if(category.equals("all")){
             posts = postRepository.findAllByPostCate("qna",pageable);
@@ -97,7 +98,7 @@ public class PostWriteService {
             /*Contents viewImage = contentsRepository.findTop1ByPostIdOrderByCreateAtAsc(post.getId());*/
             PostWriteResponseDto.WritePost mainDto = PostWriteResponseDto.WritePost.builder()
                     .id(post.getId())
-                    .image(post.getContents().get(0).getImage())
+                    .image(post.getPostContents())
                     .content(post.getContents().get(0).getContent())
                     .likeCount(post.getLikeCount())
                     .commentCount(post.getCommentCount())

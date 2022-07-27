@@ -34,8 +34,9 @@ public class PostWriteController {
     @GetMapping("/api/qnaList")
     public ResponseEntity<PostWriteResponseDto.WritePost> getQnaList(
             Pageable pageable,
-            @RequestParam(name = "category") String category) {
-        ResponseEntity<PostWriteResponseDto.WritePost> qnaList = postWriteService.getQna(pageable,category);
+            @RequestParam(name = "category") String category,
+            @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        ResponseEntity<PostWriteResponseDto.WritePost> qnaList = postWriteService.getQna(pageable,category,userDetails);
         return qnaList;
     }
 

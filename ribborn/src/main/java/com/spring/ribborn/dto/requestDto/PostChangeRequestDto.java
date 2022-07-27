@@ -12,11 +12,13 @@ public class PostChangeRequestDto {
 
     private List<String> fileUrl;
     private List<String> imageUrl;
+    private List<String> deleteImage;
 
-    public PostChangeRequestDto(String title, String category, String content, List<String> imageUrl) {
+    public PostChangeRequestDto(String title, String category, String content, List<String> imageUrl, List<String> deleteImage) {
         this.title = title;
         this.category = category;
         this.content = content;
         this.imageUrl = imageUrl;
+        this.deleteImage = deleteImage;
     }
 }

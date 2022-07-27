@@ -14,6 +14,7 @@ public class LookBookDetailResponseDto {
     private String nickname;
     private int likeCount;
     private boolean liked;
+    private boolean booked;
     private List<String> image = new ArrayList<>();
     private String category;
     private String content;

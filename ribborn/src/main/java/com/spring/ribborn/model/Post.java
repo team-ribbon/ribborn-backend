@@ -99,5 +99,13 @@ public class Post extends TimeStamp{
         this.likeCount -= 1;
     }
 
+    public String getPostContents(){
+        if(this.contents.get(0).getImage() == null){
+            return null;
+        }else{
+            return this.contents.get(0).getImage();
+        }
+
+    }
 
 }

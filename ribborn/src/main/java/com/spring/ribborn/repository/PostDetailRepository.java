@@ -96,18 +96,4 @@ public class PostDetailRepository {
                 .getResultList();
     }
 
-
-    //게시글 삭제
-    public void deletePost(Long postId) {
-        Post post = em.find(Post.class, postId);
-
-        for(Contents con : post.getContents()){
-            if(con.getImage() != null){
-                String[] split = con.getImage().split("com/");
-                awsS3Service.deleteFile(split[1]);
-            }
-        }
-
-        em.remove(post);
-    }
 }
