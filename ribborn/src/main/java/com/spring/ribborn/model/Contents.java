@@ -18,8 +18,6 @@ public class Contents extends TimeStamp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "contents_id")
     private Long id;
-
-    @Nullable
     private String image;
     private String content;
 
@@ -51,6 +49,9 @@ public class Contents extends TimeStamp {
     //Contents 수정
     public void contentsChange(String image, String content){
         this.image = image;
+        this.content = content;
+    }
+    public void contentChange(String content){
         this.content = content;
     }
 }

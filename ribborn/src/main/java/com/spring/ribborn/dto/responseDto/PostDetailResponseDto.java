@@ -15,6 +15,7 @@ public class PostDetailResponseDto {
     private Long commentCount;
     private int likeCount;
     private boolean liked;
+    private boolean booked;
     private List<String> image = new ArrayList<>();
     private String title;
     private String category;

@@ -88,14 +88,14 @@ public class UserService {
         return true;
     }
 
-    /*//아이디 중복 체크
+    //아이디 중복 체크
     public void useridCheck(LoginRequestDto userRequestDto) {
         String username = userRequestDto.getUsername();
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {
             throw new IllegalArgumentException("중복된 사용자 아이디가 존재합니다.");
         }
-    }*/
+    }
 
     // 유저 정보 조회 토큰
     public UserTokenResponseDto userAuth(Long id) {

@@ -17,6 +17,7 @@ public class ReformPostDetailResponseDto {
     private String title;
     private String category;
     private String content;
+    private boolean booked;
     private LocalDateTime createAt;
     private LocalDateTime modifyAt;
     private String region;

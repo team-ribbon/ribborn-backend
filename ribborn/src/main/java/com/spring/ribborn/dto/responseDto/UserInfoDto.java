@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class UserInfoDto {
     private Long id;
+    private String username;
     private String nickname;
     private int userType;
     private String companyNum;
@@ -14,8 +15,10 @@ public class UserInfoDto {
     private String addressDetail;
     private String introduction;
 
+
     public UserInfoDto(User user) {
         this.id = user.getId();
+        this.username = user.getUsername();
         this.nickname = user.getNickname();
         this.userType = user.getUserType();
         this.companyNum = user.getCompanyNum();
