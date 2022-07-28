@@ -57,7 +57,8 @@ public enum ErrorCode {
     INVALID_LENGTH_TOKEN(HttpStatus.BAD_REQUEST.value(), "L002", "유효하지 않은 토큰입니다. 토큰의 길이를 확인해 주세요."),
     DECODING_FAILED_TOKEN(HttpStatus.BAD_REQUEST.value(), "L003", "유효하지 않은 토큰입니다. 토큰 디코딩에 실패했습니다."),
     EXPIRATION_TOKEN(HttpStatus.UNAUTHORIZED.value(), "L004", "Unauthorized"),
-    INVAILD_CONTENTS_TOKEN(HttpStatus.BAD_REQUEST.value(), "L005", "유효하지 않은 형식의 토큰입니다.");
+    INVAILD_CONTENTS_TOKEN(HttpStatus.BAD_REQUEST.value(), "L005", "유효하지 않은 형식의 토큰입니다."),
+    NOT_EXIST_NOTIFICATION(HttpStatus.UNAUTHORIZED.value(),"L006", "유효하지 않는 방식입니다" );
 
     //    // Common
 //    INVALID_INPUT_VALUE(400, "C001", "invalid input value"),

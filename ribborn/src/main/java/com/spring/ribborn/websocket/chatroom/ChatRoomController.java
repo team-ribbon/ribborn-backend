@@ -1,15 +1,13 @@
-package com.spring.ribborn.websocket;
+package com.spring.ribborn.websocket.chatroom;
 
 
 import com.spring.ribborn.dto.requestDto.UserRequestDto;
-import com.spring.ribborn.dto.OkDto;
 import com.spring.ribborn.websocket.chatDto.MessageResponseDto;
 import com.spring.ribborn.websocket.chatDto.RoomResponseDto;
 import com.spring.ribborn.security.UserDetailsImpl;
 import com.spring.ribborn.websocket.chat.ChatMessageService;
-import com.spring.ribborn.websocket.chat.ChatRoomService;
+import com.spring.ribborn.websocket.chatroom.ChatRoomService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 

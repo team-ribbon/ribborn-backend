@@ -1,5 +1,7 @@
 package com.spring.ribborn.controller;
 
+import com.spring.ribborn.aop.LogInCheck;
+import com.spring.ribborn.aop.Logging;
 import com.spring.ribborn.dto.requestDto.LoginRequestDto;
 import com.spring.ribborn.dto.requestDto.UserRequestDto;
 import com.spring.ribborn.dto.requestDto.UserUpdateRequestDto;
@@ -29,7 +31,7 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/api/users/register/users")
-    public ResponseEntity<ApiResponseMessage> registerUser(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<ApiResponseMessage> registerUser(@RequestBody UserRequestDto userRequestDto) throws InterruptedException {
         userService.registerUser(userRequestDto);
         ApiResponseMessage message = new ApiResponseMessage("Success", "회원가입이 완료되었습니다", "", "");
         return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
@@ -45,6 +47,8 @@ public class UserController {
     }
 
     // 로그인
+    @LogInCheck
+    @Logging
     @PostMapping("/api/users/login")
     public ResponseEntity<String> login(final HttpServletResponse response, @RequestBody LoginRequestDto loginRequestDto) {
         String login = userService.login(loginRequestDto);

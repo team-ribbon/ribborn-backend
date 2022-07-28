@@ -1,19 +1,15 @@
-package com.spring.ribborn.websocket;
+package com.spring.ribborn.websocket.chat;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.spring.ribborn.websocket.chatDto.MessageRequestDto;
 import com.spring.ribborn.utils.CreationDate;
 import com.spring.ribborn.model.User;
 import lombok.Getter;
 //import lombok.NoArgsConstructor;
-import lombok.extern.jackson.Jacksonized;
 //import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
-import static com.spring.ribborn.websocket.chatDto.MessageTypeEnum.*;
 
 @Getter @Entity
 @JsonAutoDetect

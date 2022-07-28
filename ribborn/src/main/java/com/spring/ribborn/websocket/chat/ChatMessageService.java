@@ -3,44 +3,53 @@ package com.spring.ribborn.websocket.chat;
 
 //import com.spring.ribborn.websocket.NotificationRepository;
 //import com.spring.ribborn.websocket.chatDto.NotificationDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
+import com.spring.ribborn.config.S3Uploader;
 import com.spring.ribborn.exception.CustomException;
-import com.spring.ribborn.websocket.*;
+//import com.spring.ribborn.redis.RedisMessagePublisher;
+import com.spring.ribborn.model.User;
+import com.spring.ribborn.redis.RedisMessagePublisher;
+import com.spring.ribborn.repository.UserRepository;
+import com.spring.ribborn.sse.NotificationRepository;
+import com.spring.ribborn.sse.NotificationService;
 //import com.spring.ribborn.websocket.Notification;
-import com.spring.ribborn.utils.LanguageFilter;
+//import com.spring.ribborn.utils.LanguageFilter;
 import com.spring.ribborn.websocket.chatDto.*;
+import com.spring.ribborn.websocket.chatroom.ChatRoom;
+import com.spring.ribborn.websocket.chatroom.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.spring.ribborn.exception.ErrorCode.*;
+import static com.spring.ribborn.exception.ErrorCode.NOT_FOUND_CHAT;
+
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class ChatMessageService {
 
-    private final LanguageFilter filter;
+    private final RedisMessagePublisher redisMessagePublisher;
+//    private final LanguageFilter filter;
     private final ChatRoomRepository roomRepository;
     private final ChatMessageRepository messageRepository;
+    private final UserRepository userRepository;
     private final NotificationRepository notificationRepository;
     private final SimpMessageSendingOperations messagingTemplate;
     private final NotificationService notificationService;
-//    private final RedisRepository redisRepository;
+//    private final MessageRepository messageRepository1;
     private final RedisTemplate redisTemplate;
-    private final ChannelTopic channelTopic;
+//    private final ChannelTopic channelTopic;
+    private final S3Uploader s3Uploader;
+    private final String imageDirName = "chatMessage";
 
     private Map<Long, Integer> roomUsers;
 
@@ -48,54 +57,6 @@ public class ChatMessageService {
     private void init() {
         roomUsers = new HashMap<>();
     }
-
-    // 채팅방의 상태 전달하기
-//    public void sendStatus(MessageRequestDto requestDto) {
-//
-//        MessageTypeEnum type;
-//        int count = getUserCount(requestDto); // 현재 채팅방에 접속중인 유저의 수
-//
-//        if (count == 2) {
-//            type = FULL;
-//        } else {
-//            type = NORMAL;
-//        }
-//
-//        messagingTemplate.convertAndSend("/sub/chat/room/" + requestDto.getRoomId(),
-//                RoomStatusDto.valueOf(type));
-//    }
-
-    // 접속중인 유저의 수를 계산하는 메소드
-//    private int getUserCount(MessageRequestDto requestDto) {
-//
-//        int num;
-//        Long roomId = requestDto.getRoomId(); // roomId에 대한 예외처리가 필요합니다.
-//
-//        switch (requestDto.getType()) {
-//            case IN:
-//                num = 1;
-//                break;
-//            case OUT:
-//                num = -1;
-//                break;
-//            default:
-//                throw new IllegalArgumentException("ChatMessageService: 검증메시지 IN과 OUT만 허용됩니다.");
-//        }
-//        // 해시맵에 키가 존재한다면 접속중인 사람의 수를 계산합니다.
-//        if (roomUsers.containsKey(roomId)) {
-//
-//            int userCount = roomUsers.get(roomId) + num;
-//            if (userCount == 0) {
-//                roomUsers.remove(roomId);
-//                return 0;
-//            }
-//            roomUsers.put(roomId, userCount);
-//        } else {
-//            roomUsers.put(roomId, 1);
-//        }
-//
-//        return roomUsers.get(roomId);
-//    }
 
     // 메시지 찾기, 페이징 처리 (검증이 필요합니다.)
 //    @Cacheable(cacheNames = "chatInfo")
@@ -105,6 +66,8 @@ public class ChatMessageService {
         // 메시지 찾아오기
         List<ChatMessage> messages = messageRepository.findAllByRoomIdOrderByIdAsc(roomId);
         // responseDto 만들기
+
+
         List<MessageResponseDto> responseDtos = new ArrayList<>();
         // 상대가 보낸 메시지라면 모두 읽음으로 처리 -> isRead 상태 모두 true로 업데이트
         messageRepository.updateChatMessage(roomId, userid);
@@ -115,72 +78,117 @@ public class ChatMessageService {
         return responseDtos;
     }
 
+//    region 채팅방 사진 메시지 보내기
+    public void uploadChatMessageImg(File img, MessageRequestDto requestDto) {
+
+        ChatRoom chatRoom = messageRepository.findByRoomId(requestDto.getRoomId());
+
+        User receiver = chatRoom.getAcceptor();
+
+        User user = userRepository.findById(requestDto.getSenderId()).orElseThrow(
+                () -> new IllegalArgumentException("해당하는 유저가 존재하지 않습니다")
+        );
+
+        String imageUrl;
+        try {
+            imageUrl = s3Uploader.upload(img, imageDirName);
+        } catch (Exception err) {
+            imageUrl = "No Message Image";
+        }
+
+        ChatMessage message = new ChatMessage(requestDto.getRoomId(), requestDto.getSenderId() , requestDto.getMessage());
+
+        message.setImg(imageUrl);
+
+        messageRepository.save(message);
+
+//        MessageResponseDto messageResponseDto  = MessageResponseDto messageResponseDto.builder()
+//                .roomId(message.getChatRoom().getRoomId())
+//                .type(message.getType())
+//                .messageId(message.getId())
+//                .img(message.getImg())
+//                .sender(message.getUser().getNickname())
+//                .senderImg(message.getUser().getProfileImg())
+//                .createdAt(TimeConversion.timeChatConversion(message.getCreateAt()))
+//                .build();
+
+        System.out.println("전송");
+        // pub -> 채널 구독자에게 전달
+        redisMessagePublisher.publish(requestDto);
+        // 알림 보내기
+        notificationService.send(receiver);
+        System.out.println("성공");
+    }
+//    endregion
+
+    // redis 에 저장되어 있는 message 출력
+//    public List<ChatMessage> getMessages(Long roomId, Long userid , String nickname) {
+//        return messageRepository1.findAllMessage(String.valueOf(roomId));
+//    }
+
     // 채팅 메시지 및 알림 저장하기
     @Transactional
     public MessageResponseDto saveMessage(MessageRequestDto requestDto,
 //                                          Long userId
                                           String username,
-                                          String nickname) throws JsonProcessingException {
-        String topic = channelTopic.getTopic();
+                                          String nickname) {
+//        String topic = channelTopic.getTopic();
+
+        MessageRequestDto sendMessageDto = new MessageRequestDto();
+
+
         System.out.println("requestDto.getRoomId() = " + requestDto.getRoomId());
         ChatRoom chatRoom = roomRepository.findByIdFetch(requestDto.getRoomId())
                 .orElseThrow(() -> new CustomException(NOT_FOUND_CHAT));
 
-        // 비속어 필터링
-//        requestDto = filter.filtering(requestDto
+        System.out.println("chatRoomchatRoomchatRoomchatRoomchatRoomchatRoomchatRoomchatRoomchatRoom = " + chatRoom);
 
+        User receiver = chatRoom.getAcceptor();
         ChatMessage message = messageRepository.save(ChatMessage.createOf(requestDto, username , nickname));
-
-        System.out.println("============requestDto = " + requestDto + "====================");
-        System.out.println("============requestDto = " + username + "====================");
-//        System.out.println("============requestDto = " + userid + "====================");
-        System.out.println("============requestDto = " + nickname + "====================");
-
-
-
-        if (chatRoom.getAccOut()) {
-//            // 채팅 알림 저장 및 전달하기
-            Notification notification = notificationRepository.save(Notification.createOf(chatRoom, chatRoom.getAcceptor()));
-            System.out.println("----------------------chatRoom.getAcceptor() = " + chatRoom.getAcceptor());
-            messagingTemplate.convertAndSend(
-                    "/sub/notification/" + chatRoom.getAcceptor().getId(), NotificationDto.createFrom(notification)
-            );
-
-            chatRoom.accOut(false);
-        }
-        if (chatRoom.getReqOut()) {
-//            // 채팅 알림 저장 및 전달하기
-            Notification notification = notificationRepository.save(Notification.createOf(chatRoom, chatRoom.getRequester())
-            );
-            System.out.println("----------------------2번째 chatRoom.getAcceptor() = " + chatRoom.getAcceptor());
-
-            messagingTemplate.convertAndSend(
-                    "/sub/notification/" + chatRoom.getRequester().getId(), NotificationDto.createFrom(notification)
-            );
-            System.out.println("------------------------3번째 getRequester().getId() = " + chatRoom.getRequester().getId());
-
-
-            chatRoom.reqOut(false);
-        }
-        System.out.println("-------------------userId = " + username + "-------------------------");
-        ObjectMapper writer = new ObjectMapper();
-
-        System.out.println("writer = " + writer.writeValueAsString(requestDto));
-        redisTemplate.convertAndSend(topic,writer.writeValueAsString(requestDto) );
+//        if (chatRoom.getAccOut()) {
+////            // 채팅 알림 저장 및 전달하기
+//            Notification notification = notificationRepository.save(Notification.createOf(chatRoom, chatRoom.getAcceptor()));
+//            messagingTemplate.convertAndSend(
+//                    "/sub/notification/" + chatRoom.getAcceptor().getId(), NotificationDto.createFrom(notification));
+//            chatRoom.accOut(false);
+//        }
+//        if (chatRoom.getReqOut()) {
+////            // 채팅 알림 저장 및 전달하기
+//            Notification notification = notificationRepository.save(Notification.createOf(chatRoom, chatRoom.getRequester())
+//            );
+//            messagingTemplate.convertAndSend(
+//                    "/sub/notification/" + chatRoom.getRequester().getId(), NotificationDto.createFrom(notification)
+//            );
+//            chatRoom.reqOut(false);
+//        }
+//        ObjectMapper writer = new ObjectMapper();
+        // pub -> 채널 구독자에게 전달
+        redisMessagePublisher.publish(requestDto);
+        // 알림 보내기
+        notificationService.send(receiver);
+//        redisTemplate.convertAndSend(channelTopic.getTopic(), requestDto);
+//        redisTemplate.convertAndSend(topic,writer.writeValueAsString(requestDto) );
         return MessageResponseDto.createOf(message, username , nickname);
     }
 
     // 채팅 메시지 발송하기
-    public void sendMessage(MessageRequestDto requestDto, String userId, MessageResponseDto responseDto) throws JsonProcessingException {
+    public void sendMessage(MessageRequestDto requestDto, String userId, MessageResponseDto responseDto) {
         RoomMsgUpdateDto msgUpdateDto = RoomMsgUpdateDto.createFrom(requestDto);
-        String topic = channelTopic.getTopic();
-        ObjectMapper writer = new ObjectMapper();
-        System.out.println("writer = " + writer.writeValueAsString(requestDto));
-        redisTemplate.convertAndSend(topic, writer.writeValueAsString(requestDto));
+        MessageRequestDto sendMessageDto = new MessageRequestDto();
+        System.out.println(" 들어옴?들어옴?들어옴?들어옴?들어옴?들어옴?들어옴?들어옴?들어옴?들어옴?들어옴?들어옴?들어옴? " );
+//        String topic = channelTopic.getTopic();
+//        System.out.println("tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttopic = " + topic);
+//        ObjectMapper writer = new ObjectMapper();
+//        System.out.println("wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwriter = " + writer);
+        redisMessagePublisher.publish(requestDto);
+
+
+
+//        notificationService.send(requestDto.getRoomId());
+//        redisTemplate.convertAndSend(channelTopic.getTopic(), requestDto);
+//        redisTemplate.convertAndSend(topic, writer.writeValueAsString(requestDto));
         messagingTemplate.convertAndSend("/sub/chat/rooms/" + userId, msgUpdateDto); // 개별 채팅 목록 보기 업데이트
         messagingTemplate.convertAndSend("/sub/chat/room/" + requestDto.getRoomId(), responseDto); // 채팅방 내부로 메시지 전송
     }
-
-
 
 }

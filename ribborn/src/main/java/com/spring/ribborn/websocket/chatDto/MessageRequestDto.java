@@ -1,6 +1,7 @@
 package com.spring.ribborn.websocket.chatDto;
 
 
+import com.spring.ribborn.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,6 @@ public class MessageRequestDto {
     private Long senderId;
     private String nickname;
     private String message;
-    private String type; // 바꾸던가
+    private String type;
     private Boolean isRead;
 }

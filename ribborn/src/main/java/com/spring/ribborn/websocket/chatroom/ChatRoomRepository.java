@@ -1,9 +1,8 @@
-package com.spring.ribborn.websocket.chat;
+package com.spring.ribborn.websocket.chatroom;
 
 
 import com.spring.ribborn.model.User;
 import com.spring.ribborn.websocket.chatDto.RoomDto;
-import com.spring.ribborn.websocket.ChatRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

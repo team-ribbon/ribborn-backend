@@ -1,6 +1,6 @@
 package com.spring.ribborn.websocket.chat;
 
-import com.spring.ribborn.websocket.ChatMessage;
+import com.spring.ribborn.websocket.chatroom.ChatRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,5 +25,8 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
     @Query("UPDATE ChatMessage msg SET msg.isRead = true WHERE msg.roomId = :roomId AND msg.senderId <> :userId AND msg.isRead = false")
     void updateChatMessage(Long roomId, Long userId);
 
-
+    ChatRoom findByRoomId(Long roomId);
 }
+
+
+

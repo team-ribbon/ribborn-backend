@@ -1,12 +1,11 @@
-package com.spring.ribborn.websocket.chat;
+package com.spring.ribborn.websocket.chatroom;
 
 
 import com.spring.ribborn.exception.CustomException;
 import com.spring.ribborn.repository.UserRepository;
 import com.spring.ribborn.model.User;
-import com.spring.ribborn.sse.Notification;
 import com.spring.ribborn.sse.NotificationRepository;
-import com.spring.ribborn.websocket.*;
+import com.spring.ribborn.websocket.chat.ChatMessageRepository;
 import com.spring.ribborn.websocket.chatDto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
@@ -17,8 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.spring.ribborn.exception.ErrorCode.*;
-import static com.spring.ribborn.websocket.chat.ChatRoomService.UserTypeEnum.Type.ACCEPTOR;
-import static com.spring.ribborn.websocket.chat.ChatRoomService.UserTypeEnum.Type.REQUESTER;
+import static com.spring.ribborn.websocket.chatroom.ChatRoomService.UserTypeEnum.Type.ACCEPTOR;
+import static com.spring.ribborn.websocket.chatroom.ChatRoomService.UserTypeEnum.Type.REQUESTER;
 //import static com.spring.ribborn.websocket.chatDto.NotificationType.*;
 
 @RequiredArgsConstructor

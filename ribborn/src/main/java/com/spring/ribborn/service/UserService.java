@@ -1,5 +1,6 @@
 package com.spring.ribborn.service;
 
+import com.spring.ribborn.aop.Logging;
 import com.spring.ribborn.dto.requestDto.LoginRequestDto;
 import com.spring.ribborn.dto.requestDto.UserRequestDto;
 import com.spring.ribborn.dto.requestDto.UserUpdateRequestDto;
@@ -63,6 +64,7 @@ public class UserService {
     }
 
     // 로그인
+    @Logging
     public String login(LoginRequestDto loginRequestDto) {
 //        User user = userRepository.findByUsername(loginRequestDto.getUsername()).orElseThrow(
 //                () -> new NullPointerException("해당 아이디가 존재하지 않습니다.");

@@ -1,13 +1,15 @@
 package com.spring.ribborn.websocket.chatDto;
 
 
-import com.spring.ribborn.websocket.ChatMessage;
+import com.spring.ribborn.websocket.chat.ChatMessage;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 public class MessageResponseDto {
 
@@ -20,6 +22,8 @@ public class MessageResponseDto {
     private LocalDateTime date;
     private Boolean isRead = false;
     private String type;
+
+    private String img;
 
     public MessageResponseDto(MessageRequestDto messageRequestDto) {
         this.messageId = Long.valueOf(messageRequestDto.getMessage());

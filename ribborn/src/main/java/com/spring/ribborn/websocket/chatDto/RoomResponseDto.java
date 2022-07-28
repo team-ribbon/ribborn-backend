@@ -6,8 +6,8 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
-import static com.spring.ribborn.websocket.chat.ChatRoomService.UserTypeEnum.Type.ACCEPTOR;
-import static com.spring.ribborn.websocket.chat.ChatRoomService.UserTypeEnum.Type.REQUESTER;
+import static com.spring.ribborn.websocket.chatroom.ChatRoomService.UserTypeEnum.Type.ACCEPTOR;
+import static com.spring.ribborn.websocket.chatroom.ChatRoomService.UserTypeEnum.Type.REQUESTER;
 
 @Getter
 @NoArgsConstructor

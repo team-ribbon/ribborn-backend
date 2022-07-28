@@ -17,8 +17,21 @@ import java.util.*;
 @Component
 public class JwtTokenProvider {
 
-    // secretKey 와 같은 민감정보는 숨기는 것이 좋다. (이것은 연습이라서 노출함)
-    @Value("K7kjHSF345h345S86F3A2erGB98iWIad")
+    // secretKey 와 같은 민감정보는 숨기는 것이 좋다.
+    //정석대로 하려면 byte수에 맞게 디코딩해서 시크릿키를 구성해야하는데
+
+
+//    @Value("K7kjHSF345h345S86F3A2erGB98iWIad")
+////    private String secretKey;
+//
+//    public static String secretKey;
+//
+//    @Value("${jwt.secret-key}")
+//    private void setKey(String secret) {
+//        JwtTokenProvider.secretKey = secret;
+//    }
+
+    @Value("${jwt.secret}")
     private String secretKey;
 
     // 토큰 유효시간 5분 설정 (1000L = 1초, 1000L * 60 = 1분)

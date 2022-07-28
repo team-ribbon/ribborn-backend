@@ -1,7 +1,7 @@
 //package com.spring.ribborn.redis;
 //
 //
-//import com.spring.ribborn.websocket.ChatMessage;
+//import com.spring.ribborn.websocket.chat.ChatMessage;
 //import lombok.RequiredArgsConstructor;
 //import lombok.extern.slf4j.Slf4j;
 //import org.springframework.data.redis.core.RedisTemplate;
@@ -16,8 +16,6 @@
 //    private final RedisTemplate<String, Object> redisTemplate;
 //
 //    public void publish(ChannelTopic topic, ChatMessage message) {
-//        log.info("ChannelTopic : {}", topic.getTopic());
-//        log.info("ChatMessage : {}", message.getType());
 //        redisTemplate.convertAndSend(topic.getTopic(), message);
 //        System.out.println("발행 완료!");
 //    }

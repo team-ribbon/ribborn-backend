@@ -1,8 +1,8 @@
-//package com.spring.ribborn.redis;
+//package com.spring.ribborn.redis;//package com.spring.ribborn.redis;
 //
 //import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 //import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.spring.ribborn.websocket.ChatMessage;
+//import com.spring.ribborn.websocket.chat.ChatMessage;
 //import com.spring.ribborn.websocket.chatDto.MessageRequestDto;
 //import com.spring.ribborn.websocket.chatDto.MessageResponseDto;
 //import lombok.RequiredArgsConstructor;

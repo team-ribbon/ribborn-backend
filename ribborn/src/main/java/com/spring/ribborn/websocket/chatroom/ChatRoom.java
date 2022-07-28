@@ -1,4 +1,4 @@
-package com.spring.ribborn.websocket;
+package com.spring.ribborn.websocket.chatroom;
 
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -6,12 +6,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.spring.ribborn.model.TimeStamp;
 import com.spring.ribborn.model.User;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-import static com.spring.ribborn.websocket.chat.ChatRoomService.UserTypeEnum.Type.ACCEPTOR;
-import static com.spring.ribborn.websocket.chat.ChatRoomService.UserTypeEnum.Type.REQUESTER;
+import static com.spring.ribborn.websocket.chatroom.ChatRoomService.UserTypeEnum.Type.ACCEPTOR;
+import static com.spring.ribborn.websocket.chatroom.ChatRoomService.UserTypeEnum.Type.REQUESTER;
 
 @Getter @Entity
 @JsonAutoDetect
