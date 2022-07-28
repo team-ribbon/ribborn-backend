@@ -1,4 +1,4 @@
-package com.spring.ribborn.websocket;
+package com.spring.ribborn.sse;
 
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;

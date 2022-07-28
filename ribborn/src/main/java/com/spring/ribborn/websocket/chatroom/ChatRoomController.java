@@ -34,38 +34,8 @@ public class ChatRoomController {
         System.out.println("------ 주는 쪽 userid = " + userid);
         System.out.println("------받는쪽  acceptorId = " + acceptorId);
 
-//
-//        String testname = requestDto.getUsername();
-//        System.out.println("------test1 = " + testname);
-//
-//        String testnick = requestDto.getNickname();
-//        System.out.println("-------testnick = " + testnick);
-//
-//        String test1 = requestDto.getPhoneNum();
-//        System.out.println("------testname = " + test1);
-
-
         return roomService.createRoom(userid, acceptorId);
     }
-
-    // 채팅방 만들기
-
-//    @PostMapping("/room")
-//    public Long createRoom(@AuthenticationPrincipal UserDetailsImpl userDetails,
-//                           @RequestBody UserRequestDto requestDto) {
-//        Long userId = userDetails.getUserId();
-//        Long userIdDto = requestDto.getUserid();
-////        String usernamee = userDetails.getUsername();
-////        String usernameDto = requestDto.getUsername();
-////        System.out.println("username = " + usernamee);
-////        System.out.println("usernameDto = " + usernameDto);
-//
-//        System.out.println("userIdDto = " + userIdDto);
-//        System.out.println("userId = " + userId);
-//
-//        return roomService.createRoom(userId, userIdDto);
-////        return roomService.createRoom(username, requestDto);
-//    }
 
     // 전체 채팅방 목록 가져오기
     @GetMapping("/rooms")
@@ -90,13 +60,13 @@ public class ChatRoomController {
     }
 
     // 채팅방 나가기
-    @GetMapping("/room/exit/{roomId}")
-    public ResponseEntity<OkDto> exitRoom(@AuthenticationPrincipal UserDetailsImpl userDetails,
-                                          @PathVariable Long roomId) {
-        Long userid = userDetails.getUserId();
-        roomService.exitRoom(roomId, userid);
-        return ResponseEntity.ok().body(OkDto.valueOf("true"));
-    }
+//    @GetMapping("/room/exit/{roomId}")
+//    public ResponseEntity<OkDto> exitRoom(@AuthenticationPrincipal UserDetailsImpl userDetails,
+//                                          @PathVariable Long roomId) {
+//        Long userid = userDetails.getUserId();
+//        roomService.exitRoom(roomId, userid);
+//        return ResponseEntity.ok().body(OkDto.valueOf("true"));
+//    }
 
     // 채팅 즐겨찾기 고정
 //    @PutMapping("/api/room/{roomId}")

@@ -1,10 +1,14 @@
 package com.spring.ribborn.websocket;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.spring.ribborn.websocket.chatDto.MessageRequestDto;
 import com.spring.ribborn.utils.CreationDate;
 import com.spring.ribborn.model.User;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+//import lombok.NoArgsConstructor;
+import lombok.extern.jackson.Jacksonized;
 //import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -12,8 +16,11 @@ import javax.persistence.*;
 import static com.spring.ribborn.websocket.chatDto.MessageTypeEnum.*;
 
 @Getter @Entity
-//@JsonAutoDetect
-@NoArgsConstructor
+@JsonAutoDetect
+//@NoArgsConstructor
+//@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+
 //@AllArgsConstructor
 public class ChatMessage extends CreationDate {
 
@@ -35,11 +42,14 @@ public class ChatMessage extends CreationDate {
     private String message;
 
     @Column(nullable = false)
-//    @Enumerated(value = EnumType.STRING)
+////    @Enumerated(value = EnumType.STRING)
     private String type;
 
     @Column(nullable = false)
     private Boolean isRead;
+
+    @Column
+    private String img; // 이미지 첨부시
 
 
 
@@ -58,6 +68,12 @@ public class ChatMessage extends CreationDate {
         return message;
     }
 
+    public ChatMessage(Long roomId, Long userId, String message) {
+        this.roomId = roomId;
+        this.senderId = userId;
+        this.message = message;
+    }
+
 
     public static ChatMessage createInitOf(Long roomId) {
 
@@ -67,7 +83,7 @@ public class ChatMessage extends CreationDate {
         message.senderId = roomId;
 //        message.message = "채팅방이 개설되었습니다.";
         message.isRead = true;
-        message.type = "STATUS";
+//        message.type = "STATUS";
 
         return message;
     }
@@ -77,11 +93,20 @@ public class ChatMessage extends CreationDate {
         ChatMessage message = new ChatMessage();
 
         message.roomId = roomId;
-        message.senderId = roomId;
+//        message.senderId = roomId;
         message.message = user.getNickname() + "님이 채팅방을 나갔습니다.";
         message.isRead = true;
         message.type = "STATUS";
 
         return message;
     }
+
+    public ChatMessage(){
+
+    }
+
+        public void setImg(String img) {
+        this.img = img;
+    }
+
 }

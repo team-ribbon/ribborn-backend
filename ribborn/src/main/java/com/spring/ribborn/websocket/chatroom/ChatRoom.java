@@ -1,6 +1,8 @@
 package com.spring.ribborn.websocket;
 
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.spring.ribborn.model.TimeStamp;
 import com.spring.ribborn.model.User;
 import lombok.Getter;
@@ -12,7 +14,9 @@ import static com.spring.ribborn.websocket.chat.ChatRoomService.UserTypeEnum.Typ
 import static com.spring.ribborn.websocket.chat.ChatRoomService.UserTypeEnum.Type.REQUESTER;
 
 @Getter @Entity
-@NoArgsConstructor
+@JsonAutoDetect
+@JsonIgnoreProperties(ignoreUnknown = true)
+//@NoArgsConstructor
 public class ChatRoom extends TimeStamp {
 
     @Id
@@ -39,6 +43,10 @@ public class ChatRoom extends TimeStamp {
 
     @Column(nullable = false)
     private Boolean reqFixed;
+
+    public ChatRoom(){
+
+    }
 
     public static ChatRoom createOf(User requester, User acceptor) {
 

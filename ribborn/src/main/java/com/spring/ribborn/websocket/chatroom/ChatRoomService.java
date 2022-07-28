@@ -4,6 +4,8 @@ package com.spring.ribborn.websocket.chat;
 import com.spring.ribborn.exception.CustomException;
 import com.spring.ribborn.repository.UserRepository;
 import com.spring.ribborn.model.User;
+import com.spring.ribborn.sse.Notification;
+import com.spring.ribborn.sse.NotificationRepository;
 import com.spring.ribborn.websocket.*;
 import com.spring.ribborn.websocket.chatDto.*;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,6 @@ import java.util.List;
 import static com.spring.ribborn.exception.ErrorCode.*;
 import static com.spring.ribborn.websocket.chat.ChatRoomService.UserTypeEnum.Type.ACCEPTOR;
 import static com.spring.ribborn.websocket.chat.ChatRoomService.UserTypeEnum.Type.REQUESTER;
-import static com.spring.ribborn.websocket.chatDto.NotificationType.*;
 //import static com.spring.ribborn.websocket.chatDto.NotificationType.*;
 
 @RequiredArgsConstructor
@@ -49,13 +50,13 @@ public class ChatRoomService {
         ChatRoom chatRoom = roomRepository.findByUser(requester, acceptor)
                 .orElseGet( () -> {
                     ChatRoom c = roomRepository.save(ChatRoom.createOf(requester, acceptor));
-//                    // 채팅방 개설 메시지 생성
-                    notificationRepository.save(Notification.createOf(c, acceptor)); // 알림 작성 및 전달
-                    messagingTemplate.convertAndSend("/sub/notification/" + acceptorId,
-                            MessageResponseDto.createFrom(
-                                    messageRepository.save(ChatMessage.createInitOf(c.getId()))
-                            )
-                    );
+//               // 채팅방 개설 메시지 생성
+//                    notificationRepository.save(Notification.createOf(c, acceptor)); // 알림 작성 및 전달
+//                    messagingTemplate.convertAndSend("/sub/notification/" + acceptorId,
+//                            MessageResponseDto.createFrom(
+//                                    messageRepository.save(ChatMessage.createInitOf(c.getId()))
+//                            )
+//                    );
                     return c;
                 });
         chatRoom.enter(); // 채팅방에 들어간 상태로 변경 -> 람다를 사용해 일괄처리할 방법이 있는지 연구해 보도록 합니다.
@@ -65,36 +66,36 @@ public class ChatRoomService {
 
 
     // 방을 나간 상태로 변경하기
-    @Transactional
-    public void exitRoom(Long id, Long userid) {
-        // 회원 찾기
-        User user = userRepository.findById(userid)
-                .orElseThrow(() -> new CustomException(NOT_FOUND_USER)
-                );
-        // 채팅방 찾아오기
-        ChatRoom chatRoom = roomRepository.findByIdFetch(id)
-                .orElseThrow(() -> new CustomException(NOT_FOUND_CHAT)
-                );
-        if (chatRoom.getRequester().getId().equals(userid)) {
-            chatRoom.reqOut(true);
-        } else if (chatRoom.getAcceptor().getId().equals(userid)) {
-            chatRoom.accOut(true);
-        } else {
-            throw new CustomException(EXIT_INVAILED);
-        }
-
-        if (chatRoom.getAccOut() && chatRoom.getReqOut()) {
-            roomRepository.deleteById(chatRoom.getId()); // 둘 다 나간 상태라면 방 삭제
-            notificationRepository.deleteByChangeIdAndType(chatRoom.getId(), CHAT);
-        } else {
-            // 채팅방 종료 메시지 전달 및 저장
-            messagingTemplate.convertAndSend("/sub/chat/room/" + chatRoom.getId(),
-                    MessageResponseDto.createFrom(
-                            messageRepository.save(ChatMessage.createOutOf(id, user))
-                    )
-            );
-        }
-    }
+//    @Transactional
+//    public void exitRoom(Long id, Long userid) {
+//        // 회원 찾기
+//        User user = userRepository.findById(userid)
+//                .orElseThrow(() -> new CustomException(NOT_FOUND_USER)
+//                );
+//        // 채팅방 찾아오기
+//        ChatRoom chatRoom = roomRepository.findByIdFetch(id)
+//                .orElseThrow(() -> new CustomException(NOT_FOUND_CHAT)
+//                );
+//        if (chatRoom.getRequester().getId().equals(userid)) {
+//            chatRoom.reqOut(true);
+//        } else if (chatRoom.getAcceptor().getId().equals(userid)) {
+//            chatRoom.accOut(true);
+//        } else {
+//            throw new CustomException(EXIT_INVAILED);
+//        }
+//
+//        if (chatRoom.getAccOut() && chatRoom.getReqOut()) {
+//            roomRepository.deleteById(chatRoom.getId()); // 둘 다 나간 상태라면 방 삭제
+//            notificationRepository.deleteByChangeIdAndType(chatRoom.getId(), CHAT);
+//        } else {
+//            // 채팅방 종료 메시지 전달 및 저장
+//            messagingTemplate.convertAndSend("/sub/chat/room/" + chatRoom.getId(),
+//                    MessageResponseDto.createFrom(
+//                            messageRepository.save(ChatMessage.createOutOf(id, user))
+//                    )
+//            );
+//        }
+//    }
 
     // 사용자별 채팅방 전체 목록 가져오기
     public List<RoomResponseDto> getRooms(Long userId, String nickname) {
@@ -102,13 +103,8 @@ public class ChatRoomService {
         User user = userRepository.findById(userId).orElseThrow(
                 () -> new NullPointerException("해당 아이디가 존재하지 않습니다.")
         );
-        System.out.println("***************************************** user = " + user);
         // 방 목록 찾기
-//        List<RoomDto> dtos = roomRepository.findAllWith(user);
         List<RoomDto> dtos = roomRepository.findAllWith(user);
-//        System.out.println("----------1---1---1-------1--1-----1----1------1------dtos = " + dtos);
-        System.out.println("llllllllllllllllllllllllllllllllllllllll 사용자별 채팅방 전체 목록 user = " + user);
-        System.out.println("ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd dtos = " + dtos.size());
         // 메시지 리스트 만들기
         return getMessages(dtos, userId, nickname);
     }
@@ -138,6 +134,7 @@ public class ChatRoomService {
             if (dto.getAccId().equals(userId)) {
                 if (!dto.getAccOut()) { // 만약 Acc(내)가 나가지 않았다면
                     int unreadCnt = messageRepository.countMsg(dto.getReqId(), dto.getRoomId());
+                    System.out.println(" 11111111111111111111111 unreadCntunreadCntunreadCntunreadCntunreadCntunreadCntunreadCntunreadCntunreadCntunreadCntunreadCnt = " + unreadCnt);
 //                    Boolean isBanned = bannedRepository.existsBy(dto.getAccId(), dto.getReqId());
                     if (dto.getAccFixed()) {
                         prefix.add(RoomResponseDto.createOf(ACCEPTOR, dto, unreadCnt, false));
@@ -148,6 +145,8 @@ public class ChatRoomService {
             } else if (dto.getReqId().equals(userId)) {
                 if (!dto.getReqOut()) { // 만약 Req(내)가 나가지 않았다면
                     int unreadCnt = messageRepository.countMsg(dto.getAccId(), dto.getRoomId());
+                    System.out.println(" 11111111111111111111111 unreadCntunreadCntunreadCntunreadCntunreadCntunreadCntunreadCntunreadCntunreadCntunreadCntunreadCnt = " + unreadCnt);
+
 //                    Boolean isBanned = bannedRepository.existsBy(dto.getAccId(), dto.getReqId());
                     if (dto.getReqFixed()) {
                         prefix.add(RoomResponseDto.createOf(REQUESTER, dto, unreadCnt, false));
@@ -158,6 +157,8 @@ public class ChatRoomService {
             }
         }
         prefix.addAll(suffix);
+        System.out.println("suffixsuffixsuffixsuffixsuffixsuffixsuffixsuffixsuffixsuffixsuffixsuffixsuffixsuffix = " + suffix);
+        System.out.println("prefixprefixprefixprefixprefixprefixprefixprefixprefixprefixprefixprefixprefixprefix = " + prefix);
         return prefix;
     }
 

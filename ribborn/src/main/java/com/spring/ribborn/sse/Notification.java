@@ -57,18 +57,18 @@ public class Notification extends CreationDate {
 //        return  notification;
 //    }
 
-    public static Notification createOf(String nickname){
-
-        Notification notification = new Notification();
-
-//        notification.userId = barter.getSellerId();
-//        notification.changeId = barter.getId();
-        notification.nickname = nickname;
-        notification.isRead = false;
-//        notification.type = BARTER;
-
-        return  notification;
-    }
+//    public static Notification createOf(String nickname){
+//
+//        Notification notification = new Notification();
+//
+////        notification.userId = barter.getSellerId();
+////        notification.changeId = barter.getId();
+//        notification.nickname = nickname;
+//        notification.isRead = false;
+//        notification.type = "BARTER";
+//
+//        return  notification;
+//    }
 //
 //    public static Notification createOfBarter(Barter barter, String nickname, String value, String type){
 //
@@ -103,7 +103,7 @@ public class Notification extends CreationDate {
         }
 
         notification.isRead = false;
-        notification.type = "CHAT";
+        notification.type = "TALK";
 
         return notification;
     }

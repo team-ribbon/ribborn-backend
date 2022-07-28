@@ -3,6 +3,7 @@ package com.spring.ribborn.websocket;
 //import com.spring.ribborn.websocket.chatDto.NotificationDto;
 import com.spring.ribborn.exception.CustomException;
 import com.spring.ribborn.model.User;
+import com.spring.ribborn.sse.SseDto;
 import com.spring.ribborn.websocket.chat.ChatRoomRepository;
 //import com.spring.ribborn.security.UserDetailsImpl;
 import com.spring.ribborn.websocket.chatDto.NotificationDto;
@@ -28,14 +29,11 @@ import static io.lettuce.core.RedisURI.DEFAULT_TIMEOUT;
 
 public class NotificationService {
 
-//    private static final Long DEFAULT_TIMEOUT = 60L * 1000;
+    private static final Long DEFAULT_TIMEOUT = 60L * 1000;
 
     private final NotificationRepository notificationRepository;
     private final ChatRoomRepository roomRepository;
     private final EmitterRepository emitterRepository;
-//    private final BarterRepository barterRepository;
-//    private final ItemRepository itemRepository;
-
 
     public SseEmitter subscribe(Long userId, String lastEventId) {
         // 1
@@ -45,7 +43,9 @@ public class NotificationService {
 
         // 2
 //        SseEmitter emitter = emitterRepository.save(id, new SseEmitter());
-        SseEmitter emitter = new SseEmitter();
+        SseEmitter emitter = new SseEmitter(DEFAULT_TIMEOUT);
+        SseDto sseDto = new SseDto();
+        System.out.println("sseDto = " + sseDto);
 
         System.out.println("emitteremitteremitteremitteremitteremitteremitteremitteremitteremitteremitteremitteremitteremitteremitter emitter = " + emitter);
         emitter.onCompletion(() -> emitterRepository.deleteById(id));
@@ -54,7 +54,7 @@ public class NotificationService {
         // 3
         // 503 에러를 방지하기 위한 더미 이벤트 전송
         sendToClient(emitter, id, "EventStream Created. [userId=" + userId + "]");
-        System.out.println(" 더미 데이터 전송  " );
+        System.out.println(" 더미 데이터 전송 ");
         // 4
         // 클라이언트가 미수신한 Event 목록이 존재할 경우 전송하여 Event 유실을 예방
         // 현재 이쪽 에러
@@ -70,11 +70,12 @@ public class NotificationService {
         }
 
         System.out.println(" 여긴 마지막 리턴전인데 오니?? " + emitter );
-        return emitter;
+        return emitter ;
     }
 
 //    private void sendToClient( String id, Object data) {
-    @Async
+//    @Async
+
     public void sendToClient(SseEmitter emitter, String id, Object data) {
         System.out.println("센트투클라이언트 진입");
         try {
