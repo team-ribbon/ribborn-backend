@@ -13,12 +13,14 @@ public class ReformChangeRequestDto {
 
     private List<String> fileUrl;
     private List<String> imageUrl;
+    private List<String> deleteImage;
 
-    public ReformChangeRequestDto(String title, String category, String content, List<String> imageUrl, String region) {
+    public ReformChangeRequestDto(String title, String category, String content, List<String> imageUrl,List<String> deleteImage, String region) {
         this.title = title;
         this.category = category;
         this.content = content;
         this.imageUrl = imageUrl;
         this.region = region;
+        this.deleteImage = deleteImage;
     }
 }
