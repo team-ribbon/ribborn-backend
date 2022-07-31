@@ -52,7 +52,7 @@ public class PostDetailController {
     }
 
     //게시글 수정
-    @PutMapping(value = {"/api/qnaPosts/{postId}","/api/reviewPosts/{postId}","/api/lookPosts/{postid}"})
+    @PutMapping(value = {"/api/qnaPosts/{postId}","/api/reviewPosts/{postId}","/api/lookPosts/{postId}"})
     public ResponseEntity<ApiResponseMessage> postChange(@PathVariable("postId") Long postId,
                                                          @RequestPart(value = "file", required = false) List<MultipartFile> fileList,
                                                          @RequestPart(value = "key") PostChangeRequestDto postChangeRequestDto){
