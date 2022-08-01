@@ -16,15 +16,15 @@ public class RoomResponseDto {
     private Long roomId;
     private Long userId;
     private String nickname;
-//    private String profile;
     private String senderName;
     private String message;
     private LocalDateTime date;
     private Boolean isRead;
     private Boolean isBanned;
     private int unreadCnt;
+    private String type;
 
-    public static RoomResponseDto createOf(String flag, RoomDto dto, int unreadCnt, Boolean isBanned){
+    public static RoomResponseDto createOf(String type, String flag, RoomDto dto, int unreadCnt, Boolean isBanned){
 
         RoomResponseDto responseDto = new RoomResponseDto();
 
@@ -35,7 +35,8 @@ public class RoomResponseDto {
         responseDto.isRead = dto.getIsRead();
         responseDto.isBanned = isBanned;
         responseDto.unreadCnt = unreadCnt;
-        responseDto.senderName = dto.getAccNickname();
+        responseDto.senderName = String.valueOf(dto.getAccId());
+        responseDto.type = type;
 
         switch ( flag ) {
 
@@ -58,4 +59,6 @@ public class RoomResponseDto {
 
         return responseDto;
     }
+
+
 }

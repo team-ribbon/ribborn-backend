@@ -1,6 +1,7 @@
 package com.spring.ribborn.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.spring.ribborn.dto.requestDto.PostProcessChangeRequestDto;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,6 +41,11 @@ public class Post extends TimeStamp{
         contents.add(content);
         content.setPost(this);
     }
+
+    public void ProcessUpdate(PostProcessChangeRequestDto postProcessChangeRequestDto) {
+        this.process = postProcessChangeRequestDto.getProcess();
+    }
+
 
 
 }

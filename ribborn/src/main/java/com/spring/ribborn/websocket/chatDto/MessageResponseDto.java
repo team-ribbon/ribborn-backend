@@ -40,14 +40,12 @@ public class MessageResponseDto {
 
         MessageResponseDto responseDto = new MessageResponseDto();
 
-//        responseDto.senderId = userId;
         responseDto.senderName = username;
         responseDto.messageId = message.getId();
         responseDto.message = message.getMessage();
         responseDto.date = message.getCreatedAt();
         responseDto.type = message.getType();
         responseDto.senderNickname = nickname;
-//        responseDto.senderId = userid;
 
         return responseDto;
     }

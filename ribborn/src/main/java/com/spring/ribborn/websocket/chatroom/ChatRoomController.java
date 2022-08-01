@@ -1,17 +1,22 @@
 package com.spring.ribborn.websocket.chatroom;
 
 
+import com.spring.ribborn.dto.OkDto;
 import com.spring.ribborn.dto.requestDto.UserRequestDto;
+import com.spring.ribborn.exception.CustomException;
 import com.spring.ribborn.websocket.chatDto.MessageResponseDto;
 import com.spring.ribborn.websocket.chatDto.RoomResponseDto;
 import com.spring.ribborn.security.UserDetailsImpl;
 import com.spring.ribborn.websocket.chat.ChatMessageService;
 import com.spring.ribborn.websocket.chatroom.ChatRoomService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static com.spring.ribborn.exception.ErrorCode.NOT_FOUND_CHAT;
 
 @RestController
 @RequestMapping("/chat")
@@ -19,6 +24,7 @@ import java.util.List;
 public class ChatRoomController {
 
     private final ChatRoomService roomService;
+    private final ChatRoomRepository roomRepository;
     private final ChatMessageService messageService;
 
 
@@ -42,6 +48,7 @@ public class ChatRoomController {
         String nickname = userDetails.getNickname();
         System.out.println(" 전체 채팅방 목록 가져오기 userId = " + userId);
         System.out.println(" 전체 채팅방 목록 가져오기 nickname = " + nickname);
+
         return roomService.getRooms(userId , nickname);
     }
 
@@ -49,22 +56,20 @@ public class ChatRoomController {
     @GetMapping("/room/{roomId}")
     public List<MessageResponseDto> getMessage(@PathVariable Long roomId ,
                                                @AuthenticationPrincipal UserDetailsImpl userDetails) {
-//                                               @PageableDefault(page = 1, size = 20) Pageable pageable) {
         Long userid = userDetails.getUserId();
         String nickname = userDetails.getNickname();
-        System.out.println("개별 채팅방 메시지 가져오기 " + userid);
-        System.out.println("개별 채팅방 메시지 가져오기 닉닉닉닉닉닉닉닉닉닉닉닉닉닉닉닉닉닉닉 " + nickname);
         return messageService.getMessage(roomId, userid, nickname);
     }
 
+
     // 채팅방 나가기
-//    @GetMapping("/room/exit/{roomId}")
-//    public ResponseEntity<OkDto> exitRoom(@AuthenticationPrincipal UserDetailsImpl userDetails,
-//                                          @PathVariable Long roomId) {
-//        Long userid = userDetails.getUserId();
-//        roomService.exitRoom(roomId, userid);
-//        return ResponseEntity.ok().body(OkDto.valueOf("true"));
-//    }
+    @GetMapping("/room/exit/{roomId}")
+    public ResponseEntity<OkDto> exitRoom(@AuthenticationPrincipal UserDetailsImpl userDetails,
+                                          @PathVariable Long roomId) {
+        Long userid = userDetails.getUserId();
+        roomService.exitRoom(roomId, userid);
+        return ResponseEntity.ok().body(OkDto.valueOf("true"));
+    }
 
     // 채팅 즐겨찾기 고정
 //    @PutMapping("/api/room/{roomId}")

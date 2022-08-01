@@ -110,4 +110,19 @@ public class PostDetailController {
         ApiResponseMessage message = new ApiResponseMessage("Success", "상태가 변경되었습니다.", "", "");
         return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
     }
+
+
+
+    @PutMapping("/api/post/{postId}/process")
+    public ResponseEntity<ApiResponseMessage> processChange(@PathVariable("postId") Long postId ,
+                                                               @RequestBody PostProcessChangeRequestDto postProcessChangeRequestDto,
+                                                               @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long userId = userDetails.getUserId();
+        postDetailService.postProcessChange(postId, postProcessChangeRequestDto ,userId);
+        ApiResponseMessage message = new ApiResponseMessage("Success", "상태가 변경되었습니다.", "", "");
+        return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
+
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.spring.ribborn.model;
 
+import com.spring.ribborn.websocket.chatroom.ChatRoom;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -19,4 +20,6 @@ public abstract class TimeStamp {
 
     @LastModifiedDate
     private LocalDateTime modifyAt;
+
+
 }

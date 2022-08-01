@@ -55,6 +55,12 @@ public class Notification extends TimeStamp {
         this.isRead = isRead;
     }
 
+
+    public void read() {
+        this.isRead = true;
+    }
+
+
 //    public static Notification createOf(ChatRoom chatRoom, User user){
 //
 //        Notification notification = new Notification();
@@ -77,10 +83,6 @@ public class Notification extends TimeStamp {
 
 
 
-
-    public void read() {
-        isRead = true;
-    }
 
 //    public String getContent() {
 //        return content.getContent();

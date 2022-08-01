@@ -6,12 +6,14 @@ import com.spring.ribborn.websocket.chatDto.MessageRequestDto;
 import com.spring.ribborn.utils.CreationDate;
 import com.spring.ribborn.model.User;
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 //import lombok.NoArgsConstructor;
 //import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Getter @Entity
+@Getter
+@Entity @Component
 @JsonAutoDetect
 //@NoArgsConstructor
 //@JsonInclude(JsonInclude.Include.NON_NULL)
@@ -38,7 +40,7 @@ public class ChatMessage extends CreationDate {
     private String message;
 
     @Column(nullable = false)
-////    @Enumerated(value = EnumType.STRING)
+//    @Enumerated(value = EnumType.STRING)
     private String type;
 
     @Column(nullable = false)
@@ -46,6 +48,8 @@ public class ChatMessage extends CreationDate {
 
     @Column
     private String img; // 이미지 첨부시
+
+
 
 
 
@@ -79,7 +83,7 @@ public class ChatMessage extends CreationDate {
         message.senderId = roomId;
 //        message.message = "채팅방이 개설되었습니다.";
         message.isRead = true;
-//        message.type = "STATUS";
+        message.type = "STATUS";
 
         return message;
     }
@@ -89,8 +93,9 @@ public class ChatMessage extends CreationDate {
         ChatMessage message = new ChatMessage();
 
         message.roomId = roomId;
-//        message.senderId = roomId;
-        message.message = user.getNickname() + "님이 채팅방을 나갔습니다.";
+//        message.senderId = user.getId();
+        message.senderName = user.getUsername();
+        message.message = user.getNickname()  + "님이 채팅방을 나갔습니다.";
         message.isRead = true;
         message.type = "STATUS";
 

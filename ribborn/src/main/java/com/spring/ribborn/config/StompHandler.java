@@ -18,9 +18,6 @@ import static com.spring.ribborn.exception.ErrorCode.*;
 @Component
 @RequiredArgsConstructor
 public class StompHandler implements ChannelInterceptor { // 이론상 웹소켓이 실행되기 전에 작동한다고 합니다.
-
-//    private final HeaderTokenExtractor extractor;
-//    private final JwtDecoder jwtDecoder;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
@@ -47,8 +44,6 @@ public class StompHandler implements ChannelInterceptor { // 이론상 웹소켓
         try {
             String token = jwtTokenProvider.extract(accessor.getFirstNativeHeader("Authorization"));
             String user = jwtTokenProvider.getUserPk(token);
-//            String user = jwtTokenProvider.getUserPk(token);
-//            String nickname = jwtTokenProvider.decodeTokenByNickname(token);
         } catch (Exception e) {
             throw new CustomException(INVAILD_CONTENTS_TOKEN);
         }

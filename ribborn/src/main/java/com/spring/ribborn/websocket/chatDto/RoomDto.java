@@ -11,8 +11,6 @@ public interface RoomDto {
     Long getAccId();
     String getAccNickname();
     String getReqNickname();
-    String getAccProfile();
-    String getReqProfile();
     Boolean getReqOut();
     Boolean getAccOut();
     Boolean getIsRead();
@@ -21,5 +19,7 @@ public interface RoomDto {
     Long getIsBanned();
     LocalDateTime getDate();
     String getMessage();
+
+
 
 }

@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.util.UUID;
@@ -42,11 +43,10 @@ public class S3Uploader {
     // 로컬에 저장된 이미지 지우기
     private void removeNewFile(File targetFile) {
         if (targetFile.delete()) {
-            System.out.println("local File delete success");
+            log.info("local File delete success");
             return;
         }
-        System.out.println("local File delete fail");
+        log.info("local File delete fail");
     }
-
 
 }

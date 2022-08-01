@@ -8,7 +8,6 @@ import com.spring.ribborn.dto.responseDto.*;
 import com.spring.ribborn.model.Contents;
 import com.spring.ribborn.model.Love;
 import com.spring.ribborn.model.Post;
-import com.spring.ribborn.model.User;
 import com.spring.ribborn.repository.LoveFindRepository;
 import com.spring.ribborn.repository.PostDetailRepository;
 import com.spring.ribborn.repository.PostRepository;
@@ -196,4 +195,22 @@ public class PostDetailService {
 
 
     }
+
+
+    @Transactional
+    public void postProcessChange(Long postId, PostProcessChangeRequestDto postProcessChangeRequestDto, Long userId) {
+
+        Post post = postRepository.findById(postId).orElseThrow(
+                () -> new NullPointerException("해당 게시긇이 존재하지 않습니다.")
+        );
+        if(postProcessChangeRequestDto.getProcess() != null){
+            post.ProcessUpdate(postProcessChangeRequestDto);
+        } else {
+            throw new IllegalArgumentException("리폼 게시판에서만 바꿀수있습니다");
+        }
+    }
+
+
+
+
 }

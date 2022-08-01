@@ -28,16 +28,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     }
 
     // 해당 EndPoint를 통해 HandShake 하게 됩니다. 이 때, 요청을 허락하는 주소를 어디로 할 지 반드시 설정해 줘야 합니다.
-//    @Override
-//    public void registerStompEndpoints(StompEndpointRegistry registry){
-//        registry.addEndpoint("/ws-stomp").setAllowedOrigins("http://13.209.15.135:8888" , "http://localhost:3000" )
-////        registry.addEndpoint("/ws-stomp").setAllowedOrigins("*")
-//                .withSockJS();
-//    }
-
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws-stomp").setAllowedOriginPatterns("*")
+        registry.addEndpoint("/wss-stomp").setAllowedOriginPatterns("*")
                 .withSockJS();
         // SockJs Fallback 을 활용하여 Stomp 엔드포인트 설정
         // 메시지 발행하는 prefix /pub 로 시작 하도록 설정

@@ -9,6 +9,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostProcessChangeRequestDto {
     private String process;
-
-
 }

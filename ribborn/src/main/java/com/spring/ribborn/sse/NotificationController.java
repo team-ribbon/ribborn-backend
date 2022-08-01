@@ -33,8 +33,6 @@ public class NotificationController {
     @GetMapping(value = "/subscribe/{id}", produces = "text/event-stream")
     public SseEmitter subscribe(@PathVariable Long id,
                                 @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
-        System.out.println("seseseseseseseseseseseseseseseseseseseiiiiiiiiiiiiiiiiiiiiid = " + id);
-        System.out.println("lastEventIdlastEventIdlastEventIdlastEventIdlastEventIdlastEventIdlastEventId = " + lastEventId);
         return notificationService.subscribe(id, lastEventId);
     }
 
@@ -49,6 +47,7 @@ public class NotificationController {
     public void readNotification(@PathVariable Long notificationId){
         notificationService.readNotification(notificationId);
     }
+
     //알림 조회 - 구독자가 현재 읽지않은 알림 갯수
     @GetMapping(value = "/notifications/count")
     public NotificationCountDto countUnReadNotifications(@AuthenticationPrincipal UserDetailsImpl userDetails) {

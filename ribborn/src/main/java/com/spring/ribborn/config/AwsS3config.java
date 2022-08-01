@@ -16,8 +16,6 @@ import java.util.UUID;
 
 public class AwsS3config {
 
-
-
     @Value("${cloud.aws.credentials.access-key}")
     private String accessKey;
 

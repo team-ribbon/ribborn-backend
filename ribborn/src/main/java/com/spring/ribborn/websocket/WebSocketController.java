@@ -10,15 +10,18 @@ import com.spring.ribborn.websocket.chat.ChatMessageService;
 import com.spring.ribborn.websocket.chatDto.MessageRequestDto;
 import com.spring.ribborn.websocket.chatDto.MessageResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.Nullable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @Controller
@@ -62,20 +65,24 @@ public class WebSocketController {
         String jwt = extractor.extract(token);
         String username = jwtTokenProvider.getUserPk(jwt);
         String nickname = jwtTokenProvider.getNickName(jwt);
+        Long userId = jwtTokenProvider.getUserId(jwt);
 
         MessageResponseDto responseDto = messageService.saveMessage(requestDto, username ,  nickname); //DB에 저장
         messageService.sendMessage(requestDto, username, responseDto);// 메시지를 sub 주소로 발송해줌
     }
 
     @MessageMapping("/chat/message/img")
-    public void uploadMessageImg(@RequestPart("image") File image, MessageRequestDto requestDto, @Header("Authorization") String token) throws IOException {
-//            token = token.substring(7);
+//    public void uploadMessageImg(@RequestPart("image") File image, MessageRequestDto requestDto, @Header("Authorization") String token) throws IOException {
+    public void uploadMessageImg(@RequestPart(value = "file", required = false) @Nullable MultipartFile image, MessageRequestDto requestDto, @Header("Authorization") String token) throws IOException {
 
-            String jwt = extractor.extract(token);
-            String username = jwtTokenProvider.getUserPk(jwt);
-            String nickname = jwtTokenProvider.getNickName(jwt);
+        //            token = token.substring(7);
+        String jwt = extractor.extract(token);
+        String username = jwtTokenProvider.getUserPk(jwt);
+        String nickname = jwtTokenProvider.getNickName(jwt);
+        Long userId = jwtTokenProvider.getUserId(jwt);
 
             messageService.uploadChatMessageImg(image, requestDto);
+//            messageService.uploadChatMessageImg(image, requestDto);
 
     }
 

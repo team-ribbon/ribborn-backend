@@ -19,8 +19,6 @@ public interface NotificationRepository extends JpaRepository<Notification,Long>
 
     void deleteAllByReceiverId(Long receiverId);
     void deleteById(Long notificationId);
-
-
 }
 //
 //import io.lettuce.core.dynamic.annotation.Param;
@@ -38,7 +36,7 @@ public interface NotificationRepository extends JpaRepository<Notification,Long>
 //
 //    int countNotificationByUserIdAndIsReadIsFalse(String username);
 //
-//    void deleteByChangeIdAndType(Long changeId, NotificationType type);
+//
 //
 ////    @Query("select n from Notification n where n.receiver.id = :userId order by n.id desc")
 ////    List<Notification> findAllByUserId(@Param("userId") Long userId);

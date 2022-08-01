@@ -65,17 +65,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/pub/**").permitAll()
                 .antMatchers("/sub/**").permitAll()
 
-                .antMatchers(HttpMethod.POST,"/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/**").permitAll()
-
                 .antMatchers(HttpMethod.POST,"/api/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/**").permitAll()
 
                 .antMatchers(HttpMethod.POST,"/chat/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/chat/**").permitAll()
-
-                .antMatchers(HttpMethod.POST,"/chat/room/**").permitAll()
-                .antMatchers(HttpMethod.GET,"/chat/room/**").permitAll()
 
                 .antMatchers(HttpMethod.POST,"/room/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/room/**").permitAll()
@@ -104,11 +98,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 public CorsConfigurationSource corsConfigurationSource() {
                     CorsConfiguration configuration = new CorsConfiguration();
 
-                    configuration.addAllowedOrigin("http://3.39.195.193:8888");
+                    configuration.addAllowedOrigin("http://13.125.244.223:8888");
                     configuration.setAllowCredentials(true);
-                    configuration.addAllowedOrigin("http://3.39.195.193:6379");
+                    configuration.addAllowedOrigin("https://ljw8967.shop");
                     configuration.setAllowCredentials(true);
                     configuration.addAllowedOrigin("http://localhost:3000");
+                    configuration.setAllowCredentials(true);
+                    configuration.addAllowedOrigin("http://ribborn.kr");
+                    configuration.setAllowCredentials(true);
+                    configuration.addAllowedOrigin("https://ribborn.kr");
                     configuration.setAllowCredentials(true);
                     configuration.addAllowedHeader("*");
                     configuration.addAllowedMethod("*");

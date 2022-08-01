@@ -11,6 +11,5 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 public class NotificationCountDto {
-
     private Long count;
 }

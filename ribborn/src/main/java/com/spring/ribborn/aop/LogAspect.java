@@ -28,12 +28,9 @@ public class LogAspect {
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
         // @LogExecutionTime 애노테이션이 붙어있는 타겟 메소드를 실행
-        log.info("Before Execute Method!!! ( 메소드 실행 전 ");
         Object proceed = joinPoint.proceed();
 //        로그 앞뒤로 찍기전에 joinPoint.proceed(); 요거 기억!!
 
-        log.info("-------------------------------------------------------!-" );
-        log.info("After Execute Method!!!!( 메소드 실행 후 )");
         stopWatch.stop();
         log.info(stopWatch.prettyPrint());
 
@@ -44,7 +41,6 @@ public class LogAspect {
     @Around("@annotation(Logging)")
     public Object logPrint(ProceedingJoinPoint proceedingJoinPoint) throws  Throwable {
 
-        log.info("-------------------------------------");
 
         long start = System.currentTimeMillis();
 
@@ -54,12 +50,10 @@ public class LogAspect {
         long end = System.currentTimeMillis();
         Object [] objects = proceedingJoinPoint.getArgs();
         for (Object obj : objects) {
-            log.info("!!!!!!!!!!!!!!!!!!!!");
             log.info("Args: {}", obj);
         }
 
         log.info("Parameter   :" + Arrays.toString(Arrays.stream(proceedingJoinPoint.getArgs()).toArray()));
-        log.info("들어옴?");
         //메소드 이름
         log.info(sig.getName());
         // 메소드가 들어있는 컨트롤러
@@ -68,7 +62,6 @@ public class LogAspect {
         log.info(Arrays.toString(proceedingJoinPoint.getArgs()));
 
         log.info("Running Time :" + (end-start));
-        log.info("-------------------------------------");
         return result;
     }
 
@@ -85,7 +78,6 @@ public class LogAspect {
 
         Object [] objects = joinPoint.getArgs();
         for (Object obj : objects) {
-            log.info("!!!!!!!!!!!!!!!!!!!!");
             log.info("Args: {}", obj);
         }
     }

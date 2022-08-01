@@ -43,6 +43,7 @@ public class ChatRoom extends TimeStamp {
     @Column(nullable = false)
     private Boolean reqFixed;
 
+
     public ChatRoom(){
 
     }
@@ -56,6 +57,7 @@ public class ChatRoom extends TimeStamp {
         room.accOut = true;
         room.accFixed = false;
         room.reqFixed = false;
+//        room.type = "START";
         return room;
     }
 
@@ -85,4 +87,6 @@ public class ChatRoom extends TimeStamp {
         this.accOut = false;
         this.reqOut = false;
     }
+
+
 }

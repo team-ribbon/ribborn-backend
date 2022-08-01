@@ -11,8 +11,6 @@ import java.util.List;
 
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
 
-//    List<ChatMessage> findAllByRoomIdOrderByIdDesc(Long roomId);
-//    List<ChatMessage> findAllByRoomIdOrderByAsc(Long roomId);
     List<ChatMessage> findAllByRoomIdOrderByIdAsc(Long roomId);
 
     // 메시지 안읽은 갯수 카운트 쿼리
