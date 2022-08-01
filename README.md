@@ -66,7 +66,7 @@ Backend
     <summary>ERD 바로보기</summary>
 
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
-ER다이어그램 삽입
+![ribborn (1)](https://user-images.githubusercontent.com/59018674/182074665-6bd5c496-4d1a-4847-911a-dd020ab3adcf.png)
 
 
 
