@@ -108,7 +108,7 @@ Backend
 
 <br>
 <details>
-<summary>1. 4종류의 게시판 CRUD</summary>
+<summary> ✅ 4종류의 게시판 CRUD</summary>
   
 <div markdown="1">       
 
@@ -125,7 +125,7 @@ Backend
 </details>
 
 <details>
-<summary>2. 채팅 (Stomp, WebSocket)</summary>
+<summary> ✅ 채팅 (Stomp, WebSocket)</summary>
   
 <div markdown="1">       
 
@@ -140,7 +140,7 @@ Backend
 </details>
 
 <details>
-<summary>3. 알림 (Stomp, WebSocket)</summary>
+<summary> ✅ 알림 (Stomp, WebSocket)</summary>
   
 <div markdown="1">       
 
@@ -155,7 +155,7 @@ Backend
 </details>
 
 <details>
-<summary>4. 게시글의 인기순, 최신순, 지역, 진행정도로 정렬 가능</summary>
+<summary> ✅ 게시글의 인기순, 최신순, 지역, 진행정도로 정렬 가능</summary>
   
 <div markdown="1">       
   
@@ -167,7 +167,7 @@ Backend
 </details>
 
 <details>
-<summary>5. 마이페이지 내 정보 조회 기능</summary>
+<summary> ✅ 마이페이지 내 정보 조회 기능</summary>
   
 - 본인이 작성한 게시글 / 북마크한 게시글을 확인 가능  
   
@@ -179,7 +179,7 @@ Backend
 </details>
 
 <details>
-<summary>6. 마이페이지에서 내 정보 변경 기능</summary>
+<summary> ✅ 마이페이지에서 내 정보 변경 기능</summary>
   
 - 닉네임 및 개인정보 변경 가능
   
@@ -191,7 +191,7 @@ Backend
 </details>
 
 <details>
-<summary>7. 글 작성자의 게시글 확인 기능</summary>
+<summary> ✅ 글 작성자의 게시글 확인 기능</summary>
   
 - 작성자의 마이페이지에서 게시글 확인 가능 
   
