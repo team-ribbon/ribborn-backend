@@ -52,7 +52,7 @@ Backend
     <summary>아키텍처 바로보기</summary>
 
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
-아키텍처 이미지 삽입
+![서비스아키텍처](https://user-images.githubusercontent.com/59018674/182070275-cbb3c511-5777-4b3b-8cab-03aecf1cab96.png)
 
 
 
@@ -116,7 +116,11 @@ ER다이어그램 삽입
 - 리폼 견적요청, 리폼 후기, 리폼 질문, 디자이너/전문가 룩북 4종류의 게시판 CRUD
 - 이미지 업로드, 댓글CRUD, 게시글 좋아요 및 공유 가능
 
-여기에 게시판 이미지
+![3](https://user-images.githubusercontent.com/59018674/182070501-58f8ad90-c6e4-45eb-ad04-bc4e6066a114.PNG)
+![4](https://user-images.githubusercontent.com/59018674/182070504-1e9e1701-7db6-4b9b-b6fa-fc50ca46ae79.PNG)
+![5](https://user-images.githubusercontent.com/59018674/182070505-b29ad171-7a23-4bd0-a95e-57f045683852.PNG)
+![6](https://user-images.githubusercontent.com/59018674/182070509-b51b75ab-54ba-4a17-8e47-b64880e29791.PNG)
+
 
 </div>
 </details>
@@ -131,7 +135,7 @@ ER다이어그램 삽입
 - 좌측 채팅목록에서 기존 채팅중이던 목록을 확인할 수 있음
 - 채팅 중 견적 게시글에 대해 진행중, 완료 등으로 상태 변경 가능
 
-여기에 채팅 이미지
+![채팅](https://user-images.githubusercontent.com/59018674/182070598-098dff0a-1d85-4a7f-a543-747b73ad3874.png)
 
 </div>
 </details>
@@ -156,7 +160,9 @@ ER다이어그램 삽입
   
 <div markdown="1">       
   
-여기에 정렬 이미지
+![image](https://user-images.githubusercontent.com/59018674/182070687-d319b7e2-dbf8-4352-be9c-bf221e97942b.png)
+![image](https://user-images.githubusercontent.com/59018674/182070772-f3983d02-e2aa-4421-94ab-22200a739a4a.png)
+
 
 </div>
 </details>
@@ -168,7 +174,7 @@ ER다이어그램 삽입
   
 <div markdown="1">       
   
-여기에 마이페이지 사진
+![image](https://user-images.githubusercontent.com/59018674/182070840-971b6ac3-d74f-49b8-b3ce-e6a5d1a525d1.png)
 
 </div>
 </details>
@@ -180,7 +186,7 @@ ER다이어그램 삽입
   
 <div markdown="1">       
   
-정보 변경 사진
+![image](https://user-images.githubusercontent.com/59018674/182070899-f14dcd71-11de-4aad-9152-8d43b600edfd.png)
   
 </div>
 </details>
@@ -192,7 +198,7 @@ ER다이어그램 삽입
   
 <div markdown="1">       
   
-유저상세페이지 사진
+![image](https://user-images.githubusercontent.com/59018674/182071064-215be52f-a653-4b91-b694-aadce3f2903b.png)
   
 </div>
 </details>
@@ -201,11 +207,8 @@ ER다이어그램 삽입
 
 ##  API 설계
 
-<br>
 
-여기에 API 이미지
-<br>
-[API 설계 자세히보기](여기에 api 노션 링크)
+[API 설계 자세히보기](https://www.notion.so/API-3078c33df93d4bc180531687a99b2757)
 
 
 
