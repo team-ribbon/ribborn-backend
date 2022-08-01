@@ -12,14 +12,14 @@
 ## 🛠️ 아키텍처
 
 <br>
-<details>
+<!-- <details> -->
     <summary>아키텍처 바로보기</summary>
 
 <!-- summary 아래 한칸 공백 두고 내용 삽입 -->
 ![서비스아키텍처수정](https://user-images.githubusercontent.com/59018674/182071222-93c422c3-7169-46d3-b223-857d56fa8dfd.png)
 
 
-</details>
+<!-- </details> -->
 
 
    
