@@ -73,6 +73,36 @@ ER다이어그램 삽입
 
 </details>
 
+## 🔥이슈 및 트러블슈팅
+
+<br>
+
+<details>
+<summary><b>N + 1 문제</b></summary>
+  
+> **문제** : User, Post, Contents, Comment 엔티티는 N:1 맵핑이 되어있기 때문에 호출 시 N + 1 문제를 야기할 수 있음
+>
+> **해결** : 데이터를 Flat하게 조회해야 할 경우에는 Repository에서 DTO를 바로 생성하여 리턴했으나, 해당 방법은 페이징 처리가 되지 않기 때문에 페이징이 필요한 Comment는 API를 분리해서 따로 페이징 처리를 했음
+  
+</details>
+<details>
+<summary><b>게시글 내용이 길 경우 게시글이 작성되지 않는 문제</b></summary>
+  
+> **문제** : 게시글 내용이 길 경우 게시글이 작성되지 않고 rollback 처리 되는 문제 발생
+>
+> **해결** : 프론트단에서 글자 수를 제한하는 방법으로 생각했으나, 커뮤니티 서비스 특성상 글자수를 제한하는 것은 유저 입장에서 큰 불편함을 겪을 수 있기 때문에 nginx.conf 파일에서 client_max_body_size를 조정해서 처리했음
+  
+</details>
+
+<details>
+<summary><b>게시글에 이모지가 작성될 경우 에러가 발생하는 문제</b></summary>
+  
+> **문제** : 게시글,댓글,아이디 등 String이 들어가는 모든 문구에서 이모지가 들어갈 경우 HttpMessageNotWritableException 에러가 발생했음
+>
+> **해결** : 이모지는 2byte보다 크기가 크기 때문에 문제가 발생할 수 있다. XSS 필터를 추가해 해결할 수 있을 것 같다(22.08.01 현재 해결 x)
+  
+</details>
+
 <br>
 
 ## :hammer_and_wrench: 기능설명
