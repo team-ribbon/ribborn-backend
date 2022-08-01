@@ -49,12 +49,13 @@ public class PostDetailRepository {
                 .getResultList();
     }
 
-    public List<Post> findMyPost(Pageable pageable, String postCate, Long id) {
+    public List<Post> findMyPost(String postCate, Long id) {
         return em.createQuery(
                         "select distinct p from Post p" +
                                 " join fetch p.user u" +
                                 " join fetch p.contents c" +
-                                " where p.postCate = :postCate and u.id = :id", Post.class)
+                                " where p.postCate = :postCate and u.id = :id" +
+                                " order by p.id desc ", Post.class)
                 .setParameter("postCate", postCate)
                 .setParameter("id", id)
                 .getResultList();
@@ -95,18 +96,4 @@ public class PostDetailRepository {
                 .getResultList();
     }
 
-
-    //게시글 삭제
-    public void deletePost(Long postId) {
-        Post post = em.find(Post.class, postId);
-
-        for(Contents con : post.getContents()){
-            if(con.getImage() != null){
-                String[] split = con.getImage().split("com/");
-                awsS3Service.deleteFile(split[1]);
-            }
-        }
-
-        em.remove(post);
-    }
 }

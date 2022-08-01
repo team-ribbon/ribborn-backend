@@ -22,7 +22,9 @@ public class CommentController {
 
     //리뷰 작성
     @PostMapping("/api/post/{postId}/comment")
-    public ResponseEntity<ApiResponseMessage> commentWrite(@PathVariable("postId") Long postId, @RequestBody CommentWriteRequestDto commentWriteRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<ApiResponseMessage> commentWrite(@PathVariable("postId") Long postId,
+                                                           @RequestBody CommentWriteRequestDto commentWriteRequestDto,
+                                                           @AuthenticationPrincipal UserDetailsImpl userDetails){
 
         commentService.commentWrite(postId,commentWriteRequestDto,userDetails);
 

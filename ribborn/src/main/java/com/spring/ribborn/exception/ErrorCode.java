@@ -5,7 +5,6 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-@AllArgsConstructor
 public enum ErrorCode {
 
     // USER
@@ -58,32 +57,40 @@ public enum ErrorCode {
     DECODING_FAILED_TOKEN(HttpStatus.BAD_REQUEST.value(), "L003", "유효하지 않은 토큰입니다. 토큰 디코딩에 실패했습니다."),
     EXPIRATION_TOKEN(HttpStatus.UNAUTHORIZED.value(), "L004", "Unauthorized"),
     INVAILD_CONTENTS_TOKEN(HttpStatus.BAD_REQUEST.value(), "L005", "유효하지 않은 형식의 토큰입니다."),
-    NOT_EXIST_NOTIFICATION(HttpStatus.UNAUTHORIZED.value(),"L006", "유효하지 않는 방식입니다" );
+    NOT_EXIST_NOTIFICATION(HttpStatus.UNAUTHORIZED.value(),"L006", "유효하지 않는 방식입니다" ),
 
-    //    // Common
-//    INVALID_INPUT_VALUE(400, "C001", "invalid input value"),
-//    MISSING_REQUEST_BODY(400, "C002", "missing request body"),
-//    INTERNAL_SERVER_ERROR(500, "C003", "internal server error"),
-//
-//    // Authentication
+    // Common
+    MISSING_REQUEST_BODY(400, "C002", "missing request body"),
+    ACCESS_DENIED(401, "A003", "access denied."),
+    INVALID_INPUT_VALUE(400, "C001", "invalid input value"),
+    INTERNAL_SERVER_ERROR(500, "C003", "internal server error");
+
+    // Authentication
 //    DUPLICATE_USERNAME(400, "A001", "the username already exists."),
 //    DUPLICATE_NICKNAME(400, "A002", "the nickname already exists."),
-//
-//    ACCESS_DENIED(401, "A003", "access denied.");
-//
-//    private final int status;
-//    private final String code;
-//    private final String message;
-//
+
+    private final int status;
+    private final String code;
+    private final String message;
+
 //    ErrorCode(int status, String code, String message) {
 //        this.status = status;
 //        this.code = code;
 //        this.message = message;
 //    }
+//    private final int status;
+//    private final String code;
+//    private final String message;
 
-    private final int httpStatus;
-    private final String code;
-    private final String message;
+    ErrorCode(int status, String code, String message) {
+        this.status = status;
+        this.code = code;
+        this.message = message;
+    }
+
+//    private final int httpStatus;
+//    private final String code;
+//    private final String message;
 }
 //
 //import lombok.Getter;

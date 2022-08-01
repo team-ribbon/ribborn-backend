@@ -28,6 +28,7 @@ public class WebConfig implements WebMvcConfigurer {
                         "https://s3.ap-northeast-2.amazonaws.com/marketkurly-imageupload",
                         "http://ribborn.s3-website.ap-northeast-2.amazonaws.com",
                         "http://ribborn.kr",
+                        "https://www.ribborn.kr",
                         "https://ribborn.kr"
                         )
                 .allowedOriginPatterns("*")
