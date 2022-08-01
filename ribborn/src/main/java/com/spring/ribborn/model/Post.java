@@ -1,6 +1,7 @@
 package com.spring.ribborn.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.spring.ribborn.dto.requestDto.PostProcessChangeRequestDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -66,6 +67,9 @@ public class Post extends TimeStamp{
         content.setPost(this);
     }
 
+    public void ProcessUpdate(PostProcessChangeRequestDto postProcessChangeRequestDto) {
+        this.process = postProcessChangeRequestDto.getProcess();
+    }
     //게시글 수정
     public void normalPostChange(String title, String category){
         this.title = title;
@@ -107,5 +111,4 @@ public class Post extends TimeStamp{
         }
 
     }
-
 }

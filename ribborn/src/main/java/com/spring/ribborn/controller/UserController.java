@@ -1,5 +1,7 @@
 package com.spring.ribborn.controller;
 
+import com.spring.ribborn.aop.LogInCheck;
+import com.spring.ribborn.aop.Logging;
 import com.spring.ribborn.dto.requestDto.LoginRequestDto;
 import com.spring.ribborn.dto.requestDto.UserRequestDto;
 import com.spring.ribborn.dto.requestDto.UserUpdateRequestDto;
@@ -29,7 +31,7 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/api/users/register/users")
-    public ResponseEntity<ApiResponseMessage> registerUser(@RequestBody UserRequestDto userRequestDto) {
+    public ResponseEntity<ApiResponseMessage> registerUser(@RequestBody UserRequestDto userRequestDto) throws InterruptedException {
         userService.registerUser(userRequestDto);
         ApiResponseMessage message = new ApiResponseMessage("Success", "회원가입이 완료되었습니다", "", "");
         return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
@@ -45,14 +47,21 @@ public class UserController {
     }
 
     // 로그인
+    @LogInCheck
+    @Logging
     @PostMapping("/api/users/login")
     public ResponseEntity<String> login(final HttpServletResponse response, @RequestBody LoginRequestDto loginRequestDto) {
-        if (userService.login(loginRequestDto)) {
-            String token = jwtTokenProvider.createToken(loginRequestDto.getUsername());
-            return new ResponseEntity<>(token, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("로그인 실패 : username 또는 password 를 확인해주세요.", HttpStatus.BAD_REQUEST);
-        }
+        String login = userService.login(loginRequestDto);
+        System.out.println("###################################### login = " + login);
+        return new ResponseEntity<>(login ,HttpStatus.OK);
+
+
+        //        if (userService.login(loginRequestDto)) {
+////            String token = jwtTokenProvider.createToken(loginRequestDto.getUsername() ,loginRequestDto.getNickname(), loginRequestDto.getId() );
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        } else {
+//            return new ResponseEntity<>("로그인 실패 : username 또는 password 를 확인해주세요.", HttpStatus.BAD_REQUEST);
+//        }
     }
 
     // 유저 정보 조회(토큰)

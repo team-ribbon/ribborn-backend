@@ -1,6 +1,7 @@
 package com.spring.ribborn.controller;
 
 import com.spring.ribborn.dto.requestDto.PostChangeRequestDto;
+import com.spring.ribborn.dto.requestDto.PostProcessChangeRequestDto;
 import com.spring.ribborn.dto.requestDto.ReformChangeRequestDto;
 import com.spring.ribborn.dto.responseDto.*;
 import com.spring.ribborn.exception.ApiResponseMessage;
@@ -94,4 +95,42 @@ public class PostDetailController {
         ApiResponseMessage message = new ApiResponseMessage("Success", "게시글이 삭제 되었습니다.", "", "");
         return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
     }
+
+
+    // 진행(process) 상태 변경  진행전 -> 진행중
+    @PutMapping("/api/processIng/{postId}")
+    public ResponseEntity<ApiResponseMessage> processBeforeChange(@PathVariable("postId") Long postId ,
+                                                                  @AuthenticationPrincipal UserDetailsImpl userDetails
+                                                                 ){
+        Long userId = userDetails.getUserId();
+        postDetailService.postProcessingChange(postId, userId);
+        ApiResponseMessage message = new ApiResponseMessage("Success", "상태가 변경되었습니다.", "", "");
+        return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
+    }
+
+
+    // 진행 상태 변경 진행중 -> 완료
+    @PutMapping("/api/processAfter/{postId}")
+    public ResponseEntity<ApiResponseMessage> processingChange(@PathVariable("postId") Long postId ,
+                                                               @AuthenticationPrincipal UserDetailsImpl userDetails){
+        Long userId = userDetails.getUserId();
+        postDetailService.postProcessAfterChange(postId, userId);
+        ApiResponseMessage message = new ApiResponseMessage("Success", "상태가 변경되었습니다.", "", "");
+        return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
+    }
+
+
+
+    @PutMapping("/api/post/{postId}/process")
+    public ResponseEntity<ApiResponseMessage> processChange(@PathVariable("postId") Long postId ,
+                                                               @RequestBody PostProcessChangeRequestDto postProcessChangeRequestDto,
+                                                               @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        Long userId = userDetails.getUserId();
+        postDetailService.postProcessChange(postId, postProcessChangeRequestDto ,userId);
+        ApiResponseMessage message = new ApiResponseMessage("Success", "상태가 변경되었습니다.", "", "");
+        return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);
+
+    }
+
+
 }

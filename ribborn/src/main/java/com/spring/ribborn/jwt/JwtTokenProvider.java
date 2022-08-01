@@ -1,9 +1,6 @@
 package com.spring.ribborn.jwt;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,15 +11,17 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
-import java.util.Date;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
 
-    // secretKey 와 같은 민감정보는 숨기는 것이 좋다. (이것은 연습이라서 노출함)
-    @Value("K7kjHSF345h345S86F3A2erGB98iWIad")
+    // secretKey 와 같은 민감정보는 숨기는 것이 좋다.
+    //정석대로 하려면 byte수에 맞게 디코딩해서 시크릿키를 구성해야하는데
+
+    @Value("${jwt.secret}")
     private String secretKey;
 
     // 토큰 유효시간 5분 설정 (1000L = 1초, 1000L * 60 = 1분)
@@ -37,11 +36,16 @@ public class JwtTokenProvider {
     }
 
     // JWT 토큰 생성
-    public String createToken(String userPk) {
+    public String createToken(String userPk , String nickname , Long userid) {
         Claims claims = Jwts.claims().setSubject(userPk); // JWT payload 에 저장되는 정보단위
+
+        Map<String , Object> claimsMap = new HashMap<String , Object>();
+            claimsMap.put("username" ,userPk);
+            claimsMap.put("nickname" , nickname);
+            claimsMap.put("userid" , userid);
         Date now = new Date();
         return Jwts.builder()
-                .setClaims(claims) // 정보 저장
+                .setClaims(claimsMap)
                 .setIssuedAt(now) // 토큰 발행 시간 정보
                 .setExpiration(new Date(now.getTime() + TOKEN_VALID_TIME)) // set Expire Time
                 .signWith(SignatureAlgorithm.HS256, secretKey)  // 사용할 암호화 알고리즘과 signature 에 들어갈 secret값 세팅
@@ -54,13 +58,18 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    // 토큰에서 회원 정보 추출
     public String getUserPk(String token) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("username", String.class);
     }
+    public String getNickName(String token) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("nickname", String.class);
+    }
+    public Long getUserId(String token){
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("userId", Long.class);
+    }
 
     // Request의 Header에서 token 값을 가져옵니다. "X-AUTH-TOKEN" : "TOKEN값'
-    public String resolveToken(HttpServletRequest request) {
+    public static String resolveToken(HttpServletRequest request) {
         return request.getHeader("Authorization");
     }
 
@@ -73,4 +82,20 @@ public class JwtTokenProvider {
             return false;
         }
     }
+
+
+    public final String HEADER_PREFIX = "Bearer ";
+
+
+    public  String extract(String header) {
+        if (header == null || header.equals("") || header.length() < HEADER_PREFIX.length()) {
+            throw new NoSuchElementException("올바른 JWT 정보가 아닙니다.");
+        }
+
+        return header.substring(
+                HEADER_PREFIX.length(),
+                header.length()
+        );
+    }
+
 }

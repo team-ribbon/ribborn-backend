@@ -53,12 +53,10 @@ public class PostController {
                                                             @RequestPart(value = "key") LookBookPostWriteDto lookBookPostWriteDto,
                                                             @AuthenticationPrincipal UserDetailsImpl userDetails){
 
-
         List<String> strings = awsS3Service.uploadFile(multipartFile);
         lookBookPostWriteDto.setImages(strings);
         lookBookPostWriteDto.setUsername(userDetails.getUsername());
         postWriteService.lookBookPostWrite(lookBookPostWriteDto);
-
 
         ApiResponseMessage message = new ApiResponseMessage("Success", "게시글이 작성 되었습니다.", "", "");
         return new ResponseEntity<ApiResponseMessage>(message, HttpStatus.OK);

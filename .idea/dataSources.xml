@@ -8,5 +8,37 @@
       <jdbc-url>jdbc:mysql://sparta.ce9lpazmr2r2.ap-northeast-2.rds.amazonaws.com:3306/ribborn</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="MySQL" uuid="aacd49a3-7d89-45b7-968e-70cba3aab945">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://jdbc:mysql://springboot-db.cjag6bqzspsc.ap-northeast-2.rds.amazonaws.com:3306/ribborndb</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="ribborndb" uuid="87a4666e-cd2f-4e20-a8f1-3032cdefb79f">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://springboot-db.cjag6bqzspsc.ap-northeast-2.rds.amazonaws.com:3306/</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="ribborn.main/Hibernate" uuid="0ba02963-334b-4e82-a2e1-4e210a8f91e4">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate</remarks>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://springboot-db.cjag6bqzspsc.ap-northeast-2.rds.amazonaws.com:3306/ribborndb</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+    <data-source source="LOCAL" name="ribborn.test/Hibernate" uuid="2cccb67b-b375-4b47-b127-66a16f7cc280">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <imported>true</imported>
+      <remarks>Hibernate</remarks>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://springboot-db.cjag6bqzspsc.ap-northeast-2.rds.amazonaws.com:3306/ribborndb</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

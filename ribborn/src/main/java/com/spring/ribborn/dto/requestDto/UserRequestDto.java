@@ -6,6 +6,7 @@ import lombok.Setter;
 @Setter
 @Getter
 public class UserRequestDto {
+    private Long userid;
     private String username;
     private String password;
     private String nickname;
@@ -15,8 +16,6 @@ public class UserRequestDto {
     private String addressCategory;
     private String addressDetail;
     private String introduction;
-
-
 
 
 }
