@@ -121,7 +121,7 @@ Backend
    찾아봄
 >
 > **해결** : 단방향 데이터 통신방식인 SSE(server sent event) 방식을 선택하여 사용 
-   https://successful-spur-143.notion.site/0f7341351c50473292bc9648f532c7b0
+  자세한 내용>> https://successful-spur-143.notion.site/0f7341351c50473292bc9648f532c7b0
   
 </details>
 
