@@ -120,8 +120,8 @@ Backend
 > **문제** : 기존에 채팅을 웹소켓으로 구현하였는데 알림이라는것은 서버에서 클라이언트로만 데이터를 보내면되는 단방향통신만 있으면 충분할꺼라고 생각을하여 다른 통신 방법을 
    찾아봄
 >
-> **해결** : 단방향 데이터 통신방식인 SSE(server sent event) 방식을 선택하여 사용 
-  자세한 내용>> https://successful-spur-143.notion.site/0f7341351c50473292bc9648f532c7b0
+> **해결** : 단방향 데이터 통신방식인 SSE(server sent event) 방식을 선택하여 사용에 대한
+  자세한 내용은 링크 들어가시면 좋습니다.  https://successful-spur-143.notion.site/0f7341351c50473292bc9648f532c7b0
   
 </details>
 
