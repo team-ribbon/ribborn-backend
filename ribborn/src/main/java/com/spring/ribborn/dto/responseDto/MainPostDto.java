@@ -15,6 +15,7 @@ public class MainPostDto {
     private String title;
     private String category;
     private String content;
+    private String process;
     private LocalDateTime createAt;
 
     public MainPostDto(Post post) {
@@ -24,6 +25,7 @@ public class MainPostDto {
         this.commentCount = post.getCommentCount();
         this.nickname = post.getUser().getNickname();
         this.title = post.getTitle();
+        this.process = post.getProcess();
         this.category = post.getCategory();
         this.content = post.getContents().get(0).getContent();
         this.createAt = post.getCreateAt();

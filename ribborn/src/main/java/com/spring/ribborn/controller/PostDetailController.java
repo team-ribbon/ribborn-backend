@@ -52,7 +52,7 @@ public class PostDetailController {
     }
 
     //게시글 수정
-    @PutMapping(value = {"/api/qnaPosts/{postId}","/api/reviewPosts/{postId}","/api/lookPosts/{postid}"})
+    @PutMapping(value = {"/api/qnaPosts/{postId}","/api/reviewPosts/{postId}","/api/lookPosts/{postId}"})
     public ResponseEntity<ApiResponseMessage> postChange(@PathVariable("postId") Long postId,
                                                          @RequestPart(value = "file", required = false) List<MultipartFile> fileList,
                                                          @RequestPart(value = "key") PostChangeRequestDto postChangeRequestDto){
@@ -74,7 +74,11 @@ public class PostDetailController {
                                                                @RequestPart(value = "file", required = false) List<MultipartFile> fileList,
                                                                @RequestPart(value = "key")ReformChangeRequestDto reformChangeRequestDto){
 
-        List<String> strings = awsS3Service.uploadFile(fileList);
+        List<String> strings = null;
+
+        if(fileList != null){
+            strings = awsS3Service.uploadFile(fileList);
+        }
         reformChangeRequestDto.setFileUrl(strings);
         postDetailService.reformDetailChange(postId, reformChangeRequestDto);
         ApiResponseMessage message = new ApiResponseMessage("Success", "게시글이 수정 되었습니다.", "", "");

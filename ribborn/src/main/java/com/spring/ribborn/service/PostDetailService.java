@@ -98,23 +98,42 @@ public class PostDetailService {
         int a =0;
         int before = post.getContents().size()-1;
 
-        for(int i = 0; i < reformChangeRequestDto.getImageUrl().size(); i++){
-            Contents content;
-            if(i > before){
-                content = Contents.emptyContent();
-            }else{
-                content = post.getContents().get(i);
-                String[] split = content.getImage().split("com/");
+        if(reformChangeRequestDto.getImageUrl() != null){
+            for(int i = 0; i < reformChangeRequestDto.getImageUrl().size(); i++){
+                Contents content;
+                if(i > before){
+                    content = Contents.emptyContent();
+                }else{
+                    content = post.getContents().get(i);
+                    if(reformChangeRequestDto.getDeleteImage() == null){
+                        String[] split = content.getImage().split("com/");
+                        awsS3Service.deleteFile(split[1]);
+                    }
+                }
+
+                if(reformChangeRequestDto.getImageUrl().get(i).isEmpty()){
+                    content.contentsChange(reformChangeRequestDto.getFileUrl().get(a), reformChangeRequestDto.getContent());
+                    a += 1;
+                }else{
+                    content.contentsChange(reformChangeRequestDto.getImageUrl().get(i), reformChangeRequestDto.getContent());
+                }
+                post.settingContents(content);
+            }
+        }
+
+        if(reformChangeRequestDto.getDeleteImage() != null){
+            for(String image: reformChangeRequestDto.getDeleteImage()){
+                Contents byImage = contentsRepository.findByImage(image).get(0);
+                contentsDeleteRepository.deleteContents(byImage.getId());
+                String[] split = image.split("com/");
                 awsS3Service.deleteFile(split[1]);
             }
+        }
 
-            if(reformChangeRequestDto.getImageUrl().get(i).isEmpty()){
-                content.contentsChange(reformChangeRequestDto.getFileUrl().get(a), reformChangeRequestDto.getContent());
-                a += 1;
-            }else{
-                content.contentsChange(reformChangeRequestDto.getImageUrl().get(i), reformChangeRequestDto.getContent());
-            }
-            post.settingContents(content);
+        if(reformChangeRequestDto.getImageUrl() == null){
+            Contents contents = Contents.emptyContent();
+            contents.setContent(reformChangeRequestDto.getContent());
+            post.settingContents(contents);
         }
         post.reformPostChange(reformChangeRequestDto.getTitle(), reformChangeRequestDto.getCategory(), reformChangeRequestDto.getRegion());
     }
