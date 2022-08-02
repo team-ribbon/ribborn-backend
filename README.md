@@ -163,7 +163,7 @@ Backend
 </details>
 
 <details>
-<summary> ✅ 알림 (Stomp, WebSocket)</summary>
+<summary> ✅ 알림 (Server sent event)</summary>
   
 <div markdown="1">       
 
