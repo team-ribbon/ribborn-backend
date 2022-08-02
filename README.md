@@ -49,24 +49,13 @@
 
 
 
-## 👥 팀 소개
 
-Backend
-
-<br>
-
-팀원|github
----|---|
-박성규 | https://github.com/ParkSungGyu1
-이정우 | https://github.com/lky8967
-박성렬 | https://github.com/songryel-park
-<br>
 
 ## 🗓 프로젝트 기간
 
 <br>
 
-* 2022년 6월 27일 ~ 2022년 8월 5일 
+* 2022년 6월 24일 ~ 2022년 8월 5일 
   
 <br>  
 
@@ -229,8 +218,20 @@ Backend
 
 ##  API 설계
 
-
 [API 설계 자세히보기](https://www.notion.so/API-3078c33df93d4bc180531687a99b2757)
+
+## 👥 팀 소개
+
+Backend
+
+<br>
+
+팀원|github
+---|---|
+박성규 | https://github.com/ParkSungGyu1
+이정우 | https://github.com/lky8967
+박성렬 | https://github.com/songryel-park
+<br>
 
 
 
