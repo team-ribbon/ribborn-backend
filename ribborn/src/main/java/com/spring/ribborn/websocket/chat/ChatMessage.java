@@ -57,6 +57,7 @@ public class ChatMessage extends CreationDate {
 
         ChatMessage message = new ChatMessage();
 
+        message.senderId = requestDto.getSenderId();
         message.roomId = requestDto.getRoomId();
         message.senderName = senderName;
         message.message = requestDto.getMessage();
