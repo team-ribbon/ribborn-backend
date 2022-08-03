@@ -113,7 +113,6 @@ public class NotificationService {
                 }
         );
     }
-
     private Notification createNotification(User receiver) {
         return Notification.builder()
                 .receiver(receiver)
@@ -123,6 +122,31 @@ public class NotificationService {
                 .isRead(false) // 현재 읽음상태
                 .build();
     }
+
+    @Async
+    public void sender(User sender){
+        Notification notification = notificationRepository.save(createNotificationer(sender));
+        String senderId = String.valueOf(sender.getId());
+        String eventId = senderId + "_" + System.currentTimeMillis();
+        Map<String, SseEmitter> emitters = emitterRepository.findAllEmitterStartWithByUserId(senderId);
+        emitters.forEach(
+                (key, emitter) -> {
+                    emitterRepository.saveEventCache(key, notification);
+                    sendNotification(emitter, eventId, key, NotificationDto.create(notification));
+                }
+        );
+    }
+    private Notification createNotificationer(User sender) {
+        return Notification.builder()
+                .receiver(sender)
+//                .notificationType(notificationType)
+//                .content(content)
+//                .url(url)
+                .isRead(false) // 현재 읽음상태
+                .build();
+    }
+
+
 
 //    @Transactional
 //    public List<NotificationDto> findAllNotifications(Long userId) {

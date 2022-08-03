@@ -137,6 +137,7 @@ public class ChatMessageService {
         System.out.println("chatRoomchatRoomchatRoomchatRoomchatRoomchatRoomchatRoomchatRoomchatRoom = " + chatRoom);
 
         User receiver = chatRoom.getAcceptor();
+        User sender = chatRoom.getRequester();
         ChatMessage message = messageRepository.save(ChatMessage.createOf(requestDto, username , nickname));
 //        if (chatRoom.getAccOut()) {
 ////            // 채팅 알림 저장 및 전달하기
@@ -159,8 +160,10 @@ public class ChatMessageService {
         redisMessagePublisher.publish(requestDto);
         // 알림 보내기
         notificationService.send(receiver);
+        notificationService.sender(sender);
         return MessageResponseDto.createOf(message, username , nickname);
     }
+
 
     // 채팅 메시지 발송하기
     public void sendMessage(MessageRequestDto requestDto, String userId, MessageResponseDto responseDto) {
