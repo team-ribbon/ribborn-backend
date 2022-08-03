@@ -154,7 +154,6 @@ public class ChatRoomService {
 
                     } else {
                         suffix.add(RoomResponseDto.createOf(type,REQUESTER, dto, unreadCnt, false));
-
                     }
                 }
             }

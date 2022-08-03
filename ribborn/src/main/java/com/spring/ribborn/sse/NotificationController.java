@@ -36,23 +36,23 @@ public class NotificationController {
         return notificationService.subscribe(id, lastEventId);
     }
 
-    //알림조회
-    @GetMapping(value = "/notifications")
-    public List<NotificationDto> findAllNotifications(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return notificationService.findAllNotifications(userDetails.getUser().getId());
-    }
-
-    //전체목록 알림 조회에서 해당 목록 클릭 시 읽음처리 ,
-    @PostMapping("/notification/read/{notificationId}")
-    public void readNotification(@PathVariable Long notificationId){
-        notificationService.readNotification(notificationId);
-    }
-
-    //알림 조회 - 구독자가 현재 읽지않은 알림 갯수
-    @GetMapping(value = "/notifications/count")
-    public NotificationCountDto countUnReadNotifications(@AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return notificationService.countUnReadNotifications(userDetails.getUser().getId());
-    }
+//    //알림조회
+//    @GetMapping(value = "/notifications")
+//    public List<NotificationDto> findAllNotifications(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        return notificationService.findAllNotifications(userDetails.getUser().getId());
+//    }
+//
+//    //전체목록 알림 조회에서 해당 목록 클릭 시 읽음처리 ,
+//    @PostMapping("/notification/read/{notificationId}")
+//    public void readNotification(@PathVariable Long notificationId){
+//        notificationService.readNotification(notificationId);
+//    }
+//
+//    //알림 조회 - 구독자가 현재 읽지않은 알림 갯수
+//    @GetMapping(value = "/notifications/count")
+//    public NotificationCountDto countUnReadNotifications(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+//        return notificationService.countUnReadNotifications(userDetails.getUser().getId());
+//    }
 
 
 

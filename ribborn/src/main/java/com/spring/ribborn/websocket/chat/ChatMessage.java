@@ -111,4 +111,7 @@ public class ChatMessage extends CreationDate {
         this.img = img;
     }
 
+    public void update() {
+        this.isRead = true;
+    }
 }

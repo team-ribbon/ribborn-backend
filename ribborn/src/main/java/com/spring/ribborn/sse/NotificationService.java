@@ -102,7 +102,6 @@ public class NotificationService {
      */
     @Async
     public void send(User receiver){
-
         Notification notification = notificationRepository.save(createNotification(receiver));
         String receiverId = String.valueOf(receiver.getId());
         String eventId = receiverId + "_" + System.currentTimeMillis();
@@ -125,42 +124,42 @@ public class NotificationService {
                 .build();
     }
 
-    @Transactional
-    public List<NotificationDto> findAllNotifications(Long userId) {
-        List<Notification> notifications = notificationRepository.findAllByUserId(userId);
-        return notifications.stream()
-                .map(NotificationDto::create)
-                .collect(Collectors.toList());
-    }
-
-
-    public NotificationCountDto countUnReadNotifications(Long userId) {
-        //유저의 알람리스트에서 ->isRead(false)인 갯수를 측정 ,
-        Long count = notificationRepository.countUnReadNotifications(userId);
-        return NotificationCountDto.builder()
-                .count(count)
-                .build();
-    }
-
-    @Transactional
-    public void readNotification(Long notificationId) {
-        //알림을 받은 사람의 id 와 알림의 id 를 받아와서 해당 알림을 찾는다.
-        Optional<Notification> notification = notificationRepository.findById(notificationId);
-        Notification checkNotification = notification.orElseThrow(()-> new CustomException(ErrorCode.NOT_EXIST_NOTIFICATION));
-        checkNotification.read(); // 읽음처리
-
-    }
-
-    @Transactional
-    public void deleteAllByNotifications(UserDetailsImpl userDetails) {
-        Long receiverId = userDetails.getUser().getId();
-        notificationRepository.deleteAllByReceiverId(receiverId);
-
-    }
-    @Transactional
-    public void deleteByNotifications(Long notificationId) {
-        notificationRepository.deleteById(notificationId);
-    }
+//    @Transactional
+//    public List<NotificationDto> findAllNotifications(Long userId) {
+//        List<Notification> notifications = notificationRepository.findAllByUserId(userId);
+//        return notifications.stream()
+//                .map(NotificationDto::create)
+//                .collect(Collectors.toList());
+//    }
+//
+//
+//    public NotificationCountDto countUnReadNotifications(Long userId) {
+//        //유저의 알람리스트에서 ->isRead(false)인 갯수를 측정 ,
+//        Long count = notificationRepository.countUnReadNotifications(userId);
+//        return NotificationCountDto.builder()
+//                .count(count)
+//                .build();
+//    }
+//
+//    @Transactional
+//    public void readNotification(Long notificationId) {
+//        //알림을 받은 사람의 id 와 알림의 id 를 받아와서 해당 알림을 찾는다.
+//        Optional<Notification> notification = notificationRepository.findById(notificationId);
+//        Notification checkNotification = notification.orElseThrow(()-> new CustomException(ErrorCode.NOT_EXIST_NOTIFICATION));
+//        checkNotification.read(); // 읽음처리
+//
+//    }
+//
+//    @Transactional
+//    public void deleteAllByNotifications(UserDetailsImpl userDetails) {
+//        Long receiverId = userDetails.getUser().getId();
+//        notificationRepository.deleteAllByReceiverId(receiverId);
+//
+//    }
+//    @Transactional
+//    public void deleteByNotifications(Long notificationId) {
+//        notificationRepository.deleteById(notificationId);
+//    }
 }
 
 //    // 읽음 상태 업데이트
