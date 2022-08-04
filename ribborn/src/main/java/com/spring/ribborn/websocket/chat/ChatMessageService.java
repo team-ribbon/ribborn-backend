@@ -133,6 +133,8 @@ public class ChatMessageService {
         ChatRoom chatRoom = roomRepository.findByIdFetch(requestDto.getRoomId()).orElseThrow(
                 () -> new NullPointerException("해당 채팅방이 존재하지 않습니다.")
         );
+        chatRoom.accOut(false);
+        chatRoom.reqOut(false);
 
         System.out.println("chatRoomchatRoomchatRoomchatRoomchatRoomchatRoomchatRoomchatRoomchatRoom = " + chatRoom);
 
@@ -161,6 +163,7 @@ public class ChatMessageService {
         // 알림 보내기
         notificationService.send(receiver);
         notificationService.sender(sender);
+
         return MessageResponseDto.createOf(message, username , nickname);
     }
 
