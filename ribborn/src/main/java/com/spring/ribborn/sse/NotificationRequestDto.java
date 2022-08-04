@@ -12,9 +12,6 @@ import lombok.NoArgsConstructor;
 public class NotificationRequestDto {
     // 받는사람 userid
     private User receiver;
-//    private NotificationType notificationType;
-//    private String content;
-//    private String url;
 
 
 }

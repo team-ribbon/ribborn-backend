@@ -23,22 +23,11 @@ public class Notification extends TimeStamp {
     @Column(name = "notification_id")
     private Long id;
 
-//    @Embedded
-//    private NotificationContent content;
-//    //알림 내용 - 50자 이내
-
-//    @Embedded
-//    private RelatedURL url;
-//    //관련 링크 - 클릭 시 이동해야할 링크
-
+    //읽었는지에 대한 여부
     @Column(nullable = false)
     private Boolean isRead;
-    //읽었는지에 대한 여부
 
-//    @Enumerated(EnumType.STRING)
-//    @Column(nullable = false)
-//    private NotificationType notificationType;
-//    // 알림 종류 [신청 / 수락 / 거절 등등 ]
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action= OnDeleteAction.CASCADE)
@@ -49,9 +38,6 @@ public class Notification extends TimeStamp {
     @Builder
     public Notification(User receiver, Boolean isRead) {
         this.receiver = receiver;
-//        this.notificationType = notificationType;
-//        this.content = new NotificationContent(content);
-//        this.url = new RelatedURL(url);
         this.isRead = isRead;
     }
 

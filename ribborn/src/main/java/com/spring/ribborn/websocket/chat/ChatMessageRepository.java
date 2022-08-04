@@ -20,7 +20,8 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
     // 채팅 메시지 읽음 상태 일괄 업데이트
     @Modifying
     @Transactional
-    @Query("UPDATE ChatMessage msg SET msg.isRead = true WHERE msg.roomId = :roomId AND msg.senderId <> :userId AND msg.isRead = false")
+//    @Query("UPDATE ChatMessage msg SET msg.isRead = true WHERE msg.roomId = :roomId AND msg.senderId <> :userId AND msg.isRead = false")
+    @Query("UPDATE ChatMessage msg SET msg.isRead = true WHERE msg.roomId = :roomId AND msg.senderId  = :userId AND msg.isRead = true ")
     void updateChatMessage(Long roomId, Long userId);
 
     ChatRoom findByRoomId(Long roomId);

@@ -62,8 +62,7 @@ public class ChatMessageService {
         roomUsers = new HashMap<>();
     }
 
-    // 메시지 찾기, 페이징 처리 (검증이 필요합니다.)
-//    @Cacheable(cacheNames = "chatInfo")
+    // 메시지 찾기, 페이징 처리
     public List<MessageResponseDto> getMessage(Long roomId, Long userid , String nickname) {
 
         System.out.println("5555555555555555555555555555555555555 메시지찾기 getMessage nickname = " + nickname);
@@ -74,14 +73,12 @@ public class ChatMessageService {
 
         List<MessageResponseDto> responseDtos = new ArrayList<>();
         // 상대가 보낸 메시지라면 모두 읽음으로 처리 -> isRead 상태 모두 true로 업데이트
-        messageRepository.updateChatMessage(roomId, userid);
-
         for (ChatMessage message : messages) {
+            message.update();
             responseDtos.add(MessageResponseDto.createFrom(message));
         }
         return responseDtos;
     }
-
 //    region 채팅방 사진 메시지 보내기
     public void uploadChatMessageImg(MultipartFile img, MessageRequestDto requestDto) {
 
@@ -118,10 +115,8 @@ public class ChatMessageService {
     // 채팅 메시지 및 알림 저장하기
     @Transactional
     public MessageResponseDto saveMessage(MessageRequestDto requestDto,
-//                                          Long userId
                                           String username,
                                           String nickname) {
-//        String topic = channelTopic.getTopic();
 
         MessageRequestDto sendMessageDto = new MessageRequestDto();
 
@@ -130,34 +125,23 @@ public class ChatMessageService {
         ChatRoom chatRoom = roomRepository.findByIdFetch(requestDto.getRoomId()).orElseThrow(
                 () -> new NullPointerException("해당 채팅방이 존재하지 않습니다.")
         );
+        chatRoom.accOut(false);
+        chatRoom.reqOut(false);
 
         System.out.println("chatRoomchatRoomchatRoomchatRoomchatRoomchatRoomchatRoomchatRoomchatRoom = " + chatRoom);
 
         User receiver = chatRoom.getAcceptor();
+        User sender = chatRoom.getRequester();
         ChatMessage message = messageRepository.save(ChatMessage.createOf(requestDto, username , nickname));
-//        if (chatRoom.getAccOut()) {
-////            // 채팅 알림 저장 및 전달하기
-//            Notification notification = notificationRepository.save(Notification.createOf(chatRoom, chatRoom.getAcceptor()));
-//            messagingTemplate.convertAndSend(
-//                    "/sub/notification/" + chatRoom.getAcceptor().getId(), NotificationDto.createFrom(notification));
-//            chatRoom.accOut(false);
-//        }
-//        if (chatRoom.getReqOut()) {
-////            // 채팅 알림 저장 및 전달하기
-//            Notification notification = notificationRepository.save(Notification.createOf(chatRoom, chatRoom.getRequester())
-//            );
-//            messagingTemplate.convertAndSend(
-//                    "/sub/notification/" + chatRoom.getRequester().getId(), NotificationDto.createFrom(notification)
-//            );
-//            chatRoom.reqOut(false);
-//        }
-//        ObjectMapper writer = new ObjectMapper();
         // pub -> 채널 구독자에게 전달
         redisMessagePublisher.publish(requestDto);
         // 알림 보내기
         notificationService.send(receiver);
+        notificationService.sender(sender);
+
         return MessageResponseDto.createOf(message, username , nickname);
     }
+
 
     // 채팅 메시지 발송하기
     public void sendMessage(MessageRequestDto requestDto, String userId, MessageResponseDto responseDto) {
