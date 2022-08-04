@@ -73,8 +73,9 @@ public class ChatMessageService {
 
         List<MessageResponseDto> responseDtos = new ArrayList<>();
         // 상대가 보낸 메시지라면 모두 읽음으로 처리 -> isRead 상태 모두 true로 업데이트
+        messageRepository.updateChatMessage(roomId, userid);
         for (ChatMessage message : messages) {
-            message.update();
+//            message.update();
             responseDtos.add(MessageResponseDto.createFrom(message));
         }
         return responseDtos;
