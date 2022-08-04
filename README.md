@@ -1,12 +1,25 @@
-# 🎯프로젝트 RIBBORN 소개
-<br><br>
+# 리폼 커뮤니티 리본
 
-![ribbornmain](https://user-images.githubusercontent.com/59018674/182017856-1b7f4792-a10d-472c-a32f-c83b952eff33.png)
+<img height="300px" src="https://user-images.githubusercontent.com/105181604/181456826-d342485e-99c7-4f0c-8e28-b8c9870b9195.png">
+
+### [🎀 리본 바로가기 >](https://ribborn.kr)
 
 
    
 ### 당신의 옷장의 옷을 구해주세요! 
 <br><br>
+
+## 🛠️ 아키텍처
+
+<br>
+<!-- <details> -->
+<!--     <summary>아키텍처 바로보기</summary> -->
+
+<!-- summary 아래 한칸 공백 두고 내용 삽입 -->
+![서비스아키텍처수정](https://user-images.githubusercontent.com/59018674/182071222-93c422c3-7169-46d3-b223-857d56fa8dfd.png)
+
+
+<!-- </details> -->
 
 
    
@@ -24,39 +37,27 @@
 
 <br>
 
-## 👥 팀 소개
+### Back-end 기술 스택
+## 📜 기술스택
+|분류|기술|
+| :-: |:- |
+|Language|<img src="https://img.shields.io/badge/JAVA-007396?style=for-the-badge&logo=java&logoColor=white">|
+|Framework|<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white"> <img src="https://img.shields.io/badge/Springboot-6DB33F?style=for-the-badge&logo=Springboot&logoColor=white">|
+|Build Tool|<img src="https://img.shields.io/badge/gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white">|
+|DB|<img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white">|
+|Server|<img src="https://img.shields.io/badge/aws-232F3E?style=for-the-badge&logo=AmazonAWS&logoColor=white"> <img src="https://img.shields.io/badge/Amazon S3-569A31?style=for-the-badge&logo=Amazon S3&logoColor=white">|
 
-Backend
 
-<br>
 
-팀원|github
----|---|
-박성규 | https://github.com/ParkSungGyu1
-이정우 | https://github.com/lky8967
-박성렬 | https://github.com/songryel-park
-<br>
+
 
 ## 🗓 프로젝트 기간
 
 <br>
 
-* 2022년 6월 27일 ~ 2022년 8월 5일 
+* 2022년 6월 24일 ~ 2022년 8월 5일 
   
 <br>  
-
-## 🛠️ 아키텍처
-
-<br>
-<details>
-    <summary>아키텍처 바로보기</summary>
-
-<!-- summary 아래 한칸 공백 두고 내용 삽입 -->
-![서비스아키텍처수정](https://user-images.githubusercontent.com/59018674/182071222-93c422c3-7169-46d3-b223-857d56fa8dfd.png)
-
-
-</details>
-
 
 ## ⛏️ ER 다이어그램
 
@@ -102,13 +103,24 @@ Backend
   
 </details>
 
+<details>
+<summary><b>채팅 알림 설정 </b></summary>
+  
+> **문제** : 기존에 채팅을 웹소켓으로 구현하였는데 알림이라는것은 서버에서 클라이언트로만 데이터를 보내면되는 단방향통신만 있으면 충분할꺼라고 생각을하여 다른 통신 방법을 
+   찾아봄
+>
+> **해결** : 단방향 데이터 통신방식인 SSE(server sent event) 방식을 선택하여 사용에 대한
+  자세한 내용은 링크 들어가시면 좋습니다. [📝]( https://successful-spur-143.notion.site/0f7341351c50473292bc9648f532c7b0 )
+  
+</details>
+
 <br>
 
 ## :hammer_and_wrench: 기능설명
 
 <br>
 <details>
-<summary>1. 4종류의 게시판 CRUD</summary>
+<summary> ✅ 4종류의 게시판 CRUD</summary>
   
 <div markdown="1">       
 
@@ -125,7 +137,7 @@ Backend
 </details>
 
 <details>
-<summary>2. 채팅 (Stomp, WebSocket)</summary>
+<summary> ✅ 채팅 (Stomp, WebSocket)</summary>
   
 <div markdown="1">       
 
@@ -140,7 +152,7 @@ Backend
 </details>
 
 <details>
-<summary>3. 알림 (Stomp, WebSocket)</summary>
+<summary> ✅ 알림 (Server sent event)</summary>
   
 <div markdown="1">       
 
@@ -155,7 +167,7 @@ Backend
 </details>
 
 <details>
-<summary>4. 게시글의 인기순, 최신순, 지역, 진행정도로 정렬 가능</summary>
+<summary> ✅ 게시글의 인기순, 최신순, 지역, 진행정도로 정렬 가능</summary>
   
 <div markdown="1">       
   
@@ -167,7 +179,7 @@ Backend
 </details>
 
 <details>
-<summary>5. 마이페이지 내 정보 조회 기능</summary>
+<summary> ✅ 마이페이지 내 정보 조회 기능</summary>
   
 - 본인이 작성한 게시글 / 북마크한 게시글을 확인 가능  
   
@@ -179,7 +191,7 @@ Backend
 </details>
 
 <details>
-<summary>6. 마이페이지에서 내 정보 변경 기능</summary>
+<summary> ✅ 마이페이지에서 내 정보 변경 기능</summary>
   
 - 닉네임 및 개인정보 변경 가능
   
@@ -191,7 +203,7 @@ Backend
 </details>
 
 <details>
-<summary>7. 글 작성자의 게시글 확인 기능</summary>
+<summary> ✅ 글 작성자의 게시글 확인 기능</summary>
   
 - 작성자의 마이페이지에서 게시글 확인 가능 
   
@@ -206,8 +218,20 @@ Backend
 
 ##  API 설계
 
-
 [API 설계 자세히보기](https://www.notion.so/API-3078c33df93d4bc180531687a99b2757)
+
+## 👥 팀 소개
+
+Backend
+
+<br>
+
+팀원|github
+---|---|
+박성규 | https://github.com/ParkSungGyu1
+이정우 | https://github.com/lky8967
+박성렬 | https://github.com/songryel-park
+<br>
 
 
 
