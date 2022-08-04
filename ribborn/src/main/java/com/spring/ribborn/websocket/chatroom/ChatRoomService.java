@@ -98,7 +98,6 @@ public class ChatRoomService {
         }
     }
 
-
     // 사용자별 채팅방 전체 목록 가져오기
     public List<RoomResponseDto> getRooms(Long userId, String nickname) {
         // 회원 찾기
@@ -110,21 +109,6 @@ public class ChatRoomService {
         // 메시지 리스트 만들기
         return getMessages(dtos, userId, nickname);
     }
-
-    // 채팅방 즐겨찾기 추가
-//    @Transactional
-//    public void fixedRoom(Long roomId, UserDetailsImpl userDetails){
-//
-//        // fetchJoin 필요
-//        ChatRoom chatRoom = roomRepository.findById(roomId)
-//                .orElseThrow(() -> new CustomException(NOT_FOUND_CHAT)
-//                );
-//        String flag;
-//        if ( chatRoom.getAcceptor().getId().equals(userDetails.getUserId()) ){ flag = ACCEPTOR; }
-//        else { flag = REQUESTER; }
-//
-//        chatRoom.fixedRoom(flag);
-//    }
 
     public List<RoomResponseDto> getMessages(List<RoomDto> roomDtos, Long userId , String nickname) {
 
@@ -138,7 +122,6 @@ public class ChatRoomService {
             if (dto.getAccId().equals(userId)) {
                 if (!dto.getAccOut()) { // 만약 Acc(내)가 나가지 않았다면
                     int unreadCnt = messageRepository.countMsg(dto.getReqId(), dto.getRoomId());
-//                    Boolean isBanned = bannedRepository.existsBy(dto.getAccId(), dto.getReqId());
                     if (dto.getAccFixed()) {
                         prefix.add(RoomResponseDto.createOf(type,ACCEPTOR, dto, unreadCnt, false));
                     } else {
@@ -148,7 +131,6 @@ public class ChatRoomService {
             } else if (dto.getReqId().equals(userId)) {
                 if (!dto.getReqOut()) { // 만약 Req(내)가 나가지 않았다면
                     int unreadCnt = messageRepository.countMsg(dto.getAccId(), dto.getRoomId());
-//                    Boolean isBanned = bannedRepository.existsBy(dto.getAccId(), dto.getReqId());
                     if (dto.getReqFixed()) {
                         prefix.add(RoomResponseDto.createOf(type,REQUESTER, dto, unreadCnt, false));
 
@@ -161,62 +143,6 @@ public class ChatRoomService {
         prefix.addAll(suffix);
         return prefix;
     }
-
-    // 회원 차단 기능
-//    public void setBanned(UserDetailsImpl userDetails, Long bannedId) {
-//
-//        User user = userRepository
-//                .findById(userDetails.getUserId())
-//                .orElseThrow(() -> new CustomException(NOT_FOUND_REQUESTER)
-//                );
-//        User bannedUser = userRepository
-//                .findById(bannedId)
-//                .orElseThrow(() -> new CustomException(NOT_FOUND_USER)
-//                );
-//
-//        ChatBanned banned = bannedRepository.findByUserAndBannedUser(user, bannedUser).orElse(null);
-//
-//        if (banned == null) {
-//            bannedRepository.save(ChatBanned.createOf(user, bannedUser));
-//        } else {
-//            throw new CustomException(ALREADY_BANNED);
-//        }
-//    }
-
-    // 차단 회원 불러오기
-//    public List<BannedUserDto> getBanned(UserDetailsImpl userDetails) {
-//        User user = userRepository
-//                .findById(userDetails.getUserId())
-//                .orElseThrow(() -> new CustomException(NOT_FOUND_USER));
-//        List<User> bannedUsers = bannedRepository.findAllMyBannedByUser(user);
-//
-//        List<BannedUserDto> userDtos = new ArrayList<>();
-//
-//        for (User banndUser : bannedUsers) {
-//            userDtos.add(BannedUserDto.createFrom(banndUser));
-//        }
-//
-//        return userDtos;
-//    }
-
-    // 회원 차단 풀기
-//    @Transactional
-//    public void releaseBanned(UserDetailsImpl userDetails, Long bannedId) {
-//
-//        User user = userRepository
-//                .findById(userDetails.getUserId())
-//                .orElseThrow(() -> new CustomException(NOT_FOUND_REQUESTER)
-//                );
-//        User bannedUser = userRepository
-//                .findById(bannedId)
-//                .orElseThrow(() -> new CustomException(NOT_FOUND_USER)
-//                );
-//
-//        ChatBanned banned = bannedRepository.findByUserAndBannedUser(user, bannedUser)
-//                .orElseThrow(() -> new CustomException(NOT_FOUND_BANNED));
-//
-//        banned.releaseBanned();
-//    }
 
     public enum UserTypeEnum {
         ACCEPTOR(Type.ACCEPTOR),

@@ -30,7 +30,6 @@ public class MessageResponseDto {
         this.senderId = messageRequestDto.getSenderId();
         this.senderNickname = messageRequestDto.getNickname();
         this.message = messageRequestDto.getMessage();
-//        this.date = messageRequestDto.getDate();
         this.isRead = messageRequestDto.getIsRead();
         this.type = messageRequestDto.getType();
 

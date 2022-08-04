@@ -40,7 +40,6 @@ public class NotificationService {
         String emitterId = makeTimeIncludeId(userId);
 
 
-
         Long timeout = 60L * 1000L * 60L; // 1시간
         // 생성된 emiiterId를 기반으로 emitter를 저장
         SseEmitter emitter = emitterRepository.save(emitterId, new SseEmitter(timeout));
@@ -81,6 +80,7 @@ public class NotificationService {
             emitterRepository.deleteById(emitterId);
         }
     }
+
     // Last - event - id 가 존재한다는 것은 받지 못한 데이터가 있다는 것이다.
     private boolean hasLostData(String lastEventId) {
         return !lastEventId.isEmpty();
@@ -93,6 +93,7 @@ public class NotificationService {
                 .filter(entry -> lastEventId.compareTo(entry.getKey()) < 0)
                 .forEach(entry -> sendNotification(emitter, entry.getKey(), emitterId, entry.getValue()));
     }
+
     // =============================================
     /*
         : 실제 다른 사용자가 알림을 보낼 수 있는 기능이 필요
@@ -101,7 +102,7 @@ public class NotificationService {
         받을 회원의 emitter들을 모두 찾아 해당 emitter를 Send
      */
     @Async
-    public void send(User receiver){
+    public void send(User receiver) {
         Notification notification = notificationRepository.save(createNotification(receiver));
         String receiverId = String.valueOf(receiver.getId());
         String eventId = receiverId + "_" + System.currentTimeMillis();
@@ -113,18 +114,16 @@ public class NotificationService {
                 }
         );
     }
+
     private Notification createNotification(User receiver) {
         return Notification.builder()
                 .receiver(receiver)
-//                .notificationType(notificationType)
-//                .content(content)
-//                .url(url)
                 .isRead(false) // 현재 읽음상태
                 .build();
     }
 
     @Async
-    public void sender(User sender){
+    public void sender(User sender) {
         Notification notification = notificationRepository.save(createNotificationer(sender));
         String senderId = String.valueOf(sender.getId());
         String eventId = senderId + "_" + System.currentTimeMillis();
@@ -136,64 +135,11 @@ public class NotificationService {
                 }
         );
     }
+
     private Notification createNotificationer(User sender) {
         return Notification.builder()
                 .receiver(sender)
-//                .notificationType(notificationType)
-//                .content(content)
-//                .url(url)
                 .isRead(false) // 현재 읽음상태
                 .build();
     }
-
-
-
-//    @Transactional
-//    public List<NotificationDto> findAllNotifications(Long userId) {
-//        List<Notification> notifications = notificationRepository.findAllByUserId(userId);
-//        return notifications.stream()
-//                .map(NotificationDto::create)
-//                .collect(Collectors.toList());
-//    }
-//
-//
-//    public NotificationCountDto countUnReadNotifications(Long userId) {
-//        //유저의 알람리스트에서 ->isRead(false)인 갯수를 측정 ,
-//        Long count = notificationRepository.countUnReadNotifications(userId);
-//        return NotificationCountDto.builder()
-//                .count(count)
-//                .build();
-//    }
-//
-//    @Transactional
-//    public void readNotification(Long notificationId) {
-//        //알림을 받은 사람의 id 와 알림의 id 를 받아와서 해당 알림을 찾는다.
-//        Optional<Notification> notification = notificationRepository.findById(notificationId);
-//        Notification checkNotification = notification.orElseThrow(()-> new CustomException(ErrorCode.NOT_EXIST_NOTIFICATION));
-//        checkNotification.read(); // 읽음처리
-//
-//    }
-//
-//    @Transactional
-//    public void deleteAllByNotifications(UserDetailsImpl userDetails) {
-//        Long receiverId = userDetails.getUser().getId();
-//        notificationRepository.deleteAllByReceiverId(receiverId);
-//
-//    }
-//    @Transactional
-//    public void deleteByNotifications(Long notificationId) {
-//        notificationRepository.deleteById(notificationId);
-//    }
 }
-
-//    // 읽음 상태 업데이트
-////    @Transactional
-////    public void setRead(Long notificationId){
-////        Notification notification = notificationRepository
-////                .findById(notificationId)
-////                .orElseThrow( () -> new CustomException(NOT_FOUND_NOTIFICATION));
-////
-////        notification.setRead();
-////    }
-//
-//}

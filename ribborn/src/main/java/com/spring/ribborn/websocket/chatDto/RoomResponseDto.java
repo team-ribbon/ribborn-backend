@@ -44,14 +44,12 @@ public class RoomResponseDto {
 
                 responseDto.userId = dto.getReqId();
                 responseDto.nickname = dto.getReqNickname();
-//                responseDto.profile = dto.getReqProfile();
                 break;
 
             case REQUESTER:
 
                 responseDto.userId = dto.getAccId();
                 responseDto.nickname = dto.getAccNickname();
-//                responseDto.profile = dto.getAccProfile();
                 break;
 
             default: break;
