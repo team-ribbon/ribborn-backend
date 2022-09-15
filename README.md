@@ -1,6 +1,7 @@
 # 리폼 커뮤니티 리본
 
 <img height="300px" src="https://user-images.githubusercontent.com/105181604/181456826-d342485e-99c7-4f0c-8e28-b8c9870b9195.png">
+<img height="300px" src="https://user-images.githubusercontent.com/105181604/190293347-b4cb286f-ef02-45df-ba6e-08557274aaf7.png">
 
 ### [🎀 리본 바로가기 >](https://ribborn.kr)
 
